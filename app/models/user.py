@@ -4,6 +4,9 @@ from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy import Enum
 from flask_login import UserMixin
 from datetime import datetime, timezone
+from .review import Review
+from .match import Match
+from .chat_history import ChatHistory
 
 
 class User(db.Model, UserMixin):
@@ -35,12 +38,13 @@ class User(db.Model, UserMixin):
     updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
 
     # relationships here
-    reviews = db.relationship("Review", back_populates="users", cascade="all, delete-orphan")
-    pets = db.relationship("Pet", back_populates="sellers", cascade='all, delete-orphan')
-    sent_matches = db.relationship('Match', foreign_key="[Match.userId1]", back_populates='user1')
-    received_matches = db.relationship('Match', foreign_key="[Match.userId2]", back_populates='user2')
-    sender_chat = db.relationship('ChatHistory', foreign_key="[ChatHistory.senderId]", back_populates='senderId')
-    receiver_chat = db.relationship('ChatHistory', foreign_key="[ChatHistory.receiverId]", back_populates='receiverId')
+    received_reviews = db.relationship('Review', foreign_keys=[Review.sellerId], back_populates='sellers', cascade='all, delete-orphan')
+    written_reviews = db.relationship("Review", foreign_keys=[Review.reviewerId], back_populates="reviewers", cascade="all, delete-orphan")
+    pets = db.relationship("R", back_populates="sellers", cascade='all, delete-orphan')
+    sent_matches = db.relationship('Match', foreign_keys=[Match.userId1], back_populates='user1', cascade="all, delete-orphan")
+    received_matches = db.relationship('Match', foreign_keys=[Match.userId2], back_populates='user2', cascade="all, delete-orphan")
+    sender_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.senderId], back_populates='senderId', cascade="all, delete-orphan")
+    receiver_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.receiverId], back_populates='receiverId', cascade="all, delete-orphan")
 
     @property
     def password(self):

@@ -9,7 +9,7 @@ class Review(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    petId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("pets.id")), nullable=False)
+    sellerId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     reviewerId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     review = db.Column(db.Text, nullable=False)
     stars = db.Column(db.Integer, nullable=False)
@@ -17,8 +17,8 @@ class Review(db.Model):
     updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
 
     # relationships below
-    users = db.relationship("User", back_populates="reviews")
-    pets = db.relationship("Pet", back_populates="reviews")
+    sellers = db.relationship("User", foreign_keys=[sellerId], back_populates="received_reviews")
+    reviewers = db.relationship("Pet", foreign_keys=[reviewerId], back_populates="written_reviews")
 
     def __repr__(self):
-        return f"<Review id={self.id}, petId={self.petId}, reviewerId={self.reviewerId}, stars={self.stars}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>"
+        return f"<Review id={self.id}, petId={self.sellerId}, reviewerId={self.reviewerId}, stars={self.stars}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>"

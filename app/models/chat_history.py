@@ -19,9 +19,9 @@ class ChatHistory(db.Model):
     updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
 
     # relationships here
-    senderId = db.relationship('User', foreign_keys=[senderId], back_populates='sender_chat')
-    receiverId = db.relationship('User', foreign_keys=[receiverId], back_populates='receiver_chat')
-    pets = db.relationship('Pet', back_populates='chat')
+    sender = db.relationship('User', foreign_keys=[senderId], back_populates='sender_chats')
+    receiver = db.relationship('User', foreign_keys=[receiverId], back_populates='receiver_chats')
+    pets = db.relationship('Pet', back_populates='chats', cascade="all, delete-orphan")
 
     def __repr__(self):
-        return f"<Match id={self.id}, userId1={self.userId1}, userId2={self.userId2}, petId={self.petId}, status={self.status}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>"
+        return f"<ChatHistory id={self.id}, senderId={self.senderId}, receiverId={self.receiverId}, petId={self.petId}, status={self.status}, content={self.content}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>"

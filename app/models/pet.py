@@ -36,11 +36,10 @@ class Pet(db.Model):
     updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
 
     # relationships here
-    reviews = db.relationship("Review", back_populates="pets", cascade="all, delete-orphan")
     images = db.relationship("PetImage", back_populates="pets", cascade="all, delete-orphan")
     sellers = db.relationship("User", back_populates='pets')
-    matches = db.relationship('Match', back_populates='pets')
-    chat = db.relationship("ChatHistory", back_populates='pets')
+    matches = db.relationship('Match', back_populates='pets', cascade="all, delete-orphan")
+    chats = db.relationship("ChatHistory", back_populates='pets', cascade="all, delete-orphan")
 
     @property
     def days_on_adoptr(self):
