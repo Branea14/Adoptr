@@ -13,7 +13,7 @@ class PetImage(db.Model):
     url = db.Column(db.Text, nullable=False)
     preview = db.Column(db.Boolean, nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
 
     # relationship below
     pets = db.relationship("Pet", back_populates="images")

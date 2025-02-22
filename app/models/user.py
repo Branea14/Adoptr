@@ -37,6 +37,8 @@ class User(db.Model, UserMixin):
     # relationships here
     reviews = db.relationship("Review", back_populates="users", cascade="all, delete-orphan")
     pets = db.relationship("Pet", back_populates="sellers", cascade='all, delete-orphan')
+    sent_matches = db.relationship('Match', foreign_key="[Match.userId1]", back_populates='user1')
+    received_matches = db.relationship('Match', foreign_key="[Match.userId2]", back_populates='user2')
 
     @property
     def password(self):

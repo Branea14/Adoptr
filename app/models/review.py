@@ -14,11 +14,11 @@ class Review(db.Model):
     review = db.Column(db.Text, nullable=False)
     stars = db.Column(db.Integer, nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
 
     # relationships below
     users = db.relationship("User", back_populates="reviews")
     pets = db.relationship("Pet", back_populates="reviews")
 
     def __repr__(self):
-        return f"<Review id={self.id}, petId={self.petId}, buyerId={self.reviewerId}, stars={self.stars}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>"
+        return f"<Review id={self.id}, petId={self.petId}, reviewerId={self.reviewerId}, stars={self.stars}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>"
