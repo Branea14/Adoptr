@@ -40,6 +40,7 @@ class Pet(db.Model):
     images = db.relationship("PetImage", back_populates="pets", cascade="all, delete-orphan")
     sellers = db.relationship("User", back_populates='pets')
     matches = db.relationship('Match', back_populates='pets')
+    chat = db.relationship("ChatHistory", back_populates='pets')
 
     @property
     def days_on_adoptr(self):
