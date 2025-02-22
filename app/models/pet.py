@@ -35,6 +35,11 @@ class Pet(db.Model):
     createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
     updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
 
+    # relationships here
+    reviews = db.relationship("Review", back_populates="pets", cascade="all, delete-orphan")
+    images = db.relationship("PetImage", back_populates="pets", cascade="all, delete-orphan")
+    sellers = db.relationship("User", back_populates='pets')
+
 
     @property
     def days_on_adoptr(self):

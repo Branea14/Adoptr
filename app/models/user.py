@@ -34,6 +34,10 @@ class User(db.Model, UserMixin):
     createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
     updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
 
+    # relationships here
+    reviews = db.relationship("Review", back_populates="users", cascade="all, delete-orphan")
+    pets = db.relationship("Pet", back_populates="sellers", cascade='all, delete-orphan')
+
     @property
     def password(self):
         return self.hashed_password
