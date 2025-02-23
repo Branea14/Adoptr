@@ -130,7 +130,7 @@ def upgrade():
         batch_op.add_column(sa.Column('idealAge', sa.Enum('noPreference', 'puppy', 'young', 'adult', 'senior', name='ideal_age'), nullable=False, server_default='noPreference'))
         batch_op.add_column(sa.Column('idealSex', sa.Enum('noPreference', 'male', 'female', name='ideal_sex'), nullable=False, server_default='noPreference'))
         batch_op.add_column(sa.Column('idealSize', sa.Enum('noPreference', 'small', 'medium', 'large', 'xl', name='ideal_size'), nullable=False, server_default='noPreference'))
-        batch_op.add_column(sa.Column('lifestyle', sa.Enum('noPreference', 'veryActive', 'active', 'laidback', 'lapPet', name='lifestyle'), nullable=False, server_default='noPreference'))
+        batch_op.add_column(sa.Column('lifestyle', sa.Enum('noPreference', 'veryActive', 'active', 'laidback', 'lapPet', name='lifestyle'), nullable=False, server_default=sa.Text("'noPreference'")))
         batch_op.add_column(sa.Column('geohash', sa.String(length=12), nullable=False))
         batch_op.add_column(sa.Column('latitude', sa.Numeric(precision=10, scale=7), nullable=False))
         batch_op.add_column(sa.Column('longitude', sa.Numeric(precision=10, scale=7), nullable=False))
