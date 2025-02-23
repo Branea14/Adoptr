@@ -40,7 +40,7 @@ class User(db.Model, UserMixin):
     # relationships here
     received_reviews = db.relationship('Review', foreign_keys=[Review.sellerId], back_populates='sellers', cascade='all, delete-orphan')
     written_reviews = db.relationship("Review", foreign_keys=[Review.reviewerId], back_populates="reviewers", cascade="all, delete-orphan")
-    pets = db.relationship("R", back_populates="sellers", cascade='all, delete-orphan')
+    pets = db.relationship("Pet", back_populates="sellers", cascade='all, delete-orphan')
     sent_matches = db.relationship('Match', foreign_keys=[Match.userId1], back_populates='user1', cascade="all, delete-orphan")
     received_matches = db.relationship('Match', foreign_keys=[Match.userId2], back_populates='user2', cascade="all, delete-orphan")
     sender_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.senderId], back_populates='senderId', cascade="all, delete-orphan")

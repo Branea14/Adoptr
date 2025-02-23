@@ -28,9 +28,9 @@ class Pet(db.Model):
     household = db.Column(JSON, nullable=False, default=dict)
     careAndBehavior = db.Column(JSON, nullable=False, default=dict)
 
-    geohash = db.Column(db.String(12), nullable=False)
-    latitude = db.Column(db.Numeric(10, 7), nullable=False)
-    longitude = db.Column(db.Numeric(10, 7), nullable=False)
+    # geohash = db.Column(db.String(12), nullable=False)
+    # latitude = db.Column(db.Numeric(10, 7), nullable=False)
+    # longitude = db.Column(db.Numeric(10, 7), nullable=False)
 
     createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
     updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
@@ -44,6 +44,18 @@ class Pet(db.Model):
     @property
     def days_on_adoptr(self):
         return (datetime.now(timezone.utc) - self.createdAt).days
+
+    @property
+    def geohash(self):
+        return self.sellers.geohash if self.sellers else None
+
+    @property
+    def latitude(self):
+        return self.sellers.latitude if self.sellers else None
+
+    @property
+    def longitude(self):
+        return self.sellers.longitude if self.sellers else None
 
     def __repr__(self):
         return (f"<Pet id={self.id}, name='{self.name}', breed='{self.breed}', "
