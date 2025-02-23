@@ -19,6 +19,15 @@ RUN pip install psycopg2
 
 COPY . .
 
-RUN flask db upgrade 2>&1 | tee migration_log.txt || (cat migration_log.txt && exit 1)
-RUN flask seed all
+# RUN flask db upgrade 2>&1 | tee migration_log.txt || (cat migration_log.txt && exit 1)
+# RUN flask seed all
+# CMD gunicorn app:app
+
+# Apply database migrations and stop deployment if they fail
+RUN flask db upgrade || (echo "❌ Migration Failed! Check logs." && exit 1)
+
+# Apply seed data only if migrations succeed
+RUN flask seed all || echo "⚠️ Seeding failed or skipped."
+
+# Start the Flask application
 CMD gunicorn app:app

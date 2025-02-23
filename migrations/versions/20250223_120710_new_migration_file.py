@@ -1,8 +1,8 @@
-"""Recreating all migrations
+"""new migration file
 
-Revision ID: 9b3c7d01fe47
+Revision ID: 7ff0ae2b1bf6
 Revises:
-Create Date: 2025-02-23 11:47:46.938864
+Create Date: 2025-02-23 12:07:10.555155
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ from sqlalchemy.dialects import postgresql
 from sqlalchemy import Text
 
 # revision identifiers, used by Alembic.
-revision = '9b3c7d01fe47'
+revision = '7ff0ae2b1bf6'
 down_revision = None
 branch_labels = None
 depends_on = None
