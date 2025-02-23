@@ -19,6 +19,6 @@ RUN pip install psycopg2
 
 COPY . .
 
-RUN flask db upgrade
+RUN flask db upgrade || (echo "Migration Failed!" && exit 1)
 RUN flask seed all
 CMD gunicorn app:app
