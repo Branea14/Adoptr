@@ -115,9 +115,16 @@ def upgrade():
         IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ideal_size') THEN
             CREATE TYPE ideal_size AS ENUM ('noPreference', 'small', 'medium', 'large', 'xl');
         END IF;
-        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'lifestyle') THEN
-            CREATE TYPE lifestyle AS ENUM ('noPreference', 'veryActive', 'active', 'laidback', 'lapPet');
+    END $$;
+    """)
+
+    op.execute("""
+    DO $$
+    BEGIN
+        IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'lifestyle') THEN
+            DROP TYPE lifestyle CASCADE;
         END IF;
+        CREATE TYPE lifestyle AS ENUM ('noPreference', 'veryActive', 'active', 'laidback', 'lapPet');
     END $$;
     """)
 
