@@ -31,7 +31,7 @@ app.register_blueprint(auth_routes, url_prefix='/api/auth')
 
 # initializes db and migrations
 db.init_app(app)
-Migrate(app, db)
+migrate = Migrate(app, db)
 
 # Application Security
 CORS(app)
