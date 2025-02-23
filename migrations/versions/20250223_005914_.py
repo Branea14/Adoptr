@@ -94,6 +94,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['petId'], ['pets.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    op.execute("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'pet_experience') THEN CREATE TYPE pet_experience AS ENUM ('firstTime', 'previous', 'current'); END IF; END $$;")
+
     with op.batch_alter_table('users', schema=None) as batch_op:
         batch_op.add_column(sa.Column('firstName', sa.String(length=255), nullable=False, server_default='Unknown'))
         batch_op.add_column(sa.Column('lastName', sa.String(length=255), nullable=False, server_default='Unknown'))
