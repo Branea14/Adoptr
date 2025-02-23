@@ -158,8 +158,13 @@ def downgrade():
         batch_op.drop_column('lastName')
         batch_op.drop_column('firstName')
 
-    op.execute("DROP TYPE IF EXISTS pet_experience CASCADE;")
-
+    op.execute("""
+    DROP TYPE IF EXISTS pet_experience;
+    DROP TYPE IF EXISTS ideal_age;
+    DROP TYPE IF EXISTS ideal_sex;
+    DROP TYPE IF EXISTS ideal_size;
+    DROP TYPE IF EXISTS lifestyle;
+    """)
 
     op.drop_table('pet_images')
     op.drop_table('matches')
