@@ -23,11 +23,8 @@ COPY . .
 # RUN flask seed all
 # CMD gunicorn app:app
 
-# Apply database migrations and stop deployment if they fail
-RUN flask db upgrade || (echo "❌ Migration Failed! Check logs." && exit 1)
 
-# Apply seed data only if migrations succeed
-RUN flask seed all || echo "⚠️ Seeding failed or skipped."
 
-# Start the Flask application
+RUN flask db upgrade || (echo "❌ Migration Failed! Deployment Stopping." && exit 1)
+RUN flask seed all || (echo "❌ Seeding Failed! Deployment Stopping." && exit 1)
 CMD gunicorn app:app

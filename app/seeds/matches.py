@@ -23,7 +23,6 @@ def seed_matches():
         (1, 5, 13, "REQUESTED"),
         (3, 1, 16, "REQUESTED"),
         (4, 2, 18, "REQUESTED"),
-        (5, 3, 20, "REQUESTED"),
 
         # Rejected Matches
         (1, 4, 2, "REJECTED"),
