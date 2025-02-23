@@ -21,7 +21,7 @@ class ChatHistory(db.Model):
     # relationships here
     sender = db.relationship('User', foreign_keys=[senderId], back_populates='sender_chats')
     receiver = db.relationship('User', foreign_keys=[receiverId], back_populates='receiver_chats')
-    pets = db.relationship('Pet', back_populates='chats', cascade="all, delete-orphan")
+    pets = db.relationship('Pet', back_populates='chats')
 
     def __repr__(self):
         return f"<ChatHistory id={self.id}, senderId={self.senderId}, receiverId={self.receiverId}, petId={self.petId}, status={self.status}, content={self.content}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>"

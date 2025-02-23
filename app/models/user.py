@@ -43,8 +43,8 @@ class User(db.Model, UserMixin):
     pets = db.relationship("Pet", back_populates="sellers", cascade='all, delete-orphan')
     sent_matches = db.relationship('Match', foreign_keys=[Match.userId1], back_populates='user1', cascade="all, delete-orphan")
     received_matches = db.relationship('Match', foreign_keys=[Match.userId2], back_populates='user2', cascade="all, delete-orphan")
-    sender_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.senderId], back_populates='senderId', cascade="all, delete-orphan")
-    receiver_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.receiverId], back_populates='receiverId', cascade="all, delete-orphan")
+    sender_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.senderId], back_populates='sender', cascade="all, delete-orphan")
+    receiver_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.receiverId], back_populates='receiver', cascade="all, delete-orphan")
 
     @property
     def password(self):
