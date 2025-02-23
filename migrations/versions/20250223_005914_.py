@@ -92,8 +92,6 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     with op.batch_alter_table('users', schema=None) as batch_op:
-
-        batch_op.add_column
         batch_op.add_column(sa.Column('firstName', sa.String(length=255), nullable=False, server_default='Unknown'))
         batch_op.add_column(sa.Column('lastName', sa.String(length=255), nullable=False, server_default='Unknown'))
         batch_op.add_column(sa.Column('household', sa.JSON(), nullable=False))
