@@ -1,16 +1,17 @@
 """Recreating all migrations
 
-Revision ID: 25b105321b49
-Revises: 
-Create Date: 2025-02-23 12:36:40.045278
+Revision ID: d9da51a2a8ac
+Revises:
+Create Date: 2025-02-23 12:39:23.417999
 
 """
 from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
+from sqlalchemy import Text
 
 # revision identifiers, used by Alembic.
-revision = '25b105321b49'
+revision = 'd9da51a2a8ac'
 down_revision = None
 branch_labels = None
 depends_on = None
