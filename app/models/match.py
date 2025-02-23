@@ -13,7 +13,7 @@ class Match(db.Model):
     userId1 = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     userId2 = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     petId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("pets.id")), nullable=False)
-    status = db.Column(Enum('REQUESTED', 'APPROVED', 'REJECTED', name='status'), nullable=False)
+    status = db.Column(Enum('REQUESTED', 'APPROVED', 'REJECTED', name='match-status'), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
     updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
 

@@ -1,8 +1,8 @@
 """Recreating all migrations
 
-Revision ID: 29f2930d057b
+Revision ID: 9b3c7d01fe47
 Revises:
-Create Date: 2025-02-23 11:32:26.777144
+Create Date: 2025-02-23 11:47:46.938864
 
 """
 from alembic import op
@@ -10,9 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 from sqlalchemy import Text
 
-
 # revision identifiers, used by Alembic.
-revision = '29f2930d057b'
+revision = '9b3c7d01fe47'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -96,7 +95,7 @@ def upgrade():
     sa.Column('userId1', sa.Integer(), nullable=False),
     sa.Column('userId2', sa.Integer(), nullable=False),
     sa.Column('petId', sa.Integer(), nullable=False),
-    sa.Column('status', sa.Enum('REQUESTED', 'APPROVED', 'REJECTED', name='status'), nullable=False),
+    sa.Column('status', sa.Enum('REQUESTED', 'APPROVED', 'REJECTED', name='match-status'), nullable=False),
     sa.Column('createdAt', sa.DateTime(), nullable=False),
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['petId'], ['pets.id'], ),
