@@ -30,30 +30,36 @@ def is_postgresql():
 def upgrade():
 
     if is_postgresql():
+        # Explicitly drop the ENUM before recreating it
         op.execute("""
         DO $$
         BEGIN
-            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'pet_experience') THEN
-                CREATE TYPE pet_experience AS ENUM ('firstTime', 'previous', 'current');
+            IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'pet_experience') THEN
+                DROP TYPE pet_experience CASCADE;
             END IF;
-            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ideal_age') THEN
-                CREATE TYPE ideal_age AS ENUM ('noPreference', 'puppy', 'young', 'adult', 'senior');
+            IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ideal_age') THEN
+                DROP TYPE ideal_age CASCADE;
             END IF;
-            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ideal_sex') THEN
-                CREATE TYPE ideal_sex AS ENUM ('noPreference', 'male', 'female');
+            IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ideal_sex') THEN
+                DROP TYPE ideal_sex CASCADE;
             END IF;
-            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ideal_size') THEN
-                CREATE TYPE ideal_size AS ENUM ('noPreference', 'small', 'medium', 'large', 'xl');
+            IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ideal_size') THEN
+                DROP TYPE ideal_size CASCADE;
+            END IF;
+            IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'lifestyle') THEN
+                DROP TYPE lifestyle CASCADE;
             END IF;
         END $$;
         """)
 
+        # Now recreate ENUMs
         op.execute("""
         DO $$
         BEGIN
-            IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'lifestyle') THEN
-                DROP TYPE lifestyle CASCADE;
-            END IF;
+            CREATE TYPE pet_experience AS ENUM ('firstTime', 'previous', 'current');
+            CREATE TYPE ideal_age AS ENUM ('noPreference', 'puppy', 'young', 'adult', 'senior');
+            CREATE TYPE ideal_sex AS ENUM ('noPreference', 'male', 'female');
+            CREATE TYPE ideal_size AS ENUM ('noPreference', 'small', 'medium', 'large', 'xl');
             CREATE TYPE lifestyle AS ENUM ('noPreference', 'veryActive', 'active', 'laidback', 'lapPet');
         END $$;
         """)
