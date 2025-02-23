@@ -19,6 +19,11 @@ depends_on = None
 
 
 pet_experience_enum = sa.Enum('firstTime', 'previous', 'current', name='pet_experience')
+ideal_age_enum = sa.Enum('noPreference', 'puppy', 'young', 'adult', 'senior', name='ideal_age')
+ideal_sex_enum = sa.Enum('noPreference', 'male', 'female', name='ideal_sex')
+ideal_size_enum = sa.Enum('noPreference', 'small', 'medium', 'large', 'xl', name='ideal_size')
+lifestyle_enum = sa.Enum('noPreference', 'veryActive', 'active', 'laidback', 'lapPet', name='lifestyle')
+
 
 
 def upgrade():
@@ -95,7 +100,26 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
 
-    op.execute("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'pet_experience') THEN CREATE TYPE pet_experience AS ENUM ('firstTime', 'previous', 'current'); END IF; END $$;")
+    op.execute("""
+    DO $$
+    BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'pet_experience') THEN
+            CREATE TYPE pet_experience AS ENUM ('firstTime', 'previous', 'current');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ideal_age') THEN
+            CREATE TYPE ideal_age AS ENUM ('noPreference', 'puppy', 'young', 'adult', 'senior');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ideal_sex') THEN
+            CREATE TYPE ideal_sex AS ENUM ('noPreference', 'male', 'female');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ideal_size') THEN
+            CREATE TYPE ideal_size AS ENUM ('noPreference', 'small', 'medium', 'large', 'xl');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'lifestyle') THEN
+            CREATE TYPE lifestyle AS ENUM ('noPreference', 'veryActive', 'active', 'laidback', 'lapPet');
+        END IF;
+    END $$;
+    """)
 
     with op.batch_alter_table('users', schema=None) as batch_op:
         batch_op.add_column(sa.Column('firstName', sa.String(length=255), nullable=False, server_default='Unknown'))
@@ -133,6 +157,9 @@ def downgrade():
         batch_op.drop_column('household')
         batch_op.drop_column('lastName')
         batch_op.drop_column('firstName')
+
+    op.execute("DROP TYPE IF EXISTS pet_experience CASCADE;")
+
 
     op.drop_table('pet_images')
     op.drop_table('matches')
