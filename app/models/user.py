@@ -22,8 +22,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
+    # household and preferences
     household = db.Column(JSON, nullable=False, default=dict)
-    careAndBehavior = db.Column(JSON, nullable=False, default=dict)
+    careAndBehavior = db.Column(JSON, nullable=False, default=list)
 
     petExperience = db.Column(Enum('firstTime', 'previous', 'current', name='pet_experience'), nullable=False)
     idealAge = db.Column(Enum('noPreference', 'puppy', 'young', 'adult', 'senior', name='ideal_age'), nullable=False)
@@ -31,9 +32,11 @@ class User(db.Model, UserMixin):
     idealSize = db.Column(Enum('noPreference', 'small', 'medium', 'large', 'xl', name='ideal_size'), nullable=False)
     lifestyle = db.Column(Enum('noPreference', 'veryActive', 'active', 'laidback', 'lapPet', name='lifestyle'), nullable=False)
 
+    # location data
     geohash = db.Column(db.String(12), nullable=False)
     latitude = db.Column(db.Numeric(10, 7), nullable=False)
     longitude = db.Column(db.Numeric(10, 7), nullable=False)
+
     createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
     updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
 

@@ -80,6 +80,6 @@ class SignUpForm(FlaskForm):
         ('lapPet', 'Lap Pet'),
     ], validators=[DataRequired()])
 
-    geohash = StringField('Geohash', validators=[DataRequired()])
+    # geohash = StringField('Geohash', validators=[DataRequired()])
     latitude = DecimalField('Latitude', places=7, rounding=None, validators=[DataRequired()])
     longitude = DecimalField('Latitude', places=7, rounding=None, validators=[DataRequired()])

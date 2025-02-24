@@ -3,6 +3,7 @@ from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
+import geohash
 
 auth_routes = Blueprint('auth', __name__)
 
@@ -50,11 +51,34 @@ def sign_up():
     """
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
+        household_data = {
+            "kids": form.data['kids'],
+            "hasBackyard": form.data['hasBackyard'],
+            "otherPets": form.data['otherPets']
+        }
+
+        latitude = float(form.data['latitude'])
+        longitude = float(form.data['longitude'])
+        geo_hash = geohash.encode(latitude, longitude, precision=12)
+
         user = User(
+            firstName=form.data['firstName'],
+            lastName=form.data['lastName'],
             username=form.data['username'],
             email=form.data['email'],
-            password=form.data['password']
+            password=form.data['password'],
+            household=household_data,
+            careAndBehavior=form.data['careAndBehavior'],
+            petExperience=form.data['petExperience'],
+            idealAge=form.data['idealAge'],
+            idealSex=form.data['idealSex'],
+            idealSize=form.data['idealSize'],
+            lifestyle=form.data['lifestyle'],
+            latitude=latitude,
+            longitude=longitude,
+            geohash=geo_hash
         )
         db.session.add(user)
         db.session.commit()
