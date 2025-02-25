@@ -253,3 +253,20 @@ def edit_pet_listing(petId):
         'createdAt': pet.createdAt,
         'updatedAt': pet.updatedAt
     })
+
+@pet_routes.route('/current/<int:petId>', methods=['DELETE'])
+@login_required
+def delete_pet(petId):
+    current_user_id = current_user.id
+    pet = Pet.query.get(petId)
+
+    if not pet:
+        return jsonify({"error": "Pet not found"}), 404
+
+    if pet.sellerId != current_user_id:
+        return jsonify({"error": "Forbidden"}), 403
+
+    db.session.delete(pet)
+    db.session.commit()
+
+    return jsonify({"message": "Successfully deleted"})
