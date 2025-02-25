@@ -26,7 +26,7 @@ class Pet(db.Model):
     lifestyle = db.Column(Enum('veryActive', 'active', 'laidback', 'lapPet', name='lifestyle'), nullable=False)
 
     household = db.Column(JSON, nullable=False, default=dict)
-    careAndBehavior = db.Column(JSON, nullable=False, default=dict)
+    careAndBehavior = db.Column(JSON, nullable=True, default=None, server_default=None)
 
     # geohash = db.Column(db.String(12), nullable=False)
     # latitude = db.Column(db.Numeric(10, 7), nullable=False)

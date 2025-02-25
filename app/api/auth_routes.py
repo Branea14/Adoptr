@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
@@ -49,43 +49,52 @@ def sign_up():
     """
     Creates a new user and logs them in
     """
-    form = SignUpForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    data = request.get_json()
+    form = SignUpForm(data=data)
+    # form['csrf_token'].data = request.cookies['csrf_token']
 
-    if form.validate_on_submit():
+    if not form.validate():
+        return jsonify({"errors": form.errors}), 400
+
         # household_data = {
         #     "kids": form.data['kids'],
         #     "hasBackyard": form.data['hasBackyard'],
         #     "otherPets": form.data['otherPets']
         # }
         # household_data = form.data["household"]
-
+    try:
         latitude = float(form.data['latitude'])
         longitude = float(form.data['longitude'])
-        geo_hash = geohash.encode(latitude, longitude, precision=12)
+    except (ValueError, TypeError):
+        return jsonify({"message": "Invalid lat or long"}), 400
 
-        user = User(
-            firstName=form.data['firstName'],
-            lastName=form.data['lastName'],
-            username=form.data['username'],
-            email=form.data['email'],
-            password=form.data['password'],
-            household=form.data['household'],
-            careAndBehavior=form.data['careAndBehavior'],
-            petExperience=form.data['petExperience'],
-            idealAge=form.data['idealAge'],
-            idealSex=form.data['idealSex'],
-            idealSize=form.data['idealSize'],
-            lifestyle=form.data['lifestyle'],
-            latitude=latitude,
-            longitude=longitude,
-            geohash=geo_hash
-        )
-        db.session.add(user)
-        db.session.commit()
-        login_user(user)
-        return user.to_dict()
-    return form.errors, 401
+    geo_hash = geohash.encode(latitude, longitude, precision=12)
+
+    care_and_behavior = form.data.get('careAndBehavior', None)
+    if care_and_behavior == []:
+        care_and_behavior = None
+
+    user = User(
+        firstName=form.data['firstName'],
+        lastName=form.data['lastName'],
+        username=form.data['username'],
+        email=form.data['email'],
+        password=form.data['password'],
+        household=form.data['household'],
+        careAndBehavior=care_and_behavior,
+        petExperience=form.data['petExperience'],
+        idealAge=form.data['idealAge'],
+        idealSex=form.data['idealSex'],
+        idealSize=form.data['idealSize'],
+        lifestyle=form.data['lifestyle'],
+        latitude=latitude,
+        longitude=longitude,
+        geohash=geo_hash
+    )
+    db.session.add(user)
+    db.session.commit()
+    login_user(user)
+    return user.to_dict(), 201
 
 
 @auth_routes.route('/unauthorized')

@@ -1,8 +1,9 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Pet, PetImage
+from app.models import Pet, PetImage, db
 from sqlalchemy import func
 import random
+from app.forms import PetListingForm
 
 pet_routes = Blueprint('pets', __name__)
 
@@ -99,7 +100,6 @@ def pet_details():
 @login_required
 def create_pet_listing():
     current_user_id = current_user.id
-
     data = request.get_json()
 
     # validate
@@ -109,9 +109,58 @@ def create_pet_listing():
         return jsonify({"message": "Description is required"}), 400
     if not data.get('breed') or len(data['breed']) >= 50:
         return jsonify({"message": "Breed is required and must be less than 50 characters"}), 400
-    if not data.get('vaccinated'):
-        return jsonify({"message": "No checkbox is selected"}), 400
+    if data.get('vaccinated') is None:
+        return jsonify({"message": "Vaccination status must be selected"}), 400
     if not data.get('color') or len(data['color']) >= 50:
         return jsonify({"message": "Color is required and must be less than 50 characters"}), 400
-    if not data.get('ownerSurrender'):
-        return jsonify({"message": "No checkbox is selected"}), 400
+    if data.get('ownerSurrender') is None:
+        return jsonify({"message": "Owner Surrender status must be selected"}), 400
+
+    if data.get('age') not in ['puppy', 'young', 'adult', 'senior']:
+        return jsonify({"message": "Invalid age selection"}), 400
+    if data.get('sex') not in ['male', 'female']:
+        return jsonify({"message": "Invalid sex selection"}), 400
+    if data.get('size') not in ['small', 'medium', 'large', 'xl']:
+        return jsonify({"message": "Invalid size selection"}), 400
+    if data.get('adoptionStatus') not in ['available', 'pendingAdoption', 'adopted']:
+        return jsonify({"message": "Invalid adoption status selection"}), 400
+    if data.get('loveLanguage') not in ['physicalTouch', 'treats', 'play', 'training', 'independent']:
+        return jsonify({"message": "Invalid love language selection"}), 400
+    if data.get('lifestyle') not in ['veryActive', 'active', 'laidback', 'lapPet']:
+        return jsonify({"message": "Invalid lifestyle selection"}), 400
+
+    if not isinstance(data.get('household'), dict):
+        return jsonify({"message": "Household inform must be JSON"}), 400
+
+    household = data['household']
+    if 'otherPets' not in household:
+        household['otherPets'] = None
+
+    care_and_behavior = data.get('careAndBehavior', None)
+    if care_and_behavior == []:
+        care_and_behavior = None
+
+    form = PetListingForm(data=data)
+
+    if form.validate_on_submit():
+        new_pet = Pet(
+            sellerId=current_user_id,
+            name=form.data['name'],
+            description=form.data['description'],
+            breed=form.data['breed'],
+            vaccinated=form.data['vaccinated'],
+            color=form.data['color'],
+            ownerSurrender=form.data['ownerSurrender'],
+            age=form.data['age'],
+            sex=form.data['sex'],
+            adoptionStatus=form.data['adoptionStatus'],
+            loveLanguage=form.data['loveLanguage'],
+            lifestyle=form.data['lifestyle'],
+            household=form.data['household'],
+            careAndBehavior=form.data['careAndBehavior']
+        )
+
+        db.session.add(new_pet)
+        db.session.commit()
+
+    return jsonify({"pet": new_pet.to_dict()}), 201
