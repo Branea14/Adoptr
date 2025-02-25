@@ -226,6 +226,7 @@ def edit_pet_listing(petId):
     pet['ownerSurrender'] = data['ownerSurrender']
     pet['age'] = data['age']
     pet['sex'] = data['sex']
+    pet['size'] = data['size']
     pet['adoptionStatus'] = data['adoptionStatus']
     pet['loveLanguage'] = data['loveLanguage']
     pet['lifestyle'] = data['lifestyle']

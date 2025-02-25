@@ -1,8 +1,8 @@
-"""Recreating all migrations
+"""initial migration with users table
 
-Revision ID: d9da51a2a8ac
+Revision ID: 15cfb1c8e6cb
 Revises:
-Create Date: 2025-02-23 12:39:23.417999
+Create Date: 2025-02-25 16:58:39.642704
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ from sqlalchemy.dialects import postgresql
 from sqlalchemy import Text
 
 # revision identifiers, used by Alembic.
-revision = 'd9da51a2a8ac'
+revision = '15cfb1c8e6cb'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,6 +26,7 @@ def upgrade():
     sa.Column('username', sa.String(length=40), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('hashed_password', sa.String(length=255), nullable=False),
+    sa.Column('avator', sa.Text(), nullable=True),
     sa.Column('household', postgresql.JSON(astext_type=Text()), nullable=False),
     sa.Column('careAndBehavior', postgresql.JSON(astext_type=Text()), nullable=False),
     sa.Column('petExperience', sa.Enum('firstTime', 'previous', 'current', name='pet_experience'), nullable=False),
@@ -36,6 +37,7 @@ def upgrade():
     sa.Column('geohash', sa.String(length=12), nullable=False),
     sa.Column('latitude', sa.Numeric(precision=10, scale=7), nullable=False),
     sa.Column('longitude', sa.Numeric(precision=10, scale=7), nullable=False),
+    sa.Column('radius', sa.Numeric(precision=5, scale=3), nullable=False),
     sa.Column('createdAt', sa.DateTime(), nullable=False),
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
@@ -44,10 +46,10 @@ def upgrade():
     )
     op.create_table('pets',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=255), nullable=False),
+    sa.Column('name', sa.String(length=50), nullable=False),
     sa.Column('sellerId', sa.Integer(), nullable=False),
     sa.Column('description', sa.Text(), nullable=False),
-    sa.Column('breed', sa.String(length=255), nullable=False),
+    sa.Column('breed', sa.String(length=50), nullable=False),
     sa.Column('vaccinated', sa.Boolean(), nullable=False),
     sa.Column('color', sa.String(length=50), nullable=False),
     sa.Column('ownerSurrender', sa.Boolean(), nullable=False),
@@ -58,7 +60,7 @@ def upgrade():
     sa.Column('loveLanguage', sa.Enum('physicalTouch', 'treats', 'play', 'training', 'independent', name='love_language'), nullable=False),
     sa.Column('lifestyle', sa.Enum('veryActive', 'active', 'laidback', 'lapPet', name='lifestyle'), nullable=False),
     sa.Column('household', postgresql.JSON(astext_type=Text()), nullable=False),
-    sa.Column('careAndBehavior', postgresql.JSON(astext_type=Text()), nullable=False),
+    sa.Column('careAndBehavior', postgresql.JSON(astext_type=Text()), nullable=True),
     sa.Column('createdAt', sa.DateTime(), nullable=False),
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['sellerId'], ['users.id'], ),

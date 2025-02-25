@@ -69,8 +69,7 @@ class User(db.Model, UserMixin):
             'lastName': self.lastName,
             'username': self.username,
             'email': self.email,
-            'household': self.household,
-            'careAndBehavior': self.careAndBehavior,
+            'avator': self.avator,
             'petExperience': self.petExperience,
             'idealAge': self.idealAge,
             'idealSex': self.idealSex,
@@ -80,6 +79,8 @@ class User(db.Model, UserMixin):
             'latitude': float(self.latitude),
             'longitude': float(self.longitude),
             'radius': float(self.radius),
+            'household': self.household,
+            'careAndBehavior': self.careAndBehavior,
             'createdAt': self.createdAt.isoformat(),  # Converts datetime to string
             'updatedAt': self.updatedAt.isoformat()
         }
