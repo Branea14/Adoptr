@@ -53,11 +53,12 @@ def sign_up():
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
-        household_data = {
-            "kids": form.data['kids'],
-            "hasBackyard": form.data['hasBackyard'],
-            "otherPets": form.data['otherPets']
-        }
+        # household_data = {
+        #     "kids": form.data['kids'],
+        #     "hasBackyard": form.data['hasBackyard'],
+        #     "otherPets": form.data['otherPets']
+        # }
+        # household_data = form.data["household"]
 
         latitude = float(form.data['latitude'])
         longitude = float(form.data['longitude'])
@@ -69,7 +70,7 @@ def sign_up():
             username=form.data['username'],
             email=form.data['email'],
             password=form.data['password'],
-            household=household_data,
+            household=form.data['household'],
             careAndBehavior=form.data['careAndBehavior'],
             petExperience=form.data['petExperience'],
             idealAge=form.data['idealAge'],
