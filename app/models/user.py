@@ -21,6 +21,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
+    avator = db.Column(db.Text, nullable=True)
 
     # household and preferences
     household = db.Column(JSON, nullable=False, default=dict)
@@ -36,6 +37,7 @@ class User(db.Model, UserMixin):
     geohash = db.Column(db.String(12), nullable=False)
     latitude = db.Column(db.Numeric(10, 7), nullable=False)
     longitude = db.Column(db.Numeric(10, 7), nullable=False)
+    radius = db.Column(db.Numeric(5, 3), default=0.1, nullable=False)
 
     createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
     updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
@@ -77,6 +79,7 @@ class User(db.Model, UserMixin):
             'geohash': self.geohash,
             'latitude': float(self.latitude),
             'longitude': float(self.longitude),
+            'radius': float(self.radius),
             'createdAt': self.createdAt.isoformat(),  # Converts datetime to string
             'updatedAt': self.updatedAt.isoformat()
         }

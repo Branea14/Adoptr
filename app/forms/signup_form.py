@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SelectField, SelectMultipleField, DecimalField, Field
+from wtforms import StringField, BooleanField, SelectField, SelectMultipleField, DecimalField, Field, TextAreaField
 from wtforms.validators import DataRequired, Email, ValidationError
 from app.models import User
 import json
@@ -21,7 +21,7 @@ def username_exists(form, field):
         raise ValidationError('Username is already in use.')
 
 class JSONField(Field):
-    def process_form(self, valuelist):
+    def process_formdata(self, valuelist):
          if valuelist:
             try:
                 self.data = json.loads(valuelist[0])
@@ -36,6 +36,7 @@ class SignUpForm(FlaskForm):
         'username', validators=[DataRequired(), username_exists])
     email = StringField('email', validators=[DataRequired(), user_exists])
     password = StringField('password', validators=[DataRequired()])
+    avator = TextAreaField('avator')
 
     # household options
     household = JSONField('Household', validators=[DataRequired()])
@@ -92,17 +93,19 @@ class SignUpForm(FlaskForm):
 
     # geohash = StringField('Geohash', validators=[DataRequired()])
     latitude = DecimalField('Latitude', places=7, rounding=None, validators=[DataRequired()])
-    longitude = DecimalField('Latitude', places=7, rounding=None, validators=[DataRequired()])
+    longitude = DecimalField('Longitude', places=7, rounding=None, validators=[DataRequired()])
+    radius = DecimalField('Radius', places=3, rounding=None, default=0.1)
 
     def process(self, formdata = None, obj = None, data = None, **kwargs):
-        if data and "household" in data:
-            household_data = data["household"]
+        super().process(formdata, obj, data, **kwargs)
 
-            data['kids'] = household_data.get('kids', False)
-            data['hasBackyard'] = household_data.get('hasBackyard', False)
-            data['otherPets'] = household_data.get('otherPets', "none")
+        if self.data and "household" in self.data:
+            household_data = self.data["household"]
 
-        return super().process(formdata, obj, data, **kwargs)
+            self.data['kids'] = household_data.get('kids', False)
+            self.data['hasBackyard'] = household_data.get('hasBackyard', False)
+            self.data['otherPets'] = household_data.get('otherPets', "none")
+
 
     def validate_otherPets(form, field):
         if 'otherPets' not in form.household.data:
