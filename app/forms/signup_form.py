@@ -110,3 +110,23 @@ class SignUpForm(FlaskForm):
     def validate_otherPets(form, field):
         if 'otherPets' not in form.household.data:
             raise ValidationError('This field is required')
+
+    def validate_household(form, field):
+        if not isinstance(field.data, dict):
+            raise ValidationError("Household must be a JSON object")
+
+        required_keys = ["kids", "hasBackyard", "otherPets"]
+
+        for key in required_keys:
+            if key not in field.data:
+                raise ValidationError(f"Missing key '{key}' in household data")
+
+        if not isinstance(field.data["kids"], bool):
+            raise ValidationError("Kids must be a boolean value (true/false)")
+
+        if not isinstance(field.data["hasBackyard"], bool):
+            raise ValidationError("Has Backyard must be a boolean value (true/false)")
+
+        valid_pets = ["none", "dogsOnly", "catsOnly", "both", "other"]
+        if field.data["otherPets"] not in valid_pets:
+            raise ValidationError(f"Invalid value for otherPets. Must be one of {valid_pets}")

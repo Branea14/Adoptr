@@ -89,8 +89,8 @@ class User(db.Model, UserMixin):
         return (f"<User id={self.id}, firstName='{self.firstName}', lastName='{self.lastName}', "
                 f"username='{self.username}', email='{self.email}', "
                 f"household={self.household}, careAndBehavior={self.careAndBehavior}, "
-                f"petExperience='{self.petExperience.value}', idealAge='{self.idealAge.value}', "
-                f"idealSex='{self.idealSex.value}', idealSize='{self.idealSize.value}', "
-                f"lifestyle='{self.lifestyle.value}', geohash='{self.geohash}', "
+                f"petExperience='{self.petExperience}', idealAge='{self.idealAge}', "
+                f"idealSex='{self.idealSex}', idealSize='{self.idealSize}', "
+                f"lifestyle='{self.lifestyle}', geohash='{self.geohash}', "
                 f"latitude={float(self.latitude)}, longitude={float(self.longitude)}, "
                 f"createdAt={self.createdAt}, updatedAt={self.updatedAt}>")

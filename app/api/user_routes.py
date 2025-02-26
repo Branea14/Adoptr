@@ -32,6 +32,9 @@ def edit_user(id):
     current_user_id = current_user.id
     user = User.query.get(id)
 
+    print('********************************************')
+    print(user)
+
     if not user:
         return jsonify({"error": "User could not be found"}), 404
 
@@ -40,61 +43,69 @@ def edit_user(id):
 
     data = request.get_json()
 
-    #validate
+    #validations and error handling
+    errors = {}
     if not data.get('firstName') or len(data['firstName']) >= 255:
-        return jsonify({"message": "First name is required and must be less than 255 characters"}), 400
+        errors['firstName'] = "First name is required and must be less than 255 characters"
     if not data.get('lastName') or len(data['lastName']) >= 255:
-        return jsonify({"message": "Last name is required and must be less than 255 characters"}), 400
+        errors['lastName'] = "Last name is required and must be less than 255 characters"
     if not data.get('username') or len(data['username']) >= 40:
-        return jsonify({"message": "Username is required and must be less than 40 characters"}), 400
+        errors['username'] = "Username is required and must be less than 40 characters"
     if not data.get('email') or len(data['email']) >= 255:
-        return jsonify({"message": "Email is required and must be less than 255 characters"}), 400
+        errors['email'] = "Email is required and must be less than 255 characters"
     if not data.get('password') or len(data['password']) >= 255:
-        return jsonify({"message": "Password is required and must be less than 255 characters"}), 400
+        errors['password'] = "Password is required and must be less than 255 characters"
 
     if not isinstance(data.get('household'), dict):
-        return jsonify({"message": "Household inform must be JSON"}), 400
-
-    household = data['household']
-    if 'otherPets' not in household:
-        household['otherPets'] = None
+        errors['household'] = "Household inform must be JSON"
+    else:
+        household = data['household']
+        if 'kids' not in household or not isinstance(household['kids'], bool):
+            errors['household_kids'] = 'Kids must be a boolean value (true/false)'
+        if 'hasBackyard' not in household or not isinstance(household['hasBackyard'], bool):
+            errors['household_hasBackyard'] = 'Has Backyard must be a boolean value (true/false)'
+        if 'otherPets' not in household or household['otherPets'] not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other']:
+            errors['household_otherPets'] = "Invalid value for otherPets. Must be none, dogsOnly, catsOnly, both, or other."
 
     care_and_behavior = data.get('careAndBehavior', None)
     if care_and_behavior == []:
         care_and_behavior = None
 
     if data.get('petExperience') not in ['firstTime', 'previous', 'current']:
-        return jsonify({"message": "Invalid pet experience selection"}), 400
+        errors['petExperience'] = "Invalid pet experience selection"
     if data.get('idealAge') not in ['noPreference','puppy', 'young', 'adult', 'senior']:
-        return jsonify({"message": "Invalid age selection"}), 400
+        errors['idealAge'] = "Invalid age selection"
     if data.get('idealSex') not in ['noPreference', 'male', 'female']:
-        return jsonify({"message": "Invalid sex selection"}), 400
+        errors['idealSex'] = "Invalid sex selection"
     if data.get('idealSize') not in ['noPreference', 'small', 'medium', 'large', 'xl']:
-        return jsonify({"message": "Invalid size selection"}), 400
+        errors['idealSize'] = "Invalid size selection"
     if data.get('lifestyle') not in ['noPreference', 'veryActive', 'active', 'laidback', 'lapPet']:
-        return jsonify({"message": "Invalid lifestyle selection"}), 400
-
+        errors['lifestyle'] = "Invalid lifestyle selection"
     if not data.get('latitude'):
-        return jsonify({"message": "User must share their location"}), 400
+        errors['latitude'] = "User must share their location"
     if not data.get('longitude'):
-        return jsonify({"message": "User must share their location"}), 400
+        errors['longitude'] = "User must share their location"
 
-    user['firstName'] = data['firstName']
-    user['lastName'] = data['lastName']
-    user['username'] = data['username']
-    user['email'] = data['email']
-    user['password'] = data['password']
-    user['avator'] = data['avator']
-    user['petExperience'] = data['petExperience']
-    user['idealAge'] = data['idealAge']
-    user['idealSex'] = data['idealSex']
-    user['idealSize'] = data['idealSize']
-    user['latitude'] = data['latitude']
-    user['longitude'] = data['longitude']
-    user['radius'] = data['radius']
-    user['lifestyle'] = data['lifestyle']
-    user['household'] = data['household']
-    user['careAndBehavior'] = data['careAndBehavior']
+    if errors:
+        return jsonify({'message': "Bad Request", "errors": errors}), 400
+
+
+    user.firstName = data['firstName']
+    user.lastName = data['lastName']
+    user.username = data['username']
+    user.email = data['email']
+    user.password = data['password']
+    user.avator = data['avator']
+    user.petExperience = data['petExperience']
+    user.idealAge = data['idealAge']
+    user.idealSex = data['idealSex']
+    user.idealSize = data['idealSize']
+    user.latitude = data['latitude']
+    user.longitude = data['longitude']
+    user.radius = data['radius']
+    user.lifestyle = data['lifestyle']
+    user.household = data['household']
+    user.careAndBehavior = data['careAndBehavior']
 
     db.session.commit()
 
