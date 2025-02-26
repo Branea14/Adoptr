@@ -24,9 +24,15 @@ class User(db.Model, UserMixin):
     avator = db.Column(db.Text, nullable=True)
 
     # household and preferences
-    household = db.Column(JSON, nullable=False, default=dict)
-    careAndBehavior = db.Column(JSON, nullable=False, default=list)
+    kids = db.Column(db.Boolean, nullable=False)
+    hasBackyard = db.Column(db.Boolean, nullable=False)
+    houseTrained = db.Column(db.Boolean, nullable=False)
+    specialNeeds = db.Column(db.Boolean, nullable=False)
 
+    # household = db.Column(JSON, nullable=False, default=dict)
+    # careAndBehavior = db.Column(JSON, nullable=False, default=list)
+
+    otherPets = db.Column(Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other'), nullable=False)
     petExperience = db.Column(Enum('firstTime', 'previous', 'current', name='pet_experience'), nullable=False)
     idealAge = db.Column(Enum('noPreference', 'puppy', 'young', 'adult', 'senior', name='ideal_age'), nullable=False)
     idealSex = db.Column(Enum('noPreference', 'male', 'female', name='ideal_sex'), nullable=False)
@@ -70,6 +76,11 @@ class User(db.Model, UserMixin):
             'username': self.username,
             'email': self.email,
             'avator': self.avator,
+            'kids': self.kids,
+            'hasBackyard': self.hasBackyard,
+            'houseTrained': self.houseTrained,
+            'specialNeeds': self.specialNeeds,
+            'otherPets': self.otherPets,
             'petExperience': self.petExperience,
             'idealAge': self.idealAge,
             'idealSex': self.idealSex,
@@ -79,8 +90,6 @@ class User(db.Model, UserMixin):
             'latitude': float(self.latitude),
             'longitude': float(self.longitude),
             'radius': float(self.radius),
-            'household': self.household,
-            'careAndBehavior': self.careAndBehavior,
             'createdAt': self.createdAt.isoformat(),  # Converts datetime to string
             'updatedAt': self.updatedAt.isoformat()
         }
