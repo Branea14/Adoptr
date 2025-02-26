@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Pet, PetImage, db
-from sqlalchemy import func
+from app.models import Pet, PetImage, db, User
+from sqlalchemy import func, and_
 import random
 from app.forms import PetListingForm
+from decimal import Decimal
 
 pet_routes = Blueprint('pets', __name__)
 
@@ -54,9 +55,18 @@ def pet_details():
 
     user_lat, user_long = current_user.latitude, current_user.longitude
 
-    nearby_pets_query = Pet.query.filter(
-        func.abs(Pet.latitude - user_lat) <= radius,
-        func.abs(Pet.longitude - user_long) <= radius
+    new_user_lat = Decimal(str(user_lat))
+    new_user_long = Decimal(str(user_long))
+    new_radius = Decimal(str(radius))
+
+    nearby_pets_query = Pet.query.join(User).filter(
+        # does not support arithmethic operations involving column attributes
+        # func.abs(Pet.latitude - user_lat) <= radius,
+        # func.abs(Pet.longitude - user_long) <= radius
+        and_(
+            User.latitude.between(new_user_lat - new_radius, new_user_lat + new_radius),
+            User.longitude.between(new_user_long - new_radius, new_user_long + new_radius),
+        )
     ).all()
 
     if not nearby_pets_query:
@@ -79,7 +89,7 @@ def pet_details():
         "breed": pet.breed,
         "vaccinated": pet.vaccinated,
         "color": pet.color,
-        "ownerSurrender": pet.ownSurrender,
+        "ownerSurrender": pet.ownerSurrender,
         "age": pet.age,
         "sex": pet.sex,
         "size": pet.size,
