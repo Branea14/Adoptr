@@ -23,7 +23,7 @@ def current_pets():
         "breed": pet.breed,
         "vaccinated": pet.vaccinated,
         "color": pet.color,
-        "ownerSurrender": pet.ownSurrender,
+        "ownerSurrender": pet.ownerSurrender,
         "age": pet.age,
         "sex": pet.sex,
         "size": pet.size,
