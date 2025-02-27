@@ -72,3 +72,30 @@ class Pet(db.Model):
                 f"careAndBehavior={self.careAndBehavior}, geohash='{self.geohash}', "
                 f"latitude={float(self.latitude)}, longitude={float(self.longitude)}, "
                 f"daysOnAdoptr={self.days_on_adoptr}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>")
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'sellerId': self.sellerId,
+            'name': self.name,
+            'description': self.description,
+            'breed': self.breed,
+            'vaccinated': self.vaccinated,
+            'color': self.color,
+            'ownerSurrender': self.ownerSurrender,
+
+            'kids': self.kids,
+            'houseTrained': self.houseTrained,
+            'specialNeeds': self.specialNeeds,
+            'otherPets': self.otherPets,
+
+            'age': self.age,
+            'sex': self.sex,
+            'size': self.size,
+            'adoptionStatus': self.adoptionStatus,
+            'loveLanguage': self.loveLanguage,
+            'lifestyle': self.lifestyle,
+
+            'createdAt': self.createdAt.isoformat(),  # Converts datetime to string
+            'updatedAt': self.updatedAt.isoformat()
+        }

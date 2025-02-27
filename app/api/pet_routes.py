@@ -25,14 +25,19 @@ def current_pets():
         "vaccinated": pet.vaccinated,
         "color": pet.color,
         "ownerSurrender": pet.ownerSurrender,
+
+        "kids": pet.kids,
+        "houseTrained": pet.houseTrained,
+        "specialNeeds": pet.specialNeeds,
+        "otherPets": pet.otherPets,
+
         "age": pet.age,
         "sex": pet.sex,
         "size": pet.size,
         "adoptionStatus": pet.adoptionStatus,
         "loveLanguage": pet.loveLanguage,
         "lifestyle": pet.lifestyle,
-        "household": pet.household,
-        "careAndBehavior": pet.careAndBehavior
+
     } for pet in pets]
 
     return jsonify({"Pets": pet_list})
@@ -76,7 +81,7 @@ def pet_details():
 
     pet_images = PetImage.query.filter_by(petId=pet.id).all()
     pet_images_list = [{
-        "petId": image.id,
+        "petId": pet.id,
         "url": image.url,
         "preview": image.preview
     } for image in pet_images]
@@ -90,14 +95,18 @@ def pet_details():
         "vaccinated": pet.vaccinated,
         "color": pet.color,
         "ownerSurrender": pet.ownerSurrender,
+
+        "kids": pet.kids,
+        "houseTrained": pet.houseTrained,
+        "specialNeeds": pet.specialNeeds,
+        "otherPets": pet.otherPets,
+
         "age": pet.age,
         "sex": pet.sex,
         "size": pet.size,
         "adoptionStatus": pet.adoptionStatus,
         "loveLanguage": pet.loveLanguage,
         "lifestyle": pet.lifestyle,
-        "household": pet.household,
-        "careAndBehavior": pet.careAndBehavior,
         "PetImages": pet_images_list,
     }
 
@@ -112,66 +121,86 @@ def create_pet_listing():
     current_user_id = current_user.id
     data = request.get_json()
 
-    # validate
+    # validations
+    errors = {}
     if not data.get('name') or len(data['name']) >= 50:
-        return jsonify({"message": "Name is required and must be less than 50 characters"}), 400
+        errors['name'] = "Name is required and must be less than 50 characters"
     if not data.get('description'):
-        return jsonify({"message": "Description is required"}), 400
+        errors['description'] = "Description is required"
     if not data.get('breed') or len(data['breed']) >= 50:
-        return jsonify({"message": "Breed is required and must be less than 50 characters"}), 400
-    if data.get('vaccinated') is None:
-        return jsonify({"message": "Vaccination status must be selected"}), 400
+        errors['breed'] = "Breed is required and must be less than 50 characters"
+    if data.get('vaccinated') is None or not isinstance(data.get('vaccinated'), bool):
+        errors['vaccinated'] = "Must have Boolean value"
     if not data.get('color') or len(data['color']) >= 50:
-        return jsonify({"message": "Color is required and must be less than 50 characters"}), 400
-    if data.get('ownerSurrender') is None:
-        return jsonify({"message": "Owner Surrender status must be selected"}), 400
+        errors['color'] = "Color is required and must be less than 50 characters"
+    if data.get('ownerSurrender') is None or not isinstance(data.get('ownerSurrender'), bool):
+        errors['ownerSurrender'] = "Must have Boolean value"
 
+    if data.get('kids') is None or not isinstance(data.get('kids'), bool):
+        errors['kids'] = "Must have Boolean value"
+    if data.get('houseTrained') is None or not isinstance(data.get('houseTrained'), bool):
+        errors['houseTrained'] = "Must have Boolean value"
+    if data.get('specialNeeds') is None or not isinstance(data.get('specialNeeds'), bool):
+        errors['specialNeeds'] = "Must have Boolean value"
+
+    if data.get('otherPets') not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other']:
+        errors['otherPets'] = "Invalid other pet selection"
     if data.get('age') not in ['puppy', 'young', 'adult', 'senior']:
-        return jsonify({"message": "Invalid age selection"}), 400
+        errors['age'] = "Invalid age selection"
     if data.get('sex') not in ['male', 'female']:
-        return jsonify({"message": "Invalid sex selection"}), 400
+        errors['sex'] = "Invalid sex selection"
     if data.get('size') not in ['small', 'medium', 'large', 'xl']:
-        return jsonify({"message": "Invalid size selection"}), 400
+        errors['size'] = "Invalid size selection"
     if data.get('adoptionStatus') not in ['available', 'pendingAdoption', 'adopted']:
-        return jsonify({"message": "Invalid adoption status selection"}), 400
+        errors['adoptionStatus'] = "Invalid adoption status selection"
     if data.get('loveLanguage') not in ['physicalTouch', 'treats', 'play', 'training', 'independent']:
-        return jsonify({"message": "Invalid love language selection"}), 400
+        errors['loveLanguage'] = "Invalid loveLanguage selection"
     if data.get('lifestyle') not in ['veryActive', 'active', 'laidback', 'lapPet']:
-        return jsonify({"message": "Invalid lifestyle selection"}), 400
+        errors['lifestyle'] = "Invalid lifestyle selection"
 
-    if not isinstance(data.get('household'), dict):
-        return jsonify({"message": "Household inform must be JSON"}), 400
+    if errors:
+        return jsonify({"message": "Bad Request", "errors": errors}), 400
+    # if not isinstance(data.get('household'), dict):
+    #     return jsonify({"message": "Household inform must be JSON"}), 400
 
-    household = data['household']
-    if 'otherPets' not in household:
-        household['otherPets'] = None
+    # household = data['household']
+    # if 'otherPets' not in household:
+    #     household['otherPets'] = None
 
-    care_and_behavior = data.get('careAndBehavior', None)
-    if care_and_behavior == []:
-        care_and_behavior = None
+    # care_and_behavior = data.get('careAndBehavior', None)
+    # if care_and_behavior == []:
+    #     care_and_behavior = None
 
     form = PetListingForm(data=data)
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-    if form.validate_on_submit():
-        new_pet = Pet(
-            sellerId=current_user_id,
-            name=form.data['name'],
-            description=form.data['description'],
-            breed=form.data['breed'],
-            vaccinated=form.data['vaccinated'],
-            color=form.data['color'],
-            ownerSurrender=form.data['ownerSurrender'],
-            age=form.data['age'],
-            sex=form.data['sex'],
-            adoptionStatus=form.data['adoptionStatus'],
-            loveLanguage=form.data['loveLanguage'],
-            lifestyle=form.data['lifestyle'],
-            household=form.data['household'],
-            careAndBehavior=form.data['careAndBehavior']
-        )
+    # if not form.validate():
+    #     return jsonify({"message": "Bad Request", "errors": form.errors}), 400
 
-        db.session.add(new_pet)
-        db.session.commit()
+    new_pet = Pet(
+        sellerId=current_user_id,
+        name=form.data['name'],
+        description=form.data['description'],
+        breed=form.data['breed'],
+        vaccinated=form.data['vaccinated'],
+        color=form.data['color'],
+        ownerSurrender=form.data['ownerSurrender'],
+
+        kids=form.data['kids'],
+        houseTrained=form.data['houseTrained'],
+        specialNeeds=form.data['specialNeeds'],
+        otherPets=form.data['otherPets'],
+
+        age=form.data['age'],
+        sex=form.data['sex'],
+        size=form.data['size'],
+        adoptionStatus=form.data['adoptionStatus'],
+        loveLanguage=form.data['loveLanguage'],
+        lifestyle=form.data['lifestyle']
+    )
+
+    db.session.add(new_pet)
+    db.session.commit()
 
     return jsonify({"pet": new_pet.to_dict()}), 201
 
@@ -191,57 +220,61 @@ def edit_pet_listing(petId):
     data = request.get_json()
 
     # validate
+    errors = {}
     if not data.get('name') or len(data['name']) >= 50:
-        return jsonify({"message": "Name is required and must be less than 50 characters"}), 400
+        errors['name'] = "Name is required and must be less than 50 characters"
     if not data.get('description'):
-        return jsonify({"message": "Description is required"}), 400
+        errors['description'] = "Description is required"
     if not data.get('breed') or len(data['breed']) >= 50:
-        return jsonify({"message": "Breed is required and must be less than 50 characters"}), 400
-    if data.get('vaccinated') is None:
-        return jsonify({"message": "Vaccination status must be selected"}), 400
+        errors['breed'] = "Breed is required and must be less than 50 characters"
+    if data.get('vaccinated') is None or not isinstance(data.get('vaccinated'), bool):
+        errors['vaccinated'] = "Must have Boolean value"
     if not data.get('color') or len(data['color']) >= 50:
-        return jsonify({"message": "Color is required and must be less than 50 characters"}), 400
-    if data.get('ownerSurrender') is None:
-        return jsonify({"message": "Owner Surrender status must be selected"}), 400
+        errors['color'] = "Color is required and must be less than 50 characters"
+    if data.get('ownerSurrender') is None or not isinstance(data.get('ownerSurrender'), bool):
+        errors['ownerSurrender'] = "Must have Boolean value"
 
+    if data.get('kids') is None or not isinstance(data.get('kids'), bool):
+        errors['kids'] = "Must have Boolean value"
+    if data.get('houseTrained') is None or not isinstance(data.get('houseTrained'), bool):
+        errors['houseTrained'] = "Must have Boolean value"
+    if data.get('specialNeeds') is None or not isinstance(data.get('specialNeeds'), bool):
+        errors['specialNeeds'] = "Must have Boolean value"
+
+    if data.get('otherPets') not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other']:
+        errors['otherPets'] = "Invalid other pet selection"
     if data.get('age') not in ['puppy', 'young', 'adult', 'senior']:
-        return jsonify({"message": "Invalid age selection"}), 400
+        errors['age'] = "Invalid age selection"
     if data.get('sex') not in ['male', 'female']:
-        return jsonify({"message": "Invalid sex selection"}), 400
+        errors['sex'] = "Invalid sex selection"
     if data.get('size') not in ['small', 'medium', 'large', 'xl']:
-        return jsonify({"message": "Invalid size selection"}), 400
+        errors['size'] = "Invalid size selection"
     if data.get('adoptionStatus') not in ['available', 'pendingAdoption', 'adopted']:
-        return jsonify({"message": "Invalid adoption status selection"}), 400
+        errors['adoptionStatus'] = "Invalid adoption status selection"
     if data.get('loveLanguage') not in ['physicalTouch', 'treats', 'play', 'training', 'independent']:
-        return jsonify({"message": "Invalid love language selection"}), 400
+        errors['loveLanguage'] = "Invalid loveLanguage selection"
     if data.get('lifestyle') not in ['veryActive', 'active', 'laidback', 'lapPet']:
-        return jsonify({"message": "Invalid lifestyle selection"}), 400
+        errors['lifestyle'] = "Invalid lifestyle selection"
 
-    if not isinstance(data.get('household'), dict):
-        return jsonify({"message": "Household inform must be JSON"}), 400
+    if errors:
+        return jsonify({"message": "Bad Request", "errors": errors}), 400
 
-    household = data['household']
-    if 'otherPets' not in household:
-        household['otherPets'] = None
-
-    care_and_behavior = data.get('careAndBehavior', None)
-    if care_and_behavior == []:
-        care_and_behavior = None
-
-    pet['name'] = data['name']
-    pet['description'] = data['description']
-    pet['breed'] = data['breed']
-    pet['vaccinated'] = data['vaccinated']
-    pet['color'] = data['color']
-    pet['ownerSurrender'] = data['ownerSurrender']
-    pet['age'] = data['age']
-    pet['sex'] = data['sex']
-    pet['size'] = data['size']
-    pet['adoptionStatus'] = data['adoptionStatus']
-    pet['loveLanguage'] = data['loveLanguage']
-    pet['lifestyle'] = data['lifestyle']
-    pet['household'] = data['household']
-    pet['careAndBehavior'] = data['careAndBehavior']
+    pet.name = data['name']
+    pet.description = data['description']
+    pet.breed = data['breed']
+    pet.vaccinated = data['vaccinated']
+    pet.color = data['color']
+    pet.ownerSurrender = data['ownerSurrender']
+    pet.kids = data['kids']
+    pet.houseTrained = data['houseTrained']
+    pet.specialNeeds = data['specialNeeds']
+    pet.otherPets = data['otherPets']
+    pet.age = data['age']
+    pet.sex = data['sex']
+    pet.size = data['size']
+    pet.adoptionStatus = data['adoptionStatus']
+    pet.loveLanguage = data['loveLanguage']
+    pet.lifestyle = data['lifestyle']
 
     db.session.commit()
 
@@ -254,13 +287,15 @@ def edit_pet_listing(petId):
         "vaccinated": pet.vaccinated,
         "color": pet.color,
         "ownerSurrender": pet.ownerSurrender,
+        "kids": pet.kids,
+        "houseTrained": pet.houseTrained,
+        "specialNeeds": pet.specialNeeds,
+        "otherPets": pet.otherPets,
         "age": pet.age,
         "sex": pet.sex,
         "adoptionStatus": pet.adoptionStatus,
         "loveLanguage": pet.loveLanguage,
         "lifestyle": pet.lifestyle,
-        "household": pet.household,
-        "careAndBehavior": pet.careAndBehavior,
         'createdAt': pet.createdAt,
         'updatedAt': pet.updatedAt
     })

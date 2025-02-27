@@ -51,10 +51,10 @@ def sign_up():
     """
     data = request.get_json()
     form = SignUpForm(data=data)
-    # form['csrf_token'].data = request.cookies['csrf_token']
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-    if not form.validate():
-        return jsonify({"errors": form.errors}), 400
+    # if not form.validate():
+    #     return jsonify({"errors": form.errors}), 400
 
         # household_data = {
         #     "kids": form.data['kids'],
