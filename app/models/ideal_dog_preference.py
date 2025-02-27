@@ -1,5 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from sqlalchemy import Enum
+from datetime import datetime, timezone
 
 class IdealDogPreferences(db.Model):
     __tablename__ = 'ideal_dog_preferences'
@@ -15,6 +16,10 @@ class IdealDogPreferences(db.Model):
     idealSex = db.Column(Enum('noPreference', 'male', 'female', name='ideal_sex'), nullable=False)
     idealSize = db.Column(Enum('noPreference', 'small', 'medium', 'large', 'xl', name='ideal_size'), nullable=False)
     lifestyle = db.Column(Enum('noPreference', 'veryActive', 'active', 'laidback', 'lapPet', name='lifestyle'), nullable=False)
+
+    createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False, onupdate=datetime.now(timezone.utc))
+
 
     # relationship
     user = db.relationship('User', foreign_keys=[userId], back_populates='preferences')
