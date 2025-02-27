@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Review, Pet, User, db
+from app.models import Review, User, db
 from sqlalchemy.orm import joinedload
 
 reviews_routes = Blueprint('reviews', __name__)

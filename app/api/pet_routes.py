@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, session
 from flask_login import login_required, current_user
 from app.models import Pet, PetImage, db, User
-from sqlalchemy import func, and_
+from sqlalchemy import and_
 import random
 from app.forms import PetListingForm
 from decimal import Decimal
