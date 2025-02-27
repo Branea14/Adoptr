@@ -21,23 +21,16 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
-    avator = db.Column(db.Text, nullable=True)
+    avatar = db.Column(db.Text, nullable=True)
 
     # household and preferences
     kids = db.Column(db.Boolean, nullable=False)
     hasBackyard = db.Column(db.Boolean, nullable=False)
-    houseTrained = db.Column(db.Boolean, nullable=False)
-    specialNeeds = db.Column(db.Boolean, nullable=False)
-
-    # household = db.Column(JSON, nullable=False, default=dict)
-    # careAndBehavior = db.Column(JSON, nullable=False, default=list)
 
     otherPets = db.Column(Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other'), nullable=False)
     petExperience = db.Column(Enum('firstTime', 'previous', 'current', name='pet_experience'), nullable=False)
-    idealAge = db.Column(Enum('noPreference', 'puppy', 'young', 'adult', 'senior', name='ideal_age'), nullable=False)
-    idealSex = db.Column(Enum('noPreference', 'male', 'female', name='ideal_sex'), nullable=False)
-    idealSize = db.Column(Enum('noPreference', 'small', 'medium', 'large', 'xl', name='ideal_size'), nullable=False)
-    lifestyle = db.Column(Enum('noPreference', 'veryActive', 'active', 'laidback', 'lapPet', name='lifestyle'), nullable=False)
+    # household = db.Column(JSON, nullable=False, default=dict)
+    # careAndBehavior = db.Column(JSON, nullable=False, default=list)
 
     # location data
     geohash = db.Column(db.String(12), nullable=False)
@@ -57,6 +50,15 @@ class User(db.Model, UserMixin):
     sender_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.senderId], back_populates='sender', cascade="all, delete-orphan")
     receiver_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.receiverId], back_populates='receiver', cascade="all, delete-orphan")
 
+    # moved to different table
+    # houseTrained = db.Column(db.Boolean, nullable=False)
+    # specialNeeds = db.Column(db.Boolean, nullable=False)
+    # idealAge = db.Column(Enum('noPreference', 'puppy', 'young', 'adult', 'senior', name='ideal_age'), nullable=False)
+    # idealSex = db.Column(Enum('noPreference', 'male', 'female', name='ideal_sex'), nullable=False)
+    # idealSize = db.Column(Enum('noPreference', 'small', 'medium', 'large', 'xl', name='ideal_size'), nullable=False)
+    # lifestyle = db.Column(Enum('noPreference', 'veryActive', 'active', 'laidback', 'lapPet', name='lifestyle'), nullable=False)
+
+
     @property
     def password(self):
         return self.hashed_password
@@ -75,31 +77,30 @@ class User(db.Model, UserMixin):
             'lastName': self.lastName,
             'username': self.username,
             'email': self.email,
-            'avator': self.avator,
+            'avatar': self.avatar,
             'kids': self.kids,
             'hasBackyard': self.hasBackyard,
-            'houseTrained': self.houseTrained,
-            'specialNeeds': self.specialNeeds,
             'otherPets': self.otherPets,
             'petExperience': self.petExperience,
-            'idealAge': self.idealAge,
-            'idealSex': self.idealSex,
-            'idealSize': self.idealSize,
-            'lifestyle': self.lifestyle,
             'geohash': self.geohash,
             'latitude': float(self.latitude),
             'longitude': float(self.longitude),
             'radius': float(self.radius),
             'createdAt': self.createdAt.isoformat(),  # Converts datetime to string
             'updatedAt': self.updatedAt.isoformat()
+            # 'houseTrained': self.houseTrained,
+            # 'specialNeeds': self.specialNeeds,
+            # 'idealAge': self.idealAge,
+            # 'idealSex': self.idealSex,
+            # 'idealSize': self.idealSize,
+            # 'lifestyle': self.lifestyle,
         }
 
     def __repr__(self):
         return (f"<User id={self.id}, firstName='{self.firstName}', lastName='{self.lastName}', "
                 f"username='{self.username}', email='{self.email}', "
-                f"household={self.household}, careAndBehavior={self.careAndBehavior}, "
-                f"petExperience='{self.petExperience}', idealAge='{self.idealAge}', "
-                f"idealSex='{self.idealSex}', idealSize='{self.idealSize}', "
-                f"lifestyle='{self.lifestyle}', geohash='{self.geohash}', "
+                f"kids={self.kids}, hasBackyard={self.hasBackyard}, "
+                f"petExperience='{self.petExperience}', otherPets='{self.otherPets}', "
+                f"radius='{self.radius}', geohash='{self.geohash}', "
                 f"latitude={float(self.latitude)}, longitude={float(self.longitude)}, "
                 f"createdAt={self.createdAt}, updatedAt={self.updatedAt}>")

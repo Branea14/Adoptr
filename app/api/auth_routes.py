@@ -70,9 +70,9 @@ def sign_up():
 
     geo_hash = geohash.encode(latitude, longitude, precision=12)
 
-    care_and_behavior = form.data.get('careAndBehavior', None)
-    if care_and_behavior == []:
-        care_and_behavior = None
+    # care_and_behavior = form.data.get('careAndBehavior', None)
+    # if care_and_behavior == []:
+    #     care_and_behavior = None
 
     user = User(
         firstName=form.data['firstName'],
@@ -80,16 +80,21 @@ def sign_up():
         username=form.data['username'],
         email=form.data['email'],
         password=form.data['password'],
-        household=form.data['household'],
-        careAndBehavior=care_and_behavior,
+        avatar=form.data['avatar'],
+        kids=form.data['kids'],
+        hasBackyard=form.data['hasBackyard'],
+        otherPets=form.data['otherPets'],
         petExperience=form.data['petExperience'],
-        idealAge=form.data['idealAge'],
-        idealSex=form.data['idealSex'],
-        idealSize=form.data['idealSize'],
-        lifestyle=form.data['lifestyle'],
+        geohash=geo_hash,
         latitude=latitude,
         longitude=longitude,
-        geohash=geo_hash
+        radius=form.data['radius']
+        # houseTrained=form.data['houseTrained'],
+        # specialNeeds=form.data['specialNeeds'],
+        # idealAge=form.data['idealAge'],
+        # idealSex=form.data['idealSex'],
+        # idealSize=form.data['idealSize'],
+        # lifestyle=form.data['lifestyle'],
     )
     db.session.add(user)
     db.session.commit()

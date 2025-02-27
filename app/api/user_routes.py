@@ -56,35 +56,48 @@ def edit_user(id):
     if not data.get('password') or len(data['password']) >= 255:
         errors['password'] = "Password is required and must be less than 255 characters"
 
-    if not isinstance(data.get('household'), dict):
-        errors['household'] = "Household inform must be JSON"
-    else:
-        household = data['household']
-        if 'kids' not in household or not isinstance(household['kids'], bool):
-            errors['household_kids'] = 'Kids must be a boolean value (true/false)'
-        if 'hasBackyard' not in household or not isinstance(household['hasBackyard'], bool):
-            errors['household_hasBackyard'] = 'Has Backyard must be a boolean value (true/false)'
-        if 'otherPets' not in household or household['otherPets'] not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other']:
-            errors['household_otherPets'] = "Invalid value for otherPets. Must be none, dogsOnly, catsOnly, both, or other."
+    # if not isinstance(data.get('household'), dict):
+    #     errors['household'] = "Household inform must be JSON"
+    # else:
+    #     household = data['household']
+    #     if 'kids' not in household or not isinstance(household['kids'], bool):
+    #         errors['household_kids'] = 'Kids must be a boolean value (true/false)'
+    #     if 'hasBackyard' not in household or not isinstance(household['hasBackyard'], bool):
+    #         errors['household_hasBackyard'] = 'Has Backyard must be a boolean value (true/false)'
+    #     if 'otherPets' not in household or household['otherPets'] not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other']:
+    #         errors['household_otherPets'] = "Invalid value for otherPets. Must be none, dogsOnly, catsOnly, both, or other."
 
-    care_and_behavior = data.get('careAndBehavior', None)
-    if care_and_behavior == []:
-        care_and_behavior = None
+    # care_and_behavior = data.get('careAndBehavior', None)
+    # if care_and_behavior == []:
+    #     care_and_behavior = None
 
+    if data.get('kids') is None or not isinstance(data.get('kids'), bool):
+        errors['kids'] = "Must have Boolean value"
+    if data.get('hasBackyard') is None or not isinstance(data.get('hasBackyard'), bool):
+        errors['hasBackyard'] = "Must have Boolean value"
+
+    if data.get('otherPets') not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other']:
+        errors['otherPets'] = "Invalid other pet selection"
     if data.get('petExperience') not in ['firstTime', 'previous', 'current']:
         errors['petExperience'] = "Invalid pet experience selection"
-    if data.get('idealAge') not in ['noPreference','puppy', 'young', 'adult', 'senior']:
-        errors['idealAge'] = "Invalid age selection"
-    if data.get('idealSex') not in ['noPreference', 'male', 'female']:
-        errors['idealSex'] = "Invalid sex selection"
-    if data.get('idealSize') not in ['noPreference', 'small', 'medium', 'large', 'xl']:
-        errors['idealSize'] = "Invalid size selection"
-    if data.get('lifestyle') not in ['noPreference', 'veryActive', 'active', 'laidback', 'lapPet']:
-        errors['lifestyle'] = "Invalid lifestyle selection"
     if not data.get('latitude'):
         errors['latitude'] = "User must share their location"
     if not data.get('longitude'):
         errors['longitude'] = "User must share their location"
+
+    # moved to other table
+    # if not data.get('houseTrained') or not isinstance(data.get('houseTrained'), bool):
+    #     errors['houseTrained'] = "Must have Boolean value"
+    # if not data.get('specialNeeds') or not isinstance(data.get('specialNeeds'), bool):
+    #     errors['specialNeeds'] = "Must have Boolean value"
+    # if data.get('idealAge') not in ['noPreference','puppy', 'young', 'adult', 'senior']:
+    #     errors['idealAge'] = "Invalid age selection"
+    # if data.get('idealSex') not in ['noPreference', 'male', 'female']:
+    #     errors['idealSex'] = "Invalid sex selection"
+    # if data.get('idealSize') not in ['noPreference', 'small', 'medium', 'large', 'xl']:
+    #     errors['idealSize'] = "Invalid size selection"
+    # if data.get('lifestyle') not in ['noPreference', 'veryActive', 'active', 'laidback', 'lapPet']:
+    #     errors['lifestyle'] = "Invalid lifestyle selection"
 
     if errors:
         return jsonify({'message': "Bad Request", "errors": errors}), 400
@@ -95,17 +108,25 @@ def edit_user(id):
     user.username = data['username']
     user.email = data['email']
     user.password = data['password']
-    user.avator = data['avator']
+    user.avatar = data['avatar']
+    user.kids = data['kids']
+    user.hasBackyard = data['hasBackyard']
+    user.otherPets = data['otherPets']
     user.petExperience = data['petExperience']
-    user.idealAge = data['idealAge']
-    user.idealSex = data['idealSex']
-    user.idealSize = data['idealSize']
     user.latitude = data['latitude']
     user.longitude = data['longitude']
     user.radius = data['radius']
-    user.lifestyle = data['lifestyle']
-    user.household = data['household']
-    user.careAndBehavior = data['careAndBehavior']
+
+    # user.household = data['household']
+    # user.careAndBehavior = data['careAndBehavior']
+
+    # moved to other table
+    # user.houseTrained = data['houseTrained']
+    # user.specialNeeds = data['specialNeeds']
+    # user.idealAge = data['idealAge']
+    # user.idealSex = data['idealSex']
+    # user.idealSize = data['idealSize']
+    # user.lifestyle = data['lifestyle']
 
     db.session.commit()
 
@@ -115,18 +136,23 @@ def edit_user(id):
         'lastName': user.lastName,
         'username': user.username,
         'email': user.email,
-        'avator': user.avator,
+        'avatar': user.avatar,
+        'kids': user.kids,
+        'hasBackyard': user.hasBackyard,
+        # 'houseTrained': user.houseTrained,
+        # 'specialNeeds': user.specialNeeds,
+        'otherPets': user.otherPets,
         'petExperience': user.petExperience,
-        'idealAge': user.idealAge,
-        'idealSex': user.idealSex,
-        'idealSize': user.idealSize,
-        'lifestyle': user.lifestyle,
+        # 'idealAge': user.idealAge,
+        # 'idealSex': user.idealSex,
+        # 'idealSize': user.idealSize,
+        # 'lifestyle': user.lifestyle,
         'geohash': user.geohash,
         'latitude': float(user.latitude),
         'longitude': float(user.longitude),
         'radius': float(user.radius),
-        'household': user.household,
-        'careAndBehavior': user.careAndBehavior,
+        # 'household': user.household,
+        # 'careAndBehavior': user.careAndBehavior,
         'createdAt': user.createdAt.isoformat(),  # Converts datetime to string
         'updatedAt': user.updatedAt.isoformat()
     })

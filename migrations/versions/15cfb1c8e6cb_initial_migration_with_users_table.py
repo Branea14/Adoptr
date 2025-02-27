@@ -26,7 +26,7 @@ def upgrade():
     sa.Column('username', sa.String(length=40), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('hashed_password', sa.String(length=255), nullable=False),
-    sa.Column('avator', sa.Text(), nullable=True),
+    sa.Column('avatar', sa.Text(), nullable=True),
     sa.Column('household', postgresql.JSON(astext_type=Text()), nullable=False),
     sa.Column('careAndBehavior', postgresql.JSON(astext_type=Text()), nullable=False),
     sa.Column('petExperience', sa.Enum('firstTime', 'previous', 'current', name='pet_experience'), nullable=False),
