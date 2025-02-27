@@ -21,4 +21,4 @@ class Review(db.Model):
     reviewers = db.relationship("User", foreign_keys=[reviewerId], back_populates="written_reviews")
 
     def __repr__(self):
-        return f"<Review id={self.id}, petId={self.sellerId}, reviewerId={self.reviewerId}, stars={self.stars}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>"
+        return f"<Review id={self.id}, sellerId={self.sellerId}, reviewerId={self.reviewerId}, stars={self.stars}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>"

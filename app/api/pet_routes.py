@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 from flask_login import login_required, current_user
 from app.models import Pet, PetImage, db, User
 from sqlalchemy import func, and_
@@ -9,7 +9,7 @@ from decimal import Decimal
 pet_routes = Blueprint('pets', __name__)
 
 ####################### GET ALL PETS BY CURRENT USER ###############################
-@pet_routes.route('/current')
+@pet_routes.route('/by-current-user')
 @login_required
 def current_pets():
     current_user_id = current_user.id
@@ -43,7 +43,7 @@ def current_pets():
     return jsonify({"Pets": pet_list})
 
 ####################### GET PET DETAILS ###############################
-@pet_routes.route('/')
+@pet_routes.route('/swipe')
 @login_required
 def pet_details():
     # grabs 'nearby' query param in url
@@ -64,6 +64,8 @@ def pet_details():
     new_user_long = Decimal(str(user_long))
     new_radius = Decimal(str(radius))
 
+    swiped_pets = session.get('swiped_pets', [])
+
     nearby_pets_query = Pet.query.join(User).filter(
         # does not support arithmethic operations involving column attributes
         # func.abs(Pet.latitude - user_lat) <= radius,
@@ -71,13 +73,17 @@ def pet_details():
         and_(
             User.latitude.between(new_user_lat - new_radius, new_user_lat + new_radius),
             User.longitude.between(new_user_long - new_radius, new_user_long + new_radius),
-        )
+        ),
+        ~Pet.id.in_(swiped_pets) #exclude swiped pets
     ).all()
 
     if not nearby_pets_query:
         return jsonify({"error": "No nearby pets found"}), 404
 
     pet = random.choice(nearby_pets_query)
+
+    swiped_pets.append(pet.id)
+    session['swiped_pets'] = swiped_pets
 
     pet_images = PetImage.query.filter_by(petId=pet.id).all()
     pet_images_list = [{
@@ -205,7 +211,7 @@ def create_pet_listing():
     return jsonify({"pet": new_pet.to_dict()}), 201
 
 ####################### EDIT PET LISTING ###############################
-@pet_routes.route('/current/<int:petId>', methods=['PUT'])
+@pet_routes.route('/<int:petId>', methods=['PUT'])
 @login_required
 def edit_pet_listing(petId):
     current_user_id = current_user.id
@@ -300,7 +306,7 @@ def edit_pet_listing(petId):
         'updatedAt': pet.updatedAt
     })
 
-@pet_routes.route('/current/<int:petId>', methods=['DELETE'])
+@pet_routes.route('/<int:petId>', methods=['DELETE'])
 @login_required
 def delete_pet(petId):
     current_user_id = current_user.id

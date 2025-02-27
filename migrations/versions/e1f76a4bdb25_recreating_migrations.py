@@ -1,8 +1,8 @@
-"""update models deleted household in pet seeds
+"""recreating migrations
 
-Revision ID: 954ed8915dd3
-Revises: 14c82a257f8f
-Create Date: 2025-02-26 20:22:27.679864
+Revision ID: e1f76a4bdb25
+Revises: 
+Create Date: 2025-02-26 23:30:38.066264
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '954ed8915dd3'
-down_revision = '14c82a257f8f'
+revision = 'e1f76a4bdb25'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -64,7 +64,6 @@ def upgrade():
     sa.Column('color', sa.String(length=50), nullable=False),
     sa.Column('ownerSurrender', sa.Boolean(), nullable=False),
     sa.Column('kids', sa.Boolean(), nullable=False),
-    sa.Column('hasBackyard', sa.Boolean(), nullable=False),
     sa.Column('houseTrained', sa.Boolean(), nullable=False),
     sa.Column('specialNeeds', sa.Boolean(), nullable=False),
     sa.Column('otherPets', sa.Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other'), nullable=False),
