@@ -6,42 +6,42 @@ from datetime import datetime, timezone
 def seed_pets():
     pet_data = [
         # Pets listed by Seller ID 1 (Alice)
-        (1, "Buddy", "A playful Golden Retriever who loves the outdoors.", "Golden Retriever", True, "Golden", False, "puppy", "male", "large", "available", "play", "veryActive", {"kidFriendly": True, "otherPets": "dogsOnly"}, ["houseTrained"]),
-        (1, "Shadow", "A shy but affectionate mixed breed pup.", "Mixed Breed", False, "Black & White", True, "puppy", "male", "medium", "available", "physicalTouch", "laidback", {"kidFriendly": False}, ["houseTrained"]),
-        (1, "Hazel", "A calm and loving senior dog.", "Cocker Spaniel", True, "Brown", False, "senior", "female", "small", "pendingAdoption", "physicalTouch", "laidback", {"kidFriendly": False, "otherPets": "both"}, ["specialNeeds"]),
-        (1, "Rex", "A highly intelligent and obedient German Shepherd.", "German Shepherd", True, "Black & Tan", False, "adult", "male", "large", "available", "training", "active", {"kidFriendly": True}, ["specialNeeds"]),
+        (1, "Buddy", "A playful Golden Retriever who loves the outdoors.", "Golden Retriever", True, "Golden", False, "puppy", "male", "large", "available", "play", "veryActive", True, True, False, "dogsOnly"),
+        (1, "Shadow", "A shy but affectionate mixed breed pup.", "Mixed Breed", False, "Black & White", True, "puppy", "male", "medium", "available", "physicalTouch", "laidback", False, True, False, "none"),
+        (1, "Hazel", "A calm and loving senior dog.", "Cocker Spaniel", True, "Brown", False, "senior", "female", "small", "pendingAdoption", "physicalTouch", "laidback", False, False, True, "both"),
+        (1, "Rex", "A highly intelligent and obedient German Shepherd.", "German Shepherd", True, "Black & Tan", False, "adult", "male", "large", "available", "training", "active", True, False, True, "none"),
 
         # Pets listed by Seller ID 2 (Bob)
-        (2, "Max", "A gentle giant who loves belly rubs.", "Great Dane", True, "Blue", False, "adult", "male", "xl", "pendingAdoption", "treats", "laidback", {"kidFriendly": True, "otherPets": "none"}, ["houseTrained", "specialNeeds"]),
-        (2, "Ginger", "A sweet and loving Golden Retriever.", "Golden Retriever", True, "Golden", False, "young", "female", "large", "pendingAdoption", "play", "veryActive", {"kidFriendly": True, "otherPets": "dogsOnly"}, ["specialNeeds"]),
-        (2, "Duke", "A strong and protective Rottweiler.", "Rottweiler", True, "Black & Mahogany", False, "adult", "male", "large", "available", "training", "veryActive", {"kidFriendly": False}, []),
-        (2, "Maggie", "A small but brave Yorkshire Terrier.", "Yorkshire Terrier", True, "Tan & Black", False, "young", "female", "small", "available", "independent", "lapPet", {"kidFriendly": True, "otherPets": "none"}, ["houseTrained"]),
+        (2, "Max", "A gentle giant who loves belly rubs.", "Great Dane", True, "Blue", False, "adult", "male", "xl", "pendingAdoption", "treats", "laidback", True, True, True, "none"),
+        (2, "Ginger", "A sweet and loving Golden Retriever.", "Golden Retriever", True, "Golden", False, "young", "female", "large", "pendingAdoption", "play", "veryActive", True, False, True, "dogsOnly"),
+        (2, "Duke", "A strong and protective Rottweiler.", "Rottweiler", True, "Black & Mahogany", False, "adult", "male", "large", "available", "training", "veryActive", False, False, False, "none"),
+        (2, "Maggie", "A small but brave Yorkshire Terrier.", "Yorkshire Terrier", True, "Tan & Black", False, "young", "female", "small", "available", "independent", "lapPet", True, True, False, "none"),
 
         # Pets listed by Seller ID 3 (Charlie)
-        (3, "Rocky", "An energetic Labrador Retriever who needs space to run.", "Labrador Retriever", True, "Chocolate", False, "young", "male", "large", "adopted", "play", "active", {"kidFriendly": True}, []),
-        (3, "Milo", "A small dog with a big personality!", "Jack Russell Terrier", True, "White & Brown", False, "adult", "male", "small", "available", "training", "veryActive", {"kidFriendly": False, "otherPets": "dogsOnly"}, ["houseTrained"]),
-        (3, "Thor", "A strong and protective Husky.", "Siberian Husky", False, "Gray & White", False, "adult", "male", "large", "available", "training", "veryActive", {"kidFriendly": True, "otherPets": "none"}, []),
-        (3, "Rusty", "A playful and energetic mixed breed.", "Mixed Breed", False, "Red", True, "puppy", "male", "medium", "available", "training", "veryActive", {"kidFriendly": True}, ["houseTrained"]),
+        (3, "Rocky", "An energetic Labrador Retriever who needs space to run.", "Labrador Retriever", True, "Chocolate", False, "young", "male", "large", "adopted", "play", "active", True, False, False, "none"),
+        (3, "Milo", "A small dog with a big personality!", "Jack Russell Terrier", True, "White & Brown", False, "adult", "male", "small", "available", "training", "veryActive", False, True, False, "dogsOnly"),
+        (3, "Thor", "A strong and protective Husky.", "Siberian Husky", False, "Gray & White", False, "adult", "male", "large", "available", "training", "veryActive", True, False, False, "none"),
+        (3, "Rusty", "A playful and energetic mixed breed.", "Mixed Breed", False, "Red", True, "puppy", "male", "medium", "available", "training", "veryActive", True, True, False, "none"),
 
         # Pets listed by Seller ID 4 (Diana)
-        (4, "Bella", "A loyal and protective German Shepherd.", "German Shepherd", True, "Black & Tan", False, "adult", "female", "large", "available", "physicalTouch", "active", {"kidFriendly": True}, ["specialNeeds"]),
-        (4, "Charlie", "A laidback and friendly Basset Hound.", "Basset Hound", True, "White & Brown", False, "senior", "male", "medium", "pendingAdoption", "independent", "laidback", {"kidFriendly": False, "otherPets": "none"}, ["houseTrained"]),
-        (4, "Sasha", "A playful and social Poodle.", "Poodle", True, "White", False, "young", "female", "small", "available", "play", "active", {"kidFriendly": True}, ["houseTrained"]),
+        (4, "Bella", "A loyal and protective German Shepherd.", "German Shepherd", True, "Black & Tan", False, "adult", "female", "large", "available", "physicalTouch", "active", True, False, True, "none"),
+        (4, "Charlie", "A laidback and friendly Basset Hound.", "Basset Hound", True, "White & Brown", False, "senior", "male", "medium", "pendingAdoption", "independent", "laidback", False, True, False, "none"),
+        (4, "Sasha", "A playful and social Poodle.", "Poodle", True, "White", False, "young", "female", "small", "available", "play", "active", True, True, False, "none"),
 
         # Pets listed by Seller ID 5 (Ethan)
-        (5, "Daisy", "A playful pup with lots of love to give.", "Beagle", False, "Tricolor", False, "puppy", "female", "medium", "available", "play", "active", {"kidFriendly": True, "otherPets": "dogsOnly"}, ["houseTrained"]),
-        (5, "Buster", "A fun-loving dog who loves the outdoors.", "Border Collie", True, "Black & White", False, "young", "male", "medium", "available", "play", "veryActive", {"kidFriendly": True}, []),
-        (5, "Tank", "A protective but loving Bullmastiff.", "Bullmastiff", True, "Fawn", False, "adult", "male", "xl", "available", "training", "laidback", {"kidFriendly": True, "otherPets": "none"}, ["houseTrained"]),
-        (5, "Cooper", "A cheerful and smart Australian Shepherd.", "Australian Shepherd", True, "Merle", False, "young", "male", "medium", "available", "play", "veryActive", {"kidFriendly": True, "otherPets": "dogsOnly"}, ["specialNeeds"]),
+        (5, "Daisy", "A playful pup with lots of love to give.", "Beagle", False, "Tricolor", False, "puppy", "female", "medium", "available", "play", "active", True, True, False, "dogsOnly"),
+        (5, "Buster", "A fun-loving dog who loves the outdoors.", "Border Collie", True, "Black & White", False, "young", "male", "medium", "available", "play", "veryActive", True, False, False, "none"),
+        (5, "Tank", "A protective but loving Bullmastiff.", "Bullmastiff", True, "Fawn", False, "adult", "male", "xl", "available", "training", "laidback", True, True, False, "none"),
+        (5, "Cooper", "A cheerful and smart Australian Shepherd.", "Australian Shepherd", True, "Merle", False, "young", "male", "medium", "available", "play", "veryActive", True, False, True, "catsOnly")
     ]
 
     pet_objects = []
-    for seller_id, name, description, breed, vaccinated, color, owner_surrender, age, sex, size, adoption_status, love_language, lifestyle, household, care_and_behavior in pet_data:
-        care_and_behavior = None if not care_and_behavior else care_and_behavior
+    for seller_id, name, description, breed, vaccinated, color, owner_surrender, age, sex, size, adoption_status, love_language, lifestyle, kids, house_trained, special_needs, other_pets  in pet_data:
+        # care_and_behavior = None if not care_and_behavior else care_and_behavior
 
-        household= household or {}
-        if 'otherPets' not in household:
-            household['otherPets'] = 'none'
+        # household= household or {}
+        # if 'otherPets' not in household:
+        #     household['otherPets'] = 'none'
 
         pet = Pet(
             sellerId=seller_id,
@@ -57,8 +57,12 @@ def seed_pets():
             adoptionStatus=adoption_status,
             loveLanguage=love_language,
             lifestyle=lifestyle,
-            household=household,
-            careAndBehavior=care_and_behavior,
+            kids=kids,
+            houseTrained=house_trained,
+            specialNeeds=special_needs,
+            otherPets=other_pets,
+            # household=household,
+            # careAndBehavior=care_and_behavior,
             createdAt=datetime.now(timezone.utc),
             updatedAt=datetime.now(timezone.utc),
         )

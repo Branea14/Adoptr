@@ -19,7 +19,6 @@ class Pet(db.Model):
     ownerSurrender = db.Column(db.Boolean, nullable=False)
 
     kids = db.Column(db.Boolean, nullable=False)
-    hasBackyard = db.Column(db.Boolean, nullable=False)
     houseTrained = db.Column(db.Boolean, nullable=False)
     specialNeeds = db.Column(db.Boolean, nullable=False)
 
