@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from .review import Review
 from .match import Match
 from .chat_history import ChatHistory
+from .ideal_dog_preference import IdealDogPreferences
 
 
 class User(db.Model, UserMixin):
@@ -49,6 +50,7 @@ class User(db.Model, UserMixin):
     received_matches = db.relationship('Match', foreign_keys=[Match.userId2], back_populates='user2', cascade="all, delete-orphan")
     sender_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.senderId], back_populates='sender', cascade="all, delete-orphan")
     receiver_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.receiverId], back_populates='receiver', cascade="all, delete-orphan")
+    preferences = db.relationship('IdealDogPreferences', foreign_keys=[IdealDogPreferences.userId], back_populates='user', cascade='all, delete-orphan')
 
     # moved to different table
     # houseTrained = db.Column(db.Boolean, nullable=False)

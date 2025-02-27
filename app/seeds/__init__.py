@@ -5,6 +5,7 @@ from .pet_images import seed_pet_images, undo_pet_images
 from .reviews import seed_reviews, undo_reviews
 from .matches import seed_matches, undo_matches
 from .chats import seed_chats, undo_chats
+from .preferences import seed_preferences, undo_preferences
 
 from app.models.db import db, environment, SCHEMA
 

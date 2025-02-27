@@ -18,6 +18,13 @@ class Pet(db.Model):
     color = db.Column(db.String(50), nullable=False)
     ownerSurrender = db.Column(db.Boolean, nullable=False)
 
+    kids = db.Column(db.Boolean, nullable=False)
+    hasBackyard = db.Column(db.Boolean, nullable=False)
+    houseTrained = db.Column(db.Boolean, nullable=False)
+    specialNeeds = db.Column(db.Boolean, nullable=False)
+
+    otherPets = db.Column(Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other'), nullable=False)
+
     age = db.Column(Enum('puppy', 'young', 'adult', 'senior', name='age'), nullable=False)
     sex = db.Column(Enum('male', 'female', name='sex'), nullable=False)
     size = db.Column(Enum('small', 'medium', 'large', 'xl', name='size'), nullable=False)
@@ -25,8 +32,8 @@ class Pet(db.Model):
     loveLanguage = db.Column(Enum('physicalTouch', 'treats', 'play', 'training', 'independent', name='love_language'), nullable=False)
     lifestyle = db.Column(Enum('veryActive', 'active', 'laidback', 'lapPet', name='lifestyle'), nullable=False)
 
-    household = db.Column(JSON, nullable=False, default=dict)
-    careAndBehavior = db.Column(JSON, nullable=True, default=None, server_default=None)
+    # household = db.Column(JSON, nullable=False, default=dict)
+    # careAndBehavior = db.Column(JSON, nullable=True, default=None, server_default=None)
 
     # geohash = db.Column(db.String(12), nullable=False)
     # latitude = db.Column(db.Numeric(10, 7), nullable=False)
