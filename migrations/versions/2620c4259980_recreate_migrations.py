@@ -1,8 +1,8 @@
-"""recreating migrations
+"""recreate migrations
 
-Revision ID: e1f76a4bdb25
+Revision ID: 2620c4259980
 Revises: 
-Create Date: 2025-02-26 23:30:38.066264
+Create Date: 2025-02-27 20:26:39.394905
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e1f76a4bdb25'
+revision = '2620c4259980'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -43,12 +43,12 @@ def upgrade():
     op.create_table('ideal_dog_preferences',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('userId', sa.Integer(), nullable=False),
-    sa.Column('houseTrained', sa.Boolean(), nullable=False),
-    sa.Column('specialNeeds', sa.Boolean(), nullable=False),
-    sa.Column('idealAge', sa.Enum('noPreference', 'puppy', 'young', 'adult', 'senior', name='ideal_age'), nullable=False),
-    sa.Column('idealSex', sa.Enum('noPreference', 'male', 'female', name='ideal_sex'), nullable=False),
-    sa.Column('idealSize', sa.Enum('noPreference', 'small', 'medium', 'large', 'xl', name='ideal_size'), nullable=False),
-    sa.Column('lifestyle', sa.Enum('noPreference', 'veryActive', 'active', 'laidback', 'lapPet', name='lifestyle'), nullable=False),
+    sa.Column('houseTrained', sa.Boolean(), nullable=True),
+    sa.Column('specialNeeds', sa.Boolean(), nullable=True),
+    sa.Column('idealAge', sa.Enum('noPreference', 'puppy', 'young', 'adult', 'senior', name='ideal_age'), nullable=True),
+    sa.Column('idealSex', sa.Enum('noPreference', 'male', 'female', name='ideal_sex'), nullable=True),
+    sa.Column('idealSize', sa.Enum('noPreference', 'small', 'medium', 'large', 'xl', name='ideal_size'), nullable=True),
+    sa.Column('lifestyle', sa.Enum('noPreference', 'veryActive', 'active', 'laidback', 'lapPet', name='lifestyle'), nullable=True),
     sa.Column('createdAt', sa.DateTime(), nullable=False),
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
