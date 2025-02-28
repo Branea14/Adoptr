@@ -88,7 +88,7 @@ class User(db.Model, UserMixin):
             'latitude': float(self.latitude),
             'longitude': float(self.longitude),
             'radius': float(self.radius),
-            'idealDogPreferences': self.preferences.to_dict() if self.preferences else None,
+            # 'idealDogPreferences': self.preferences.to_dict() if self.preferences else None,
             'createdAt': self.createdAt.isoformat(),  # Converts datetime to string
             'updatedAt': self.updatedAt.isoformat()
             # 'houseTrained': self.houseTrained,
