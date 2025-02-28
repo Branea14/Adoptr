@@ -22,7 +22,7 @@ class Pet(db.Model):
     houseTrained = db.Column(db.Boolean, nullable=False)
     specialNeeds = db.Column(db.Boolean, nullable=False)
 
-    otherPets = db.Column(Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other'), nullable=False)
+    otherPets = db.Column(Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other', name='pets_other_pets'), nullable=False)
 
     age = db.Column(Enum('puppy', 'young', 'adult', 'senior', name='age'), nullable=False)
     sex = db.Column(Enum('male', 'female', name='sex'), nullable=False)

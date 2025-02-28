@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):
     kids = db.Column(db.Boolean, nullable=False)
     hasBackyard = db.Column(db.Boolean, nullable=False)
 
-    otherPets = db.Column(Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other'), nullable=False)
+    otherPets = db.Column(Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other', name='user_other_pets'), nullable=False)
     petExperience = db.Column(Enum('firstTime', 'previous', 'current', name='pet_experience'), nullable=False)
     # household = db.Column(JSON, nullable=False, default=dict)
     # careAndBehavior = db.Column(JSON, nullable=False, default=list)

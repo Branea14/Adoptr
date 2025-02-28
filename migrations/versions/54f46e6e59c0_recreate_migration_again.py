@@ -1,8 +1,8 @@
-"""lets go
+"""recreate migration again
 
-Revision ID: 85494e5fdd4c
+Revision ID: 54f46e6e59c0
 Revises: 
-Create Date: 2025-02-27 22:47:15.913557
+Create Date: 2025-02-27 22:55:41.907383
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '85494e5fdd4c'
+revision = '54f46e6e59c0'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -28,7 +28,7 @@ def upgrade():
     sa.Column('avatar', sa.Text(), nullable=True),
     sa.Column('kids', sa.Boolean(), nullable=False),
     sa.Column('hasBackyard', sa.Boolean(), nullable=False),
-    sa.Column('otherPets', sa.Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other'), nullable=False),
+    sa.Column('otherPets', sa.Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other', name='user_other_pets'), nullable=False),
     sa.Column('petExperience', sa.Enum('firstTime', 'previous', 'current', name='pet_experience'), nullable=False),
     sa.Column('geohash', sa.String(length=12), nullable=False),
     sa.Column('latitude', sa.Numeric(precision=10, scale=7), nullable=False),
@@ -66,7 +66,7 @@ def upgrade():
     sa.Column('kids', sa.Boolean(), nullable=False),
     sa.Column('houseTrained', sa.Boolean(), nullable=False),
     sa.Column('specialNeeds', sa.Boolean(), nullable=False),
-    sa.Column('otherPets', sa.Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other'), nullable=False),
+    sa.Column('otherPets', sa.Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other', name='pets_other_pets'), nullable=False),
     sa.Column('age', sa.Enum('puppy', 'young', 'adult', 'senior', name='age'), nullable=False),
     sa.Column('sex', sa.Enum('male', 'female', name='sex'), nullable=False),
     sa.Column('size', sa.Enum('small', 'medium', 'large', 'xl', name='size'), nullable=False),
