@@ -12,12 +12,12 @@ from .api.review_routes import reviews_routes
 from .api.pet_image_routes import pet_image_routes
 from .api.ideal_dog_preferences_routes import dog_preferences_routes
 from .api.matches_routes import matches_routes
+from .api.chat_history_routes import chat_history_routes
 
 from .seeds import seed_commands
 from .config import Config
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
-
 
 # @app.route('/run-migrations')
 # def run_migrations():
@@ -48,6 +48,7 @@ app.register_blueprint(reviews_routes, url_prefix='/api/reviews')
 app.register_blueprint(pet_image_routes, url_prefix='/api/pet-images')
 app.register_blueprint(dog_preferences_routes, url_prefix='/api/dog-preferences')
 app.register_blueprint(matches_routes, url_prefix='/api/matches')
+app.register_blueprint(chat_history_routes, url_prefix='/api/chat')
 
 # initializes db and migrations
 db.init_app(app)
