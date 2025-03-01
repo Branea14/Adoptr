@@ -11,6 +11,7 @@ from .api.pet_routes import pet_routes
 from .api.review_routes import reviews_routes
 from .api.pet_image_routes import pet_image_routes
 from .api.ideal_dog_preferences_routes import dog_preferences_routes
+# from .api.matches_routes import matches_routes
 
 from .seeds import seed_commands
 from .config import Config
@@ -46,6 +47,7 @@ app.register_blueprint(pet_routes, url_prefix='/api/pets')
 app.register_blueprint(reviews_routes, url_prefix='/api/reviews')
 app.register_blueprint(pet_image_routes, url_prefix='/api/pet-images')
 app.register_blueprint(dog_preferences_routes, url_prefix='/api/dog-preferences')
+# app.register_blueprint(match)
 
 # initializes db and migrations
 db.init_app(app)
