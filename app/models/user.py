@@ -50,7 +50,7 @@ class User(db.Model, UserMixin):
     received_matches = db.relationship('Match', foreign_keys=[Match.userId2], back_populates='user2', cascade="all, delete-orphan")
     sender_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.senderId], back_populates='sender', cascade="all, delete-orphan")
     receiver_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.receiverId], back_populates='receiver', cascade="all, delete-orphan")
-    preferences = db.relationship('IdealDogPreferences', foreign_keys=[IdealDogPreferences.userId], back_populates='user', cascade='all, delete-orphan')
+    preferences = db.relationship('IdealDogPreferences', foreign_keys=[IdealDogPreferences.userId], back_populates='user', uselist=False, cascade='all, delete-orphan')
 
     # moved to different table
     # houseTrained = db.Column(db.Boolean, nullable=False)
@@ -88,7 +88,7 @@ class User(db.Model, UserMixin):
             'latitude': float(self.latitude),
             'longitude': float(self.longitude),
             'radius': float(self.radius),
-            # 'idealDogPreferences': self.preferences.to_dict() if self.preferences else None,
+            'idealDogPreferences': self.preferences.to_dict() if self.preferences else None,
             'createdAt': self.createdAt.isoformat(),  # Converts datetime to string
             'updatedAt': self.updatedAt.isoformat()
             # 'houseTrained': self.houseTrained,

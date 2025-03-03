@@ -13,9 +13,10 @@ from .api.pet_image_routes import pet_image_routes
 from .api.ideal_dog_preferences_routes import dog_preferences_routes
 from .api.matches_routes import matches_routes
 from .api.chat_history_routes import chat_history_routes
-
 from .seeds import seed_commands
 from .config import Config
+from .sockets import socketio
+
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
@@ -57,6 +58,8 @@ migrate = Migrate(app, db)
 # Application Security
 CORS(app)
 
+# initializes socketio with flask app
+socketio.init_app(app, cors_allowed_origins="*")
 
 # Since we are deploying with Docker and Flask,
 # we won't be using a buildpack when we deploy to Heroku.
@@ -112,3 +115,7 @@ def react_root(path):
 @app.errorhandler(404)
 def not_found(e):
     return app.send_static_file('index.html')
+
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True)

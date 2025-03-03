@@ -64,7 +64,11 @@ def pet_details():
     new_user_long = Decimal(str(user_long))
     new_radius = Decimal(str(radius))
 
-    swiped_pets = session.get('swiped_pets', [])
+    if 'swiped_pets' not in session:
+        session['swiped_pets'] = []
+
+    swiped_pets = session['swiped_pets']
+    # swiped_pets = session.get('swiped_pets', [])
 
     nearby_pets_query = Pet.query.join(User).filter(
         # does not support arithmethic operations involving column attributes
@@ -74,7 +78,8 @@ def pet_details():
             User.latitude.between(new_user_lat - new_radius, new_user_lat + new_radius),
             User.longitude.between(new_user_long - new_radius, new_user_long + new_radius),
         ),
-        ~Pet.id.in_(swiped_pets) #exclude swiped pets
+        Pet.id.notin_(swiped_pets), #exclude swiped pets
+        Pet.sellerId != current_user.id
     ).all()
 
     if not nearby_pets_query:
@@ -82,8 +87,8 @@ def pet_details():
 
     pet = random.choice(nearby_pets_query)
 
-    swiped_pets.append(pet.id)
-    session['swiped_pets'] = swiped_pets
+    # swiped_pets.append(pet.id) does not persist in session
+    session['swiped_pets'] = list(set(session['swiped_pets'] + [pet.id])) # updates session, flask needs explicit reassignment
 
     pet_images = PetImage.query.filter_by(petId=pet.id).all()
     pet_images_list = [{
