@@ -95,6 +95,7 @@ class Pet(db.Model):
             'adoptionStatus': self.adoptionStatus,
             'loveLanguage': self.loveLanguage,
             'lifestyle': self.lifestyle,
+            'images': [image.to_dict() for image in self.images],
 
             'createdAt': self.createdAt.isoformat(),  # Converts datetime to string
             'updatedAt': self.updatedAt.isoformat()

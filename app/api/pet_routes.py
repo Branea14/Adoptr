@@ -132,6 +132,8 @@ def create_pet_listing():
     current_user_id = current_user.id
     data = request.get_json()
 
+    images = data.get('images', [])
+
     # validations
     errors = {}
     if not data.get('name') or len(data['name']) >= 50:
@@ -168,6 +170,8 @@ def create_pet_listing():
         errors['loveLanguage'] = "Invalid loveLanguage selection"
     if data.get('lifestyle') not in ['veryActive', 'active', 'laidback', 'lapPet']:
         errors['lifestyle'] = "Invalid lifestyle selection"
+    if not isinstance(images, list) or any(not isinstance(img, dict)  or 'url' not in img for img in images):
+        errors['images'] = "Image URLs must a list of objects with 'url' key"
 
     if errors:
         return jsonify({"message": "Bad Request", "errors": errors}), 400
@@ -213,6 +217,24 @@ def create_pet_listing():
     db.session.add(new_pet)
     db.session.commit()
 
+    new_pet_images = []
+    has_preview = False
+
+    for img in images:
+        url = img.get('url')
+        preview = img.get('preview', False)
+
+        if has_preview:
+            preview = False
+        elif preview:
+            has_preview = True
+
+        new_pet_images.append(PetImage(petId=new_pet.id, url=url, preview=preview))
+
+    if new_pet_images:
+        db.session.bulk_save_objects(new_pet_images)
+        db.session.commit()
+
     return jsonify({"pet": new_pet.to_dict()}), 201
 
 ####################### EDIT PET LISTING ###############################
@@ -229,6 +251,7 @@ def edit_pet_listing(petId):
         return jsonify({"error": "Forbidden"}), 403
 
     data = request.get_json()
+    images = data.get('images', [])
 
     # validate
     errors = {}
@@ -266,6 +289,8 @@ def edit_pet_listing(petId):
         errors['loveLanguage'] = "Invalid loveLanguage selection"
     if data.get('lifestyle') not in ['veryActive', 'active', 'laidback', 'lapPet']:
         errors['lifestyle'] = "Invalid lifestyle selection"
+    if not isinstance(images, list) or any(not isinstance(img, dict) or 'url' not in img for img in images):
+        errors['images'] = "Image URLs must be a list of objects with 'url' key"
 
     if errors:
         return jsonify({"message": "Bad Request", "errors": errors}), 400
@@ -289,6 +314,40 @@ def edit_pet_listing(petId):
 
     db.session.commit()
 
+
+    existing_images = {img.id: img for img in pet.images}
+    new_image_objects = []
+    has_preview = any(img.preview for img in pet.images)
+    incoming_image_ids = set()
+
+    for img in images:
+        img_id = img.get('id')
+        url = img.get('url')
+        preview = img.get('preview', False)
+        if img_id is not None and img_id in existing_images:
+            existing_image = existing_images[img_id]
+            existing_image.url = url
+            existing_image.preview = preview
+            incoming_image_ids.add(img_id)
+        else:
+            # add image
+            if preview and not has_preview:
+                for existing_img in pet.images:
+                    existing_img.preview = False
+                has_preview = True
+
+            new_image_objects.append(PetImage(petId=petId, url=url, preview=preview))
+
+    # if incoming_image_ids:
+    images_to_delete = [img for img_id, img in existing_images.items() if img_id not in incoming_image_ids]
+    for img in images_to_delete:
+       db.session.delete(img)
+
+    if new_image_objects:
+        db.session.bulk_save_objects(new_image_objects)
+
+    db.session.commit()
+
     return jsonify({
         "id": pet.id,
         "sellerId": pet.sellerId,
@@ -307,6 +366,10 @@ def edit_pet_listing(petId):
         "adoptionStatus": pet.adoptionStatus,
         "loveLanguage": pet.loveLanguage,
         "lifestyle": pet.lifestyle,
+        "images": [
+            {"id": img.id, "url": img.url, "preview": img.preview}
+            for img in pet.images
+        ],
         'createdAt': pet.createdAt,
         'updatedAt': pet.updatedAt
     })

@@ -68,7 +68,7 @@ def sign_up():
     except (ValueError, TypeError):
         return jsonify({"message": "Invalid lat or long"}), 400
 
-    geo_hash = geohash.encode(latitude, longitude, precision=12)
+    geo_hash = geohash.encode(latitude, longitude, precision=5)
 
     # care_and_behavior = form.data.get('careAndBehavior', None)
     # if care_and_behavior == []:

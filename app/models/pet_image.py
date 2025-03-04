@@ -20,3 +20,11 @@ class PetImage(db.Model):
 
     def __repr__(self):
         return f"<PetImage id={self.id}, petId={self.petId}, url='{self.url}', preview={self.preview}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "petId": self.petId,
+            "url": self.url,
+            "preview": self.preview
+        }
