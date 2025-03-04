@@ -13,6 +13,9 @@ def all_approved_matches():
         (Match.status == 'APPROVED')
     ).all()
 
+    if not matches:
+        return jsonify({"approved_matches": []}), 200
+
     match_data = [{
         "id": match.id,
         "senderUserId1": match.userId1,
@@ -26,7 +29,7 @@ def all_approved_matches():
     return jsonify({"Matches": match_data}), 201
 
 
-####################### CREATING MATCHES ###############################
+####################### CREATING MATCHES/sending a friend request ###############################
 @matches_routes.route('/', methods=['POST'])
 @login_required
 def create_match():
