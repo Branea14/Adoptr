@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import User, db
+import geohash
 
 user_routes = Blueprint('users', __name__)
 
@@ -102,20 +103,27 @@ def edit_user(id):
     if errors:
         return jsonify({'message': "Bad Request", "errors": errors}), 400
 
+    new_latitude = float(data['latitude'])
+    new_longitude= float(data['longitude'])
+
+    if new_latitude != user.latitude or new_longitude != user.longitude:
+        user.latitude = new_latitude
+        user.longitude = new_longitude
+        user.geohash = geohash.encode(new_latitude, new_longitude, precision=5)
 
     user.firstName = data['firstName']
     user.lastName = data['lastName']
     user.username = data['username']
     user.email = data['email']
     user.password = data['password']
-    user.avatar = data['avatar']
+    user.avatar = data.get('avatar', user.avatar)
     user.kids = data['kids']
     user.hasBackyard = data['hasBackyard']
     user.otherPets = data['otherPets']
     user.petExperience = data['petExperience']
-    user.latitude = data['latitude']
-    user.longitude = data['longitude']
-    user.radius = data['radius']
+    user.radius = data.get('radius', user.radius or 0.1)
+    # user.latitude = data['latitude']
+    # user.longitude = data['longitude']
 
     # user.household = data['household']
     # user.careAndBehavior = data['careAndBehavior']

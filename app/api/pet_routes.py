@@ -5,8 +5,36 @@ from sqlalchemy import and_
 import random
 from app.forms import PetListingForm
 from decimal import Decimal
+from geopy.distance import geodesic
 
 pet_routes = Blueprint('pets', __name__)
+
+##################################### DEBUGGING ROUTE ####################################
+@pet_routes.route('/nearby')
+@login_required
+def get_nearby_pets():
+    user = current_user  # Alice (or the logged-in user)
+
+    print(f"User {user.username} Location: ({user.latitude}, {user.longitude}), Radius: {user.radius}")
+
+    pets = Pet.query.all()  # Fetch all pets
+
+    visible_pets = []
+
+    for pet in pets:
+        pet_location = (pet.latitude, pet.longitude)
+        user_location = (user.latitude, user.longitude)
+        distance_km = geodesic(user_location, pet_location).km
+
+        if distance_km <= (user.radius * 111):  # Convert degrees to km
+            print(f"✅ Pet {pet.id} is within Alice's radius!")
+            visible_pets.append(pet.to_dict())
+        else:
+            print(f"❌ Pet {pet.id} is too far ({distance_km:.2f} km)")
+
+    return jsonify({"nearbyPets": visible_pets})
+
+
 
 ####################### GET ALL PETS BY CURRENT USER ###############################
 @pet_routes.route('/by-current-user')
@@ -50,8 +78,9 @@ def pet_details():
     # nearby = request.args.get('nearby') == 'true'
 
     # user-defined radius, default to .1
+
     try:
-        radius = float(request.args.get('radius', 0.1))
+        radius = float(request.args.get('radius', current_user.radius or 0.1))
     except ValueError:
         return jsonify({"error": "Invalid Radius Value"}), 400
 
@@ -78,7 +107,7 @@ def pet_details():
             User.latitude.between(new_user_lat - new_radius, new_user_lat + new_radius),
             User.longitude.between(new_user_long - new_radius, new_user_long + new_radius),
         ),
-        Pet.id.notin_(swiped_pets), #exclude swiped pets
+        # Pet.id.notin_(swiped_pets), #exclude swiped pets
         Pet.sellerId != current_user.id
     ).all()
 
