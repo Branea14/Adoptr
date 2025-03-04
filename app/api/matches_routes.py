@@ -50,7 +50,7 @@ def create_match():
     pet = Pet.query.get(petId)
     if not pet:
         return jsonify({"error": "Pet not found"}), 404
-    if pet.ownerId != userId2:
+    if pet.sellerId != userId2:
         return jsonify({"error": "Unauthorized. Must be Pet Owner"}), 403
 
     if userId2 == current_user.id:
