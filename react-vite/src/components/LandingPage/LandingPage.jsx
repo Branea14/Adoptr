@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDrag } from "@use-gesture/react";
 import "./LandingPage.css";
+import LoginFormModal from "../LoginFormModal";
+import { useModal } from "../../context/Modal";
+import SignupFormModal from "../SignupFormModal";
 
 const LandingPage = () => {
     const [loading, setLoading] = useState(true);
     const [swiped, setSwiped] = useState(false);
     const [position, setPosition] = useState(0);
     const [showButtons, setShowButtons] = useState(false);
+    const {setModalContent} = useModal();
 
     // movement is how far user moved div, [x] horiztontally on x-axis
     // down touching/moving the el
@@ -30,6 +34,16 @@ const LandingPage = () => {
             setLoading(false);
         }, 1500);
     }, []);
+
+    const handleLoginButton = async (e) => {
+        e.preventDefault()
+        setModalContent(<LoginFormModal/>)
+    }
+
+    const handleSignUpButton = async (e) => {
+        e.preventDefault()
+        setModalContent(<SignupFormModal/>)
+    }
 
     return (
         <div className={`container ${loading ? "loading" : "loaded"}`}>
@@ -57,8 +71,8 @@ const LandingPage = () => {
                     ) : showButtons ? (
                         <div className="buttons-overlay">
                             <div className="buttons">
-                                <button>Login</button>
-                                <button>Sign Up</button>
+                                <button onClick={handleLoginButton}>Login</button>
+                                <button onClick={handleSignUpButton}>Sign Up</button>
                             </div>
                         </div>
                     ) : null}
