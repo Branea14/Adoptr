@@ -1,0 +1,126 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Main Container */
+.container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(50, 65, 50);
+    transition: background 1s ease-in-out;
+}
+
+/* Loading Screen */
+.loading-screen {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: rgb(233, 208, 176);
+    /* font-family: Arial, sans-serif; */
+    font-family: 'Bubblegum Sans';
+    font-size: 22px;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Fade Out Loading Screen */
+.loaded .loading-screen {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Logo Styling */
+.logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.brand {
+    font-size: 60px;
+    font-weight: bold;
+    margin-left: -10px
+}
+
+/* Main Content */
+.landing-page-container {
+    height: 100vh;
+    width: 100vw;
+    /* allows for overlay */
+    position: relative;
+}
+
+.fullscreen-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.loaded .fullscreen-image,
+.loaded .overlay {
+    opacity: 1;
+}
+
+.slogan-overlay {
+    position: absolute;
+    top: 450px;
+    left: 30px;
+    /* transform: translate(-50%, -50%); */
+    text-align: left;
+    color: white;
+}
+
+.slogan {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0);
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    font-family: 'Bubblegum Sans';
+    color: rgb(248, 238, 225);
+    transition: transform 0.3s ease-out;
+    cursor: grab;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.buttons button {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.buttons button:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.buttons-overlay {
+    position: absolute;
+    top: 450px;
+    left: 30px;
+    /* transform: translate(-50%, -50%); */
+    text-align: left;
+    color: white;
+}
+
+.swipe-whole-screen {
+    color: transparent;
+}
