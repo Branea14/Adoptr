@@ -17,7 +17,7 @@ export default function Layout() {
 
       <ModalProvider>
         <useLocation>
-          {({ useLocation}) => {
+          {({useLocation}) => {
             useLocation.pathname !== '/' ? <Navigation /> : null
           }}
         </useLocation>

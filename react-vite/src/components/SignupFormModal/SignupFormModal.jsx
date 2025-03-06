@@ -5,6 +5,7 @@ import { thunkSignup } from "../../redux/session";
 import "./SignupForm.css";
 // import * as React from 'react'
 import Slider from '@mui/material/Slider'
+import { useNavigate } from "react-router-dom";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -34,6 +35,8 @@ function SignupFormModal() {
   const [idealSex, setIdealSex] = useState(null)
   const [idealSize, setIdealSize] = useState(null)
   const [lifestyle, setLifestyle] = useState(null)
+
+  const navigate = useNavigate()
 
   const dogPreferences = {
     houseTrained,
@@ -159,7 +162,7 @@ function SignupFormModal() {
       setErrors({});
       setValidationErrors({});
       closeModal();
-      navigate("/");
+      navigate("/swipe");
     }
   };
 

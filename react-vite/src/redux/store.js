@@ -7,10 +7,12 @@ import {
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import dogPreferencesReducer from "./dog_preferences";
+import petReducer from "./pets";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
-  dogPreferences: dogPreferencesReducer
+  dogPreferences: dogPreferencesReducer,
+  pet: petReducer
 });
 
 let enhancer;
