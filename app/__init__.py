@@ -56,7 +56,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 # Application Security
-CORS(app)
+CORS(app, supports_credentials=True)
 
 # initializes socketio with flask app
 socketio.init_app(app, cors_allowed_origins="*")

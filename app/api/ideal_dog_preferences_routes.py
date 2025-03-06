@@ -5,6 +5,33 @@ from sqlalchemy.orm import joinedload
 
 dog_preferences_routes = Blueprint('dog-preferences', __name__)
 
+####################### FETCH DOG PREFERENCES ###############################
+@dog_preferences_routes.route('/<int:userId>')
+@login_required
+def fetch_dog_preferences(userId):
+    if userId != current_user.id:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    preferences = IdealDogPreferences.query.filter_by(userId=current_user.id).first()
+    if not preferences:
+        return jsonify({'error': "User does not have any dog preferences yet"}), 404
+
+    preference_list = {
+        "id": preferences.id,
+        "userId": preferences.userId,
+        "houseTrained": preferences.houseTrained,
+        "specialNeeds": preferences.specialNeeds,
+        "idealAge": preferences.idealAge,
+        "idealSex": preferences.idealSex,
+        "idealSize": preferences.idealSize,
+        "lifestyle": preferences.lifestyle,
+        "createdAt": preferences.createdAt.isoformat(),
+        "updatedAt": preferences.updatedAt.isoformat(),
+    }
+
+    return jsonify({"dogPreferences": preference_list}), 200
+
+
 ####################### ADD DOG PREFERENCES ###############################
 @dog_preferences_routes.route('/', methods=['POST'])
 @login_required

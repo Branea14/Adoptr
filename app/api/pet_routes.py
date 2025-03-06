@@ -9,30 +9,30 @@ from geopy.distance import geodesic
 
 pet_routes = Blueprint('pets', __name__)
 
-##################################### DEBUGGING ROUTE ####################################
-@pet_routes.route('/nearby')
-@login_required
-def get_nearby_pets():
-    user = current_user  # Alice (or the logged-in user)
+# ##################################### DEBUGGING ROUTE ####################################
+# @pet_routes.route('/nearby')
+# @login_required
+# def get_nearby_pets():
+#     user = current_user  # Alice (or the logged-in user)
 
-    print(f"User {user.username} Location: ({user.latitude}, {user.longitude}), Radius: {user.radius}")
+#     print(f"User {user.username} Location: ({user.latitude}, {user.longitude}), Radius: {user.radius}")
 
-    pets = Pet.query.all()  # Fetch all pets
+#     pets = Pet.query.all()  # Fetch all pets
 
-    visible_pets = []
+#     visible_pets = []
 
-    for pet in pets:
-        pet_location = (pet.latitude, pet.longitude)
-        user_location = (user.latitude, user.longitude)
-        distance_km = geodesic(user_location, pet_location).km
+#     for pet in pets:
+#         pet_location = (pet.latitude, pet.longitude)
+#         user_location = (user.latitude, user.longitude)
+#         distance_km = geodesic(user_location, pet_location).km
 
-        if distance_km <= (user.radius * 111):  # Convert degrees to km
-            print(f"✅ Pet {pet.id} is within Alice's radius!")
-            visible_pets.append(pet.to_dict())
-        else:
-            print(f"❌ Pet {pet.id} is too far ({distance_km:.2f} km)")
+#         if distance_km <= (user.radius * 111):  # Convert degrees to km
+#             print(f"✅ Pet {pet.id} is within Alice's radius!")
+#             visible_pets.append(pet.to_dict())
+#         else:
+#             print(f"❌ Pet {pet.id} is too far ({distance_km:.2f} km)")
 
-    return jsonify({"nearbyPets": visible_pets})
+#     return jsonify({"nearbyPets": visible_pets})
 
 
 
