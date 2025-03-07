@@ -158,6 +158,11 @@ def pet_details():
 @pet_routes.route('/', methods=['POST'])
 @login_required
 def create_pet_listing():
+
+    print(f"🚀 Current User: {current_user}")  # Add this line
+    if not current_user.is_authenticated:
+        return jsonify({"error": "User is not logged in"}), 401
+
     current_user_id = current_user.id
     data = request.get_json()
 

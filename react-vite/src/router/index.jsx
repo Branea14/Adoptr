@@ -4,6 +4,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from './Layout';
 import LandingPage from '../components/LandingPage'
 import SwipingPage from '../components/SwipingPage';
+import CreatePets from '../components/CreatePets';
 
 export const router = createBrowserRouter([
   {
@@ -22,8 +23,12 @@ export const router = createBrowserRouter([
       //   element: <SignupFormPage />,
       // },
       {
-        path: "/swipe",
+        path: "/pets/swipe",
         element: <SwipingPage />
+      },
+      {
+        path: '/pets/',
+        element: <CreatePets />
       }
     ],
   },

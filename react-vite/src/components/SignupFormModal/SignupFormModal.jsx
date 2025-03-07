@@ -162,7 +162,7 @@ function SignupFormModal() {
       setErrors({});
       setValidationErrors({});
       closeModal();
-      navigate("/swipe");
+      navigate("/pets/swipe");
     }
   };
 
