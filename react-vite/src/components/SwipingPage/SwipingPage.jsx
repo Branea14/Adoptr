@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { createPet, getDetails, getPets } from "../../redux/pets";
+import { getDetails } from "../../redux/pets";
 import { useDrag } from "@use-gesture/react";
-import { createMatch } from "../../redux/matches";
+// import { approvedMatches, createMatch } from "../../redux/matches";
 
 const SwipingPage = () => {
     const dispatch = useDispatch()
@@ -42,7 +42,7 @@ const SwipingPage = () => {
         Promise.all([
             dispatch(getDetails()),
             // dispatch(getPets())
-            dispatch(createPet())
+            // dispatch(approvedMatches())
         ]).finally(() => setLoading(false))
     }, [dispatch])
 

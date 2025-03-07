@@ -1,12 +1,32 @@
 import { csrfFetch } from "./csrf";
 
 // actions
-const CREATING_MATCHES = 'match/CREATING_MATCHES'
+const CREATING_MATCH = 'matches/CREATING_MATCH'
+const GET_APPROVED_MATCH = 'matches/GET_APPROVED_MATCH'
+const GET_REQUESTED_MATCH = 'matches/GET_REQUESTED_MATCH'
+const UPDATE_MATCH = 'matches/UPDATE_MATCH'
+const DELETE_MATCH = 'matches/DELETE_MATCH'
 
 // ACTION CREATOR
 const creatingMatches = (match) => ({
-    type: CREATING_MATCHES,
+    type: CREATING_MATCH,
     payload: match
+})
+const approvedMatchAction = (matches) => ({
+    type: GET_APPROVED_MATCH,
+    payload: matches
+})
+const requestedMatchAction = (matches) => ({
+    type: GET_REQUESTED_MATCH,
+    payload: matches
+})
+const updatedMatchAction = (match) => ({
+    type: UPDATE_MATCH,
+    payload: match
+})
+const deleteMatchAction = (matchId) => ({
+    type: DELETE_MATCH,
+    payload: {id: matchId}
 })
 
 
@@ -24,40 +44,126 @@ export const createMatch = (pet) => async dispatch => {
         return data;
     }
 }
+export const approvedMatches = () => async (dispatch) => {
+    const response = await csrfFetch('/api/matches/approved')
+
+    if (response.ok) {
+        const data = await response.json()
+        // console.log('look here', data)
+        const normalizedMatches = data.Matches.reduce((acc, match) => {
+            acc[match.id] = match;
+            return acc;
+        }, {})
+        dispatch(approvedMatchAction(normalizedMatches))
+        return data
+    }
+}
+export const requestedMatches = () => async (dispatch) => {
+    const response = await csrfFetch('/api/matches/requested')
+
+    if (response.ok) {
+        const data = await response.json()
+        const normalizedMatches = data.Matches.reduce((acc, match) => {
+            acc[match.id] = match;
+            return acc;
+        }, {})
+        dispatch(requestedMatchAction(normalizedMatches))
+        return data
+    }
+}
+export const updatedMatch = (matchData) => async (dispatch) => {
+    const response = await csrfFetch(`/api/matches/${matchData.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({status: matchData.status})
+    })
+
+    if (response.ok) {
+        const data = await response.json()
+        dispatch(updatedMatchAction(data))
+        return data
+    }
+}
+export const deleteMatch = (matchId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/matches/${matchId}`, {
+        method: 'DELETE'
+    })
+
+    if (response.ok) {
+        dispatch(deleteMatchAction(matchId))
+        return true
+    }
+    return false
+}
 
 const initialState = {
     approvedMatches: {},
-    pendingMatches: {},
+    requestedMatches: {},
     rejectedMatches: {}
 };
 
 const matchReducer = (state= initialState, action) => {
     switch(action.type) {
-        case CREATING_MATCHES: {
+        case GET_APPROVED_MATCH: {
+            return { ...state, approvedMatches: {...action.payload}}
+        }
+
+        case GET_REQUESTED_MATCH: {
+            return { ...state, requestedMatches: {...action.payload}}
+        }
+
+        case CREATING_MATCH: {
             const newMatch = action.payload;
             if (newMatch.status === 'APPROVED') {
                 return {
                     ...state,
                     approvedMatches: {...state.approvedMatches, [newMatch.id]: newMatch},
-                    pendingMatches: Object.fromEntries(
-                        Object.entries(state.pendingMatches).filter((id) => id !== String(newMatch.id))
+                    requestedMatches: Object.fromEntries(
+                        Object.entries(state.requestedMatches).filter(([id]) => id !== String(newMatch.id))
                     )
                 }
             } else if (newMatch.status === 'REQUESTED') {
                 return {
                     ...state,
-                    pendingMatches: {...state.pendingMatches, [newMatch.id]: newMatch}
+                    requestedMatches: {...state.requestedMatches, [newMatch.id]: newMatch}
                 }
             } else if (newMatch.status === 'REJECTED') {
                 return {
                     ...state,
                     rejectedMatches: {...state.rejectedMatches, [newMatch.id]: newMatch},
-                    pendingMatches: Object.fromEntries(
-                        Object.entries(state.pendingMatches).filter((id) => id !== String(newMatch.id))
-                    )
+                    // requestedMatches: Object.fromEntries(
+                    //     Object.entries(state.requestedMatches).filter((id) => id !== String(newMatch.id))
+                    // )
                 }
             }
             return state;
+        }
+
+        case UPDATE_MATCH: {
+            const updatedMatch = action.payload
+            const {id, status} = updatedMatch
+
+            const newState = {...state}
+            if (state.requestedMatches[id]) delete newState.requestedMatches[id]
+            if (state.approvedMatches[id]) delete newState.approvedMatches[id]
+            if (state.rejectedMatches[id]) delete newState.rejectedMatches[id]
+
+            if (status === 'APPROVED') {
+                newState.approvedMatches[id] = updatedMatch
+            } else if (status === 'REJECTED') {
+                newState.rejectedMatches[id] = updatedMatch
+            }
+            return newState
+        }
+
+        case DELETE_MATCH: {
+            const { id } = action.payload
+
+            const newState = {...state}
+            if (state.requestedMatches[id]) delete newState.requestedMatches[id]
+            if (state.approvedMatches[id]) delete newState.approvedMatches[id]
+            if (state.rejectedMatches[id]) delete newState.rejectedMatches[id]
+
+            return newState
         }
         default:
             return state;

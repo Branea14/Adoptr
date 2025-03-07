@@ -29,6 +29,31 @@ def all_approved_matches():
     return jsonify({"Matches": match_data}), 201
 
 
+####################### GET ALL REQUESTED MATCHES ###############################
+@matches_routes.route('/requested')
+@login_required
+def all_requested_matches():
+    matches = Match.query.filter(
+        ((Match.userId1 == current_user.id) | (Match.userId2 == current_user.id)) &
+        (Match.status == 'REQUESTED')
+    ).all()
+
+    if not matches:
+        return jsonify({"requested_matches": []}), 200
+
+    match_data = [{
+        "id": match.id,
+        "senderUserId1": match.userId1,
+        "receiverUserId2": match.userId2,
+        "petId": match.petId,
+        "status": match.status,
+        "createdAt": match.createdAt.isoformat(),
+        "updatedAt": match.updatedAt.isoformat()
+    } for match in matches]
+
+    return jsonify({"Matches": match_data}), 200
+
+
 ####################### CREATING MATCHES/sending a friend request ###############################
 @matches_routes.route('/', methods=['POST'])
 @login_required
@@ -83,7 +108,7 @@ def create_match():
 
 
 ####################### UPDATE MATCHES ###############################
-@matches_routes.route('/<int:id>', methods=['PUT'])
+@matches_routes.route('/<int:id>', methods=['PATCH'])
 @login_required
 def update_match(id):
     selected_match = Match.query.get_or_404(id, description="Match could not be found")
