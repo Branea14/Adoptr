@@ -6,13 +6,16 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
-import dogPreferencesReducer from "./dog_preferences";
+// import dogPreferencesReducer from "./dog_preferences";
 import petReducer from "./pets";
+import matchReducer from "./matches";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
-  dogPreferences: dogPreferencesReducer,
-  pet: petReducer
+  // dogPreferences: dogPreferencesReducer,
+  pet: petReducer,
+  matches: matchReducer
+
 });
 
 let enhancer;

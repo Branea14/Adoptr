@@ -54,13 +54,42 @@ def all_requested_matches():
     return jsonify({"Matches": match_data}), 200
 
 
+####################### GET ALL REJECTED MATCHES ###############################
+@matches_routes.route('/rejected')
+@login_required
+def all_rejected_matches():
+    matches = Match.query.filter(
+        ((Match.userId1 == current_user.id) | (Match.userId2 == current_user.id)) &
+        (Match.status == 'REJECTED')
+    ).all()
+
+    if not matches:
+        return jsonify({"rejected_matches": []}), 200
+
+    match_data = [{
+        "id": match.id,
+        "senderUserId1": match.userId1,
+        "receiverUserId2": match.userId2,
+        "petId": match.petId,
+        "status": match.status,
+        "createdAt": match.createdAt.isoformat(),
+        "updatedAt": match.updatedAt.isoformat()
+    } for match in matches]
+
+    return jsonify({"Matches": match_data}), 200
+
+
 ####################### CREATING MATCHES/sending a friend request ###############################
 @matches_routes.route('/', methods=['POST'])
 @login_required
 def create_match():
     data = request.get_json()
+    print("🟢 Received Data:", data)  # ✅ Debugging: Print incoming request
+
     userId2 = data.get('userId2')
     petId = data.get('petId')
+    new_status = data.get('status', 'REQUESTED')
+    print(f"🟡 userId2: {userId2}, petId: {petId}, new_status: {new_status}")  # ✅ Debugging
 
     errors = {}
     if not userId2:
@@ -69,11 +98,27 @@ def create_match():
         errors['petId'] = 'petId is required'
 
     if errors:
+        print("🔴 Bad Request Errors:", errors)
         return jsonify({"message": "Bad Request", "errors": errors}), 400
+
+    if new_status not in ['REQUESTED', 'APPROVED', 'REJECTED']:
+        return jsonify({"error": "Invalid status. Must be REQUESTED, APPROVED, or REJECTED"}), 400
 
     existing_match = Match.query.filter_by(userId1=current_user.id, userId2=userId2, petId=petId).first()
     if existing_match:
-        return jsonify({"error": "Match already exists"}), 409
+        existing_match.status = new_status
+        db.session.commit()
+        return jsonify({
+            "Match": {
+                "id": existing_match.id,
+                "userId1": existing_match.userId1,
+                "userId2": existing_match.userId2,
+                "petId": existing_match.petId,
+                "status": existing_match.status,
+                "createdAt": existing_match.createdAt.isoformat(),
+                "updatedAt": existing_match.updatedAt.isoformat()
+            }
+        }), 200
 
     pet = Pet.query.get(petId)
     if not pet:
@@ -88,7 +133,7 @@ def create_match():
         userId1=current_user.id,
         userId2=userId2,
         petId=petId,
-        status='REQUESTED',
+        status=new_status
     )
 
     db.session.add(new_match)
@@ -122,8 +167,10 @@ def update_match(id):
     errors = {}
     if new_status not in ['APPROVED', 'REJECTED']:
         errors['status'] = 'Invalid status. Status must be APPROVED or REJECTED'
-    if selected_match.status != 'REQUESTED':
-        errors['status'] = 'Cannot update a match that is already approved or rejected'
+    if selected_match.status == 'APPROVED':
+        errors['status'] = 'Cannot update an approved match'
+    # if selected_match.status != 'REQUESTED':
+    #     errors['status'] = 'Cannot update a match that is already approved or rejected'
 
     if errors:
         return jsonify({"message": "Bad Request", "errors": errors}), 400

@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 const CREATING_MATCH = 'matches/CREATING_MATCH'
 const GET_APPROVED_MATCH = 'matches/GET_APPROVED_MATCH'
 const GET_REQUESTED_MATCH = 'matches/GET_REQUESTED_MATCH'
+const GET_REJECTED_MATCH = 'matches/GET_REJECTED_MATCH'
 const UPDATE_MATCH = 'matches/UPDATE_MATCH'
 const DELETE_MATCH = 'matches/DELETE_MATCH'
 
@@ -28,19 +29,26 @@ const deleteMatchAction = (matchId) => ({
     type: DELETE_MATCH,
     payload: {id: matchId}
 })
+const rejectedMatchAction = (matches) => ({
+    type: GET_REJECTED_MATCH,
+    payload: matches
+})
 
 
 //Thunk
-export const createMatch = (pet) => async dispatch => {
-    const {petId, sellerId} = pet
+export const createMatch = (pet, status = "REQUESTED") => async (dispatch) => {
+    if (!status) status = 'REQUESTED'
+
+    // const {id, sellerId, status} = pet
     const response = await csrfFetch('/api/matches/', {
         method: 'POST',
-        body: JSON.stringify({petId, sellerId})
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({status, userId2: pet.sellerId, petId: pet.id})
     })
 
     if (response.ok) {
         const data = await response.json()
-        dispatch(creatingMatches(data))
+        dispatch(creatingMatches(data.Match))
         return data;
     }
 }
@@ -50,8 +58,8 @@ export const approvedMatches = () => async (dispatch) => {
     if (response.ok) {
         const data = await response.json()
         // console.log('look here', data)
-        const normalizedMatches = data.Matches.reduce((acc, match) => {
-            acc[match.id] = match;
+        const normalizedMatches = data.Matches?.reduce((acc, match) => {
+            acc[match.petId] = match;
             return acc;
         }, {})
         dispatch(approvedMatchAction(normalizedMatches))
@@ -64,7 +72,7 @@ export const requestedMatches = () => async (dispatch) => {
     if (response.ok) {
         const data = await response.json()
         const normalizedMatches = data.Matches.reduce((acc, match) => {
-            acc[match.id] = match;
+            acc[match.petId] = match;
             return acc;
         }, {})
         dispatch(requestedMatchAction(normalizedMatches))
@@ -94,6 +102,19 @@ export const deleteMatch = (matchId) => async (dispatch) => {
     }
     return false
 }
+export const rejectedMatches = () => async (dispatch) => {
+    const response = await csrfFetch('/api/matches/rejected')
+
+    if (response.ok) {
+        const data = await response.json()
+        const normalizedMatches = data.Matches.reduce((acc, match) => {
+            acc[match.petId] = match
+            return acc
+        }, {})
+        dispatch(rejectedMatchAction(normalizedMatches))
+        return data
+    }
+}
 
 const initialState = {
     approvedMatches: {},
@@ -109,6 +130,10 @@ const matchReducer = (state= initialState, action) => {
 
         case GET_REQUESTED_MATCH: {
             return { ...state, requestedMatches: {...action.payload}}
+        }
+
+        case GET_REJECTED_MATCH: {
+            return { ...state, rejectedMatches: {...action.payload}}
         }
 
         case CREATING_MATCH: {
