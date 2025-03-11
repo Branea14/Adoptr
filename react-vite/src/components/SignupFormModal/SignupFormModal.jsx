@@ -23,7 +23,7 @@ function SignupFormModal() {
   // const [latitude, setLatitude] = useState()
   // const [longitude, setLongitude] = useState()
   const [location, setLocation] = useState({latitude: null, longitude: null});
-  const [radius, setRadius] = useState(.1)
+  const [radius, setRadius] = useState(5.0)
   const [errors, setErrors] = useState({});
   const [validationErrors, setValidationErrors] = useState({})
 

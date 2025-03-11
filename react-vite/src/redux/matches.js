@@ -39,6 +39,8 @@ const rejectedMatchAction = (matches) => ({
 export const createMatch = (pet, status = "REQUESTED") => async (dispatch) => {
     if (!status) status = 'REQUESTED'
 
+
+    console.log('looooooooooooooooooooook', pet)
     // const {id, sellerId, status} = pet
     const response = await csrfFetch('/api/matches/', {
         method: 'POST',
@@ -50,6 +52,10 @@ export const createMatch = (pet, status = "REQUESTED") => async (dispatch) => {
         const data = await response.json()
         dispatch(creatingMatches(data.Match))
         return data;
+    } else {
+        const errorResponse = await response.json()
+        console.error("failed to create match", errorResponse)
+        return errorResponse
     }
 }
 export const approvedMatches = () => async (dispatch) => {

@@ -12,21 +12,35 @@ const SwipingPage = () => {
     const [position, setPosition] = useState(0)
     const [hidePets, setHidePets] = useState({})
 
-    // const currentUser = useSelector((state) => state.session.user)
+    const currentUser = useSelector((state) => state.session.user)
     const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
     const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
     const rejectedMatch = useSelector((state) => state.matches?.rejectedMatches)
     const pet = useSelector((state) => {
-        const petDetails = state.pet.petDetails
+        // const petDetails = state.pet.petDetails
 
-        if (petDetails && !hidePets[petDetails.id]) {
-            if (approvedMatch && approvedMatch[petDetails.id]) return null;
-            if (rejectedMatch && rejectedMatch[petDetails.id]) return null
-            // if (requestedMatch && requestedMatch[petDetails.id]?.receiverUserId2 === currentUser.id) return null
+        // if (petDetails && !hidePets[petDetails.id]) {
+        //     if (approvedMatch && approvedMatch[petDetails.id]) return null;
+        //     if (rejectedMatch && rejectedMatch[petDetails.id]) return null
+        //     // if (requestedMatch && requestedMatch[petDetails.id]?.receiverUserId2 === currentUser.id) return null
 
-            return petDetails
-        }
-        return null;
+        //     return petDetails
+        // }
+        // return null;
+        const petDetails = state.pet.petDetails;
+        if (!petDetails || hidePets[petDetails.id]) return null;
+
+        console.log("Currently Displayed Pet:", petDetails);
+
+        const isApproved = Object.values(approvedMatch || {}).some(match => match.petId === petDetails.id);
+        const isRejected = Object.values(rejectedMatch || {}).some(match => match.petId === petDetails.id);
+        const isRequested = Object.values(requestedMatch || {}).some(match => match.petId === petDetails.id);
+
+        console.log("Is Approved:", isApproved, "Is Requested:", isRequested, "Is Rejected:", isRejected);
+
+        if (isApproved || isRejected || isRequested) return null;
+
+        return petDetails;
     })
 
     console.log('loooook here', pet)
@@ -34,25 +48,37 @@ const SwipingPage = () => {
     console.log('requested matches', requestedMatch)
     console.log('rejected matches', rejectedMatch)
 
+    const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match.sellerId !== currentUser.id);
+
+
     useEffect(() => {
-        setLoading(true)
+        setLoading(true);
         Promise.all([
             dispatch(getDetails()),
             dispatch(requestedMatches()),
             dispatch(approvedMatches()),
-            dispatch(rejectedMatches())
-        ]).finally(() => setLoading(false))
-    }, [dispatch, swipeAction])
+            dispatch(rejectedMatches()),
+        ]).finally(() => setLoading(false));
+    }, [dispatch, swipeAction]);
+
+    // useEffect(() => {
+    //     console.log("Approved Matches:", approvedMatch);
+    //     console.log("Requested Matches:", requestedMatch);
+    //     console.log("Rejected Matches:", rejectedMatch);
+    // }, [approvedMatch, requestedMatch, rejectedMatch]);
+
 
 
     const handleSwipe = async (id) => {
         setLoading(true)
 
         await Promise.all([
-            // dispatch(requestedMatches()),
+            dispatch(requestedMatches()),
             dispatch(approvedMatches()),
-            disapatch(rejectedMatches())
+            dispatch(rejectedMatches())
         ])
+
+        console.log("fetching a new pet after swipe......")
 
         // const newPet = await dispatch(getDetails())
         dispatch(getDetails()).then((newPet) => {
@@ -104,39 +130,52 @@ const SwipingPage = () => {
     });
 
 
-    if (loading) return <p>Loading pet details...</p>
-    if (!pet) return <p>No more pets nearby!</p>
+    if (!pet && loading) return <p>Loading pet details...</p>
+    if (!pet && !loading) return <p>No more pets nearby!</p>
 
     return (
         <>
-            <div {...bind()} style={{
-                border: "2px solid red",
-                padding: "16px",
-                borderRadius: "8px",
-                maxWidth: "400px",
-                margin: "20px auto",
-                transform: `translate(${position}px)`
-            }}>
-            <h1>{pet.name}, {pet.breed}</h1>
-            <p>{pet.description}</p>
-            <p>Age: {pet.age}</p>
-            <p>Color: {pet.color}</p>
-            <p>Lifestyle: {pet.lifestyle}</p>
-            <p>Size: {pet.size}</p>
-            <p>Sex: {pet.sex}</p>
-            <p>Love Language: {pet.loveLanguage}</p>
-            <p>HouseTrained? {pet.houseTrained}</p>
-            <p>Good with kids? {pet.kids}</p>
-            <p>Good with other pets? {pet.otherPets}</p>
-            <p>Owner Surrender? {pet.ownerSurrender}</p>
-            <p>Vaccinated? {pet.vaccinated}</p>
-            <p>Special Needs? {pet.specialNeeds}</p>
-            {/* {pet?.PetImages.map((image, index) => (
-                <div key={index}>
-                    <img src={image.url}/>
-                </div>
-            ))} */}
+            <h2>Approved Matches</h2>
+            <div>
+                {filteredApprovedMatches.length > 0 ? (
+                    filteredApprovedMatches.map((match) => (
+                        <div key={match.id}>
+                            <h3>{match.petName}</h3>
+                            <img src={match.petImage} alt={`${match.petName}`}/>
+                        </div>
+                    ))
+                ) : null}
             </div>
+            {pet && Object.keys(pet).length > 0 ? (
+                <div {...bind()} style={{
+                    border: "2px solid red",
+                    padding: "16px",
+                    borderRadius: "8px",
+                    maxWidth: "400px",
+                    margin: "20px auto",
+                    transform: `translate(${position}px)`
+                }}>
+                <h1>{pet.name}, {pet.breed}</h1>
+                <p>{pet.description}</p>
+                <p>Age: {pet.age}</p>
+                <p>Color: {pet.color}</p>
+                <p>Lifestyle: {pet.lifestyle}</p>
+                <p>Size: {pet.size}</p>
+                <p>Sex: {pet.sex}</p>
+                <p>Love Language: {pet.loveLanguage}</p>
+                <p>HouseTrained? {pet.houseTrained}</p>
+                <p>Good with kids? {pet.kids}</p>
+                <p>Good with other pet? {pet.otherPet}</p>
+                <p>Owner Surrender? {pet.ownerSurrender}</p>
+                <p>Vaccinated? {pet.vaccinated}</p>
+                <p>Special Needs? {pet.specialNeeds}</p>
+                {/* {pet?.PetImages.map((image, index) => (
+                    <div key={index}>
+                        <img src={image.url}/>
+                    </div>
+                ))} */}
+                </div>
+            ) : <p>No more pets nearby</p>}
         </>
     )
 }

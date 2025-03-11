@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
+from sqlalchemy.orm import load_only
 from flask_login import current_user, login_user, logout_user, login_required
 import geohash
 
@@ -29,9 +30,19 @@ def login():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
-        user = User.query.filter(User.email == form.data['email']).first()
+        user = User.query.options(load_only("firstName")).filter(User.email == form.data['email']).first()
+        print('look here for user informaton', user)
+        # shortened_user = {
+        #     "id": user.id,
+        #     "username": user.username,
+        #     "email": user.email
+        # }
         login_user(user)
-        return user.to_dict()
+        # login_user(shortened_user)
+        # return user.to_dict()
+        return jsonify({
+            "id": user.id
+        })
     return form.errors, 401
 
 

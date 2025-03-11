@@ -7,6 +7,7 @@ import Navigation from "../components/Navigation/Navigation";
 
 export default function Layout() {
   const dispatch = useDispatch();
+  const location = useLocation()
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
@@ -16,11 +17,7 @@ export default function Layout() {
     <>
 
       <ModalProvider>
-        <useLocation>
-          {({useLocation}) => {
-            useLocation.pathname !== '/' ? <Navigation /> : null
-          }}
-        </useLocation>
+        {location.pathname !== '/' && <Navigation />}
         {/* <Navigation /> */}
         {isLoaded && <Outlet />}
         <Modal />

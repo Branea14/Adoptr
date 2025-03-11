@@ -11,7 +11,7 @@ import { csrfFetch, restoreCSRF } from "./redux/csrf";
 const store = configureStore();
 
 if (import.meta.env.MODE !== "production") {
-  restoreCSRF()
+  // restoreCSRF()
 
   window.csrfFetch = csrfFetch;
   window.store = store;

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, session
 from flask_login import login_required, current_user
-from app.models import Pet, PetImage, db, User
+from app.models import Pet, PetImage, db, User, Match
 from sqlalchemy import and_
 import random
 from app.forms import PetListingForm
@@ -79,45 +79,55 @@ def pet_details():
 
     # user-defined radius, default to .1
 
-    try:
-        radius = float(request.args.get('radius', current_user.radius or 0.1))
-    except ValueError:
-        return jsonify({"error": "Invalid Radius Value"}), 400
+    # try:
+    #     radius = float(request.args.get('radius', current_user.radius or 0.1))
+    # except ValueError:
+    #     return jsonify({"error": "Invalid Radius Value"}), 400
 
-    if current_user.latitude is None or current_user.longitude is None:
-        return jsonify({"error": "User location is not available"}), 400
+    # if current_user.latitude is None or current_user.longitude is None:
+    #     return jsonify({"error": "User location is not available"}), 400
 
-    user_lat, user_long = current_user.latitude, current_user.longitude
+    # user_lat, user_long = current_user.latitude, current_user.longitude
 
-    new_user_lat = Decimal(str(user_lat))
-    new_user_long = Decimal(str(user_long))
-    new_radius = Decimal(str(radius))
+    # new_user_lat = Decimal(str(user_lat))
+    # new_user_long = Decimal(str(user_long))
+    # new_radius = Decimal(str(radius))
 
-    if 'swiped_pets' not in session:
-        session['swiped_pets'] = []
+    swiped_pets_ids = [
+        pet_id for (pet_id,) in db.session.query(Match.petId).filter(
+        ((Match.userId2 == current_user.id) | (Match.userId1 == current_user.id)),
+        Match.status.in_(["REQUESTED", "APPROVED", "REJECTED"])
+    ).all()]
 
-    swiped_pets = session['swiped_pets']
+    print('what shoudl we eat', swiped_pets_ids)
+    # if 'swiped_pets' not in session:
+    #     session['swiped_pets'] = []
+
+    # swiped_pets = session['swiped_pets']
     # swiped_pets = session.get('swiped_pets', [])
 
     nearby_pets_query = Pet.query.join(User).filter(
         # does not support arithmethic operations involving column attributes
         # func.abs(Pet.latitude - user_lat) <= radius,
         # func.abs(Pet.longitude - user_long) <= radius
-        and_(
-            User.latitude.between(new_user_lat - new_radius, new_user_lat + new_radius),
-            User.longitude.between(new_user_long - new_radius, new_user_long + new_radius),
-        ),
-        # Pet.id.notin_(swiped_pets), #exclude swiped pets
-        Pet.sellerId != current_user.id
+        # and_(
+        #     User.latitude.between(new_user_lat - new_radius, new_user_lat + new_radius),
+        #     User.longitude.between(new_user_long - new_radius, new_user_long + new_radius),
+        # ),
+        Pet.sellerId != current_user.id,
+        ~Pet.id.in_(swiped_pets_ids) #exclude swiped pets
     ).all()
 
+    print("Fetched pets:", [pet.id for pet in nearby_pets_query])  # Debugging Line
+    print('hungry not really', [pet.__dict__ for pet in nearby_pets_query])
+
     if not nearby_pets_query:
-        return jsonify({"error": "No nearby pets found"}), 404
+        return jsonify({"pet": "No nearby pets found"}), 404
 
     pet = random.choice(nearby_pets_query)
 
     # swiped_pets.append(pet.id) does not persist in session
-    session['swiped_pets'] = list(set(session['swiped_pets'] + [pet.id])) # updates session, flask needs explicit reassignment
+    # session['swiped_pets'] = list(set(session['swiped_pets'] + [pet.id])) # updates session, flask needs explicit reassignment
 
     pet_images = PetImage.query.filter_by(petId=pet.id).all()
     pet_images_list = [{
