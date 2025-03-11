@@ -73,7 +73,7 @@ def current_pets():
 ####################### GET PET DETAILS ###############################
 @pet_routes.route('/swipe')
 @login_required
-def pet_details():
+def pet_details_swipe():
     # grabs 'nearby' query param in url
     # nearby = request.args.get('nearby') == 'true'
 

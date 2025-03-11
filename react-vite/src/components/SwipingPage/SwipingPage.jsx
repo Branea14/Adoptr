@@ -48,7 +48,8 @@ const SwipingPage = () => {
     console.log('requested matches', requestedMatch)
     console.log('rejected matches', rejectedMatch)
 
-    const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match.sellerId !== currentUser.id);
+    //moved to navigation
+    // const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match.sellerId !== currentUser.id);
 
 
     useEffect(() => {
@@ -135,7 +136,8 @@ const SwipingPage = () => {
 
     return (
         <>
-            <h2>Approved Matches</h2>
+        {/* moved to navigation */}
+            {/* <h2>Approved Matches</h2>
             <div>
                 {filteredApprovedMatches.length > 0 ? (
                     filteredApprovedMatches.map((match) => (
@@ -145,7 +147,7 @@ const SwipingPage = () => {
                         </div>
                     ))
                 ) : null}
-            </div>
+            </div> */}
             {pet && Object.keys(pet).length > 0 ? (
                 <div {...bind()} style={{
                     border: "2px solid red",
