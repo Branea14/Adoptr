@@ -22,30 +22,37 @@ function Navigation() {
   }, [dispatch])
 
   return (
-    <div className='navbar'>
-      <ul>
-        {/* <li>
-          <NavLink to="/">Home</NavLink>
-        </li> */}
-        <li>
-          <ProfileButton />
-          {currentUser?.firstName}
-        </li>
-      </ul>
-      <h2>Approved Matches</h2>
-          <div className="approved-match">
-            {filteredApprovedMatches.length > 0 ? (
-              filteredApprovedMatches.map((match) => (
-                <Link to={`/pets/${match.petId}`} key={match.id} className='pet-details-link'>
-                  <div key={match.id}>
-                      <img className='approved-match-image' src={match.petImage} alt={`${match.petName}`}/>
-                      <h3>{match.petName}</h3>
-                  </div>
-                </Link>
-              ))
-            ) : null}
-          </div>
+    <div className='container-of-headers'>
+      <div className='navbar2'>
+        <img src="/logo.png" alt="Adoptr Logo" className='nav-logo'/>
+        <h1 className='platform-name'>Adoptr</h1>
+      </div>
+      <div className='navbar'>
+        <ul>
+          {/* <li>
+            <NavLink to="/">Home</NavLink>
+          </li> */}
+          <li>
+            <ProfileButton />
+            {currentUser?.firstName}
+          </li>
+        </ul>
+        <h2>Approved Matches</h2>
+            <div className="approved-match">
+              {filteredApprovedMatches.length > 0 ? (
+                filteredApprovedMatches.map((match) => (
+                  <Link to={`/pets/${match.petId}`} key={match.id} className='pet-details-link'>
+                    <div key={match.id}>
+                        <img className='approved-match-image' src={match.petImage} alt={`${match.petName}`}/>
+                        <h3>{match.petName}</h3>
+                    </div>
+                  </Link>
+                ))
+              ) : null}
+            </div>
 
+
+      </div>
 
     </div>
   );

@@ -20,7 +20,7 @@ const PetDetails = () => {
 
     return (
         <div className="pet-details-container">
-            {pet?.PetImages.map((image, index) => (
+            {pet?.PetImages?.map((image, index) => (
                 <div key={index} className="pet-images">
                     <img
                         src={image.url}
@@ -29,22 +29,22 @@ const PetDetails = () => {
                 </div>
             ))}
             <button>Want to Adopt?</button>
-            <div className="pet-name">{pet.name}</div>
-            <div className="pet-description">{pet.description}</div>
-            <div className="pet-breed">{pet.breed}</div>
-            <div className="pet-color">Color: {pet.color}</div>
-            <div className="pet-otherPets">Good with other pets? {pet.otherPets}</div>
-            <div className="pet-age">Age: {pet.age}</div>
-            <div className="pet-sex">{pet.sex}</div>
-            <div className="pet-size">Size: {pet.size}</div>
-            <div className="pet-adoptionStatus">Adoption Status: {pet.adoptionStatus}</div>
-            <div className="pet-loveLanguage">Love Language: {pet.loveLanguage}</div>
-            <div className="pet-lifestyle">Lifestyle: {pet.lifestyle}</div>
-            <div className="pet-vaccinated">Vaccinated? {pet.vaccinated.toString()}</div>
-            <div className="pet-ownerSurrender">Owner Surrender? {pet.ownerSurrender.toString()}</div>
-            <div className="pet-kids">Good with Kids? {pet.kids.toString()}</div>
-            <div className="pet-houseTrained">House-Trained?{pet.houseTrained.toString()}</div>
-            <div className="pet-specialNeeds">Special Needs? {pet.specialNeeds.toString()}</div>
+            <h2 className="pet-name">{pet?.name}</h2>
+            <div className="pet-description">{pet?.description}</div>
+            <div className="pet-breed">{pet?.breed}</div>
+            <div className="pet-color">Color: {pet?.color}</div>
+            <div className="pet-otherPets">Good with other pets? {pet?.otherPets}</div>
+            <div className="pet-age">Age: {pet?.age}</div>
+            <div className="pet-sex">{pet?.sex}</div>
+            <div className="pet-size">Size: {pet?.size}</div>
+            <div className="pet-adoptionStatus">Adoption Status: {pet?.adoptionStatus}</div>
+            <div className="pet-loveLanguage">Love Language: {pet?.loveLanguage}</div>
+            <div className="pet-lifestyle">Lifestyle: {pet?.lifestyle}</div>
+            <div className="pet-vaccinated">Vaccinated? {pet?.vaccinated ? "Yes" : "No"}</div>
+            <div className="pet-ownerSurrender">Owner Surrender? {pet?.ownerSurrender ? "Yes" : "No"}</div>
+            <div className="pet-kids">Good with Kids? {pet?.kids ? "Yes" : "No"}</div>
+            <div className="pet-houseTrained">House-Trained? {pet?.houseTrained ? "Yes" : "No"}</div>
+            <div className="pet-specialNeeds">Special Needs? {pet?.specialNeeds ? "Yes" : "No"}</div>
 
         </div>
     )
