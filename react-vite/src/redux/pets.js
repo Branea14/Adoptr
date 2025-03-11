@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 //actions
 const GET_PET_DETAILS = 'pet/GET_PET_DETAILS'
+const GET_VIEWED_PET_DETAILS = 'pet/GET_VIEWED_PET_DETAILS'
 const GET_ALL_PETS = 'pets/GET_ALL_PETS'
 const CREATE_PET = 'pets/CREATE_PET'
 const UPDATE_PET = 'pets/UPDATE_PET'
@@ -10,6 +11,10 @@ const DELETE_PET = 'pets/DELETE_PET'
 // action creators
 const getPetDetails = (pet) => ({
     type: GET_PET_DETAILS,
+    payload: pet
+})
+const getViewedPetDetails = (pet) => ({
+    type: GET_VIEWED_PET_DETAILS,
     payload: pet
 })
 const getAllPets = (pets) => ({
@@ -36,6 +41,15 @@ export const getDetails = () => async (dispatch) => {
     if (response.ok) {
         const data = await response.json()
         dispatch(getPetDetails(data))
+        return data
+    }
+}
+export const getViewedPetDetailsThunk = (petId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/pets/${petId}`)
+
+    if (response.ok) {
+        const data = await response.json()
+        dispatch(getViewedPetDetails(data))
         return data
     }
 }
@@ -108,19 +122,20 @@ export const deletePet = (petId) => async (dispatch) => {
 
 const initialState = {
     petDetails: {},
+    viewedPetDetails: {},
     pets: {}
 };
 
 const petReducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_ALL_PETS: {
-            return {...state, pets: {...action.payload}}
+            return { ...state, pets: {...action.payload} }
         }
         case GET_PET_DETAILS: {
-            return {
-                ...state,
-                petDetails: action.payload
-            }
+            return { ...state, petDetails: action.payload }
+        }
+        case GET_VIEWED_PET_DETAILS: {
+            return { ...state, viewedPetDetails: action.payload }
         }
         case CREATE_PET: {
             const newPet = { ...state.pets, [action.payload.id]: action.payload}

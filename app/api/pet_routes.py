@@ -70,10 +70,54 @@ def current_pets():
 
     return jsonify({"Pets": pet_list})
 
+####################### GET PET ###############################
+@pet_routes.route('/<int:id>')
+@login_required
+def get_pet(id):
+    pet = Pet.query.get(id)
+
+    if not pet:
+        return jsonify({"message": "Pet could not be found"}), 404
+
+    pet_images = PetImage.query.filter_by(petId=pet.id).all()
+    pet_images_list = [{
+        "petId": pet.id,
+        "url": image.url,
+        "preview": image.preview
+    } for image in pet_images]
+
+    pet_data = {
+        "id": pet.id,
+        "name": pet.name,
+        "sellerId": pet.sellerId,
+        "description": pet.description,
+        "breed": pet.breed,
+        "vaccinated": pet.vaccinated,
+        "color": pet.color,
+        "ownerSurrender": pet.ownerSurrender,
+
+        "kids": pet.kids,
+        "houseTrained": pet.houseTrained,
+        "specialNeeds": pet.specialNeeds,
+        "otherPets": pet.otherPets,
+
+        "age": pet.age,
+        "sex": pet.sex,
+        "size": pet.size,
+        "adoptionStatus": pet.adoptionStatus,
+        "loveLanguage": pet.loveLanguage,
+        "lifestyle": pet.lifestyle,
+        "PetImages": pet_images_list,
+    }
+
+    return jsonify(pet_data)
+
+
+
 ####################### GET PET DETAILS ###############################
 @pet_routes.route('/swipe')
 @login_required
-def pet_details_swipe():
+def pet_details():
     # grabs 'nearby' query param in url
     # nearby = request.args.get('nearby') == 'true'
 
@@ -99,7 +143,7 @@ def pet_details_swipe():
         Match.status.in_(["REQUESTED", "APPROVED", "REJECTED"])
     ).all()]
 
-    print('what shoudl we eat', swiped_pets_ids)
+    # print('what shoudl we eat', swiped_pets_ids)
     # if 'swiped_pets' not in session:
     #     session['swiped_pets'] = []
 

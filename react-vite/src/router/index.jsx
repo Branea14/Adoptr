@@ -5,6 +5,7 @@ import Layout from './Layout';
 import LandingPage from '../components/LandingPage'
 import SwipingPage from '../components/SwipingPage';
 import CreatePets from '../components/CreatePets';
+import PetDetails from '../components/PetDetails'
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
       {
         path: '/pets/',
         element: <CreatePets />
+      },
+      {
+        path: "/pets/:petId",
+        element: <PetDetails />
       }
     ],
   },

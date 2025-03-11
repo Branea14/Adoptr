@@ -23,5 +23,5 @@
   background-color: aqua;
   display: flex;
   flex-direction: column;
-
+  z-index: 1000; /* ensures it stays on top */
 }

@@ -1,0 +1,16 @@
+/* .pet-name {
+    background-color: red;
+} */
+
+/* Ensure navbar does not overlap */
+.pet-details-container {
+    position: relative;
+    margin-left: 300px;  /* Adjust based on navbar height */
+    padding: 20px;
+}
+
+/* If navbar has fixed positioning, add padding to body */
+body {
+    margin: 0;
+    display: flex;
+}
