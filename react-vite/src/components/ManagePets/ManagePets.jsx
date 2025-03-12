@@ -12,7 +12,7 @@ const ManagePets = () => {
 
     const [loading, setLoading] = useState(true)
 
-    const currentUser = useSelector((state) => state.session.user)
+    // const currentUser = useSelector((state) => state.session.user)
     const pets = useSelector((state) => state.pet.pets)
     const petsArray = Object.values(pets)
     // console.log(petsArray)
