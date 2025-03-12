@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const { closeModal } = useModal();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
@@ -36,8 +39,6 @@ function SignupFormModal() {
   const [idealSize, setIdealSize] = useState(null)
   const [lifestyle, setLifestyle] = useState(null)
 
-  const navigate = useNavigate()
-
   const dogPreferences = {
     houseTrained,
     specialNeeds,
@@ -46,8 +47,6 @@ function SignupFormModal() {
     idealSize,
     lifestyle,
   };
-
-  const { closeModal } = useModal();
 
   // Validate email format
   const validateEmail = (email) => {
@@ -123,7 +122,7 @@ function SignupFormModal() {
       latitude: location.latitude,
       longitude: location.longitude,
       radius,
-      dogPreferences,  // <-- Debugging output
+      // dogPreferences,  // <-- Debugging output
     });
 
     const serverResponse = await dispatch(
@@ -224,6 +223,7 @@ function SignupFormModal() {
                 placeholder="First Name"
                 required
               />
+              {errors.firstName && <p className="signup-error-message">{errors.firstName}</p>}
             </label>
 
             <label>
@@ -235,6 +235,7 @@ function SignupFormModal() {
                 placeholder="Last Name"
                 required
               />
+              {errors.lastName && <p className="signup-error-message">{errors.lastName}</p>}
             </label>
 
             <label>
@@ -393,10 +394,10 @@ function SignupFormModal() {
                   required
                 />
                 <label htmlFor='other'>Other Only</label>
-              </div>
-
                 {errors.otherPets && <p className="signup-error-message">{errors.otherPets}</p>}
                 {validationErrors.otherPets && <p className="signup-error-message">{validationErrors.otherPets}</p>}
+              </div>
+
 
 
             <label>What's your pet experience?</label>

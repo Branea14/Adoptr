@@ -262,8 +262,9 @@ def create_pet_listing():
         errors['loveLanguage'] = "Invalid loveLanguage selection"
     if data.get('lifestyle') not in ['veryActive', 'active', 'laidback', 'lapPet']:
         errors['lifestyle'] = "Invalid lifestyle selection"
-    if not isinstance(images, list) or any(not isinstance(img, dict)  or 'url' not in img for img in images):
-        errors['images'] = "Image URLs must a list of objects with 'url' key"
+    if not isinstance(images, list) or any(not isinstance(img, dict) or 'url' not in img for img in images):
+        errors['images'] = "Image URLs must be a list of objects with 'url' key"
+
 
     if errors:
         return jsonify({"message": "Bad Request", "errors": errors}), 400
