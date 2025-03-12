@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, session
 from flask_login import login_required, current_user
 from app.models import Pet, PetImage, db, User, Match
-from sqlalchemy import and_
+from sqlalchemy.orm import joinedload
 import random
 from app.forms import PetListingForm
 from decimal import Decimal
@@ -42,7 +42,7 @@ pet_routes = Blueprint('pets', __name__)
 def current_pets():
     current_user_id = current_user.id
 
-    pets = Pet.query.filter_by(sellerId=current_user_id).all()
+    pets = Pet.query.options(joinedload(Pet.images)).filter_by(sellerId=current_user_id).all()
 
     pet_list = [{
         "id": pet.id,
@@ -65,7 +65,11 @@ def current_pets():
         "adoptionStatus": pet.adoptionStatus,
         "loveLanguage": pet.loveLanguage,
         "lifestyle": pet.lifestyle,
-
+        "images": [{
+            "petId": image.petId,
+            "url": image.url,
+            "preview": image.preview
+        } for image in pet.images]
     } for pet in pets]
 
     return jsonify({"Pets": pet_list})

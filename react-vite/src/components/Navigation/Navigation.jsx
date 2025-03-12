@@ -76,7 +76,7 @@ function Navigation() {
             <div className="additional-menu">
               <ul>
                 <li>
-                  <Link>Manage Pet Listings</Link>
+                  <Link to="/pets/current">Manage Pet Listings</Link>
                 </li>
 
                 <li>
