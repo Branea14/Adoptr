@@ -41,7 +41,7 @@ const ManagePets = () => {
             <h1>Manage Pets</h1>
             <div className='create-pet-listing-link'>
                 {/* needs link below!!!!!! */}
-                <Link to=''>
+                <Link to='/pets/new'>
                     Create a New Pet Listing
                 </Link>
             </div>

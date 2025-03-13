@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPet, getViewedPetDetailsThunk } from "../../redux/pets";
 import "./CreatePets.css"
-import { useNavigate, useParams } from "react-router-dom";
-import { col } from "sequelize";
+import { useNavigate } from "react-router-dom";
 
 const CreatePets = () => {
     const [name, setName] = useState('')
@@ -26,6 +25,7 @@ const CreatePets = () => {
     const [loveLanguage, setLoveLanguage] = useState(null)
     const [lifestyle, setLifestyle] = useState(null)
     const [images, setImages] = useState([])
+    const [imageUrl, setImageUrl] = useState("")
     const [errors, setErrors] = useState({})
     const [validationErrors, setValidationErrors] = useState({})
 
@@ -38,8 +38,8 @@ const CreatePets = () => {
 
         if (!name.trim()) newErrors.name = "Name is required"
         if (!description) newErrors.description = "Description is required"
-        if (!breed || breed.length() > 50) newErrors.breed = "Breed is required"
-        if (!color || color.length() > 50) newErrors.color = "Color is required"
+        if (!breed || breed?.length > 50) newErrors.breed = "Breed is required"
+        if (!color || color?.length > 50) newErrors.color = "Color is required"
 
         if (vaccinated === null) newErrors.vaccinated = "Please answer question."
         if (ownerSurrender === null) newErrors.ownerSurrender = "Please answer question."
@@ -66,8 +66,8 @@ const CreatePets = () => {
         const newErrors = {}
         if (!name.trim()) newErrors.name = "Name is required"
         if (!description) newErrors.description = "Description is required"
-        if (!breed && breed.length() <= 50) newErrors.breed = "Breed is required"
-        if (!color && color.length() <= 50) newErrors.color = "Color is required"
+        if (!breed && breed?.length <= 50) newErrors.breed = "Breed is required"
+        if (!color && color?.length <= 50) newErrors.color = "Color is required"
 
         if (vaccinated === null) newErrors.vaccinated = "Please answer question."
         if (ownerSurrender === null) newErrors.ownerSurrender = "Please answer question."
@@ -109,19 +109,25 @@ const CreatePets = () => {
                 adoptionStatus,
                 loveLanguage,
                 lifestyle,
-                images: images.map(({ url, preview}) => ({ url, preview }))
+                images
             })
         )
 
+        console.log('LOOOOOOOOK HERE /pets/', serverResponse.id)
         if (serverResponse) {
             if(serverResponse.errors) setErrors(serverResponse.errors)
             else if (typeof serverResponse === 'object') setErrors(serverResponse)
             else setErrors({ general: serverResponse })
+
+            if (!serverResponse.errors && serverResponse.id) {
+                setErrors({})
+                setValidationErrors({})
+                navigate(`/pets/${serverResponse.id}`)
+            }
         }
         else {
             setErrors({})
             setValidationErrors({})
-            navigate(`/pets/${serverResponse.pet.id}`)
         }
     }
 
@@ -132,15 +138,15 @@ const CreatePets = () => {
         )
     }
 
-    const handleImageUpload = (e) => {
-        const files = Array.from(e.target.files)
+    const handleAddImage = () => {
+        if (!imageUrl.trim()) return
 
-        const newImages = files.map((file) => ({
-            url: URL.createObjectURL(file),
-            preview: false
-        }))
+        setImages((prevImages) => [
+            ...prevImages,
+            { url : imageUrl.trim(), preview: false}
+        ])
 
-        setImages((prevImages) => [ ...prevImages, newImages])
+        setImageUrl("")
     }
 
     const setPreviewImage = (index) => {
@@ -151,6 +157,31 @@ const CreatePets = () => {
             }))
         )
     }
+
+    const removeImage = (index) => {
+        setImages((prevImages) => prevImages.filter((_, i) => i !== index))
+    }
+
+    // handling files instead of urls
+    // const handleImageUpload = (e) => {
+    //     const files = Array.from(e.target.files)
+
+    //     const newImages = files.map((file) => ({
+    //         url: URL.createObjectURL(file),
+    //         preview: false
+    //     }))
+
+    //     setImages((prevImages) => [ ...prevImages, newImages])
+    // }
+
+    // const setPreviewImage = (index) => {
+    //     setImages((prevImages) =>
+    //         prevImages.map((img, i) => ({
+    //             ...img,
+    //             preview: i === index
+    //         }))
+    //     )
+    // }
 
 
     return (
@@ -361,7 +392,6 @@ const CreatePets = () => {
                     value='none'
                     checked={otherPets.includes("none")}
                     onChange={handleOtherPetsChange}
-                    required
                     />
                     <label htmlFor='none'>None</label>
 
@@ -371,7 +401,6 @@ const CreatePets = () => {
                     value='dogsOnly'
                     checked={otherPets.includes("dogsOnly")}
                     onChange={handleOtherPetsChange}
-                    required
                     />
                     <label htmlFor='dogs'>Dogs Only</label>
 
@@ -381,7 +410,6 @@ const CreatePets = () => {
                     value='catsOnly'
                     checked={otherPets.includes("catsOnly")}
                     onChange={handleOtherPetsChange}
-                    required
                     />
                     <label htmlFor='cats'>Cats Only</label>
 
@@ -391,7 +419,6 @@ const CreatePets = () => {
                     value='both'
                     checked={otherPets.includes("both")}
                     onChange={handleOtherPetsChange}
-                    required
                     />
                     <label htmlFor='both'>Both</label>
 
@@ -401,9 +428,8 @@ const CreatePets = () => {
                     value='other'
                     checked={otherPets.includes("other")}
                     onChange={handleOtherPetsChange}
-                    required
                     />
-                    <label htmlFor='other'>Other Only</label>
+                    <label htmlFor='other'>Other</label>
                     {errors.otherPets && <p className="create-pet-error-message">{errors.otherPets}</p>}
                     {validationErrors.otherPets && <p className="create-pet-error-message">{validationErrors.otherPets}</p>}
                 </div>
@@ -526,7 +552,7 @@ const CreatePets = () => {
                     name='size'
                     value='xl'
                     checked={size === "xl"}
-                    onChange={(e) => setsize(e.target.value)}
+                    onChange={(e) => setSize(e.target.value)}
                     required
                     />XLarge
                 </label>
@@ -555,7 +581,7 @@ const CreatePets = () => {
                     checked={adoptionStatus === "pendingAdoption"}
                     onChange={(e) => setAdoptionStatus(e.target.value)}
                     required
-                    />pendingAdoption
+                    />Pending Adoption
                 </label>
 
                 <label>
@@ -681,19 +707,26 @@ const CreatePets = () => {
                     {validationErrors.lifestyle && <p className="create-pet-error-message">{validationErrors.lifestyle}</p>}
                 </div>
 
-                <label>Upload Images</label>
-                <input type='file' multiple='image/*' onChange={handleImageUpload}/>
+                <label>Image URL</label>
+                <input
+                    type='text'
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    placeholder="Enter Image URL"
+                />
+                <button type="button" onClick={handleAddImage}>Add Image</button>
                 <div className="image-preview-container">
                     {images.map((img, index) => (
                         <div key={index} className="image-preview">
-                            <img src={img.url} alt={`Uploaded ${index}`}/>
+                            <img src={img.url} alt={`Uploaded ${index}`} width="100"/>
                             <button type="button" onClick={() => setPreviewImage(index)}>
                                 {img.preview ? "Preview ✅" : "Set as Preview"}
                             </button>
+                            <button type="button" onClick={() => removeImage(index)}>Remove</button>
                         </div>
                     ))}
                 </div>
-                <button type="submit">Create Pet Listing</button>
+                <button type="submit" onClick={() => navigate(``)}>Create Pet Listing</button>
             </form>
 
         </div>

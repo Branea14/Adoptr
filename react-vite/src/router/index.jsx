@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
         element: <SwipingPage />
       },
       {
-        path: '/pets/',
+        path: '/pets/new',
         element: <CreatePets />
       },
       {

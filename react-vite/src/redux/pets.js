@@ -1,3 +1,4 @@
+import { imageListClasses } from "@mui/material";
 import { csrfFetch } from "./csrf";
 
 //actions
@@ -66,26 +67,33 @@ export const getPets = () => async (dispatch) => {
         dispatch(getAllPets(normalizedPets))
     }
 }
-export const createPet = (newPetData, images) => async (dispatch) => {
-    const formattedImages = images.map((url, index) => ({
-        url,
+export const createPet = (newPetData) => async (dispatch) => {
+    const formattedImages = newPetData.images.map((img, index) => ({
+        url: img.url,
         preview: index === 0
     }))
 
-    const responseData = {...newPetData, images: formattedImages}
+    const responseData = {...newPetData, images: formattedImages }
+    try {
+        const response = await csrfFetch('/api/pets/', {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            // credentials: "include",
+            body: JSON.stringify(responseData)
+        })
 
-    const response = await csrfFetch('/api/pets/', {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        credentials: "include",
-        body: JSON.stringify(responseData)
-    })
+        if (response.ok) {
+            const data = await response.json()
+            // console.log('look here', data)
+            dispatch(createPetAction(data.pet))
+            return data.pet
+        } else {
+            const errorData = await response.json()
+            console.error('error resposne', errorData)
+        }
 
-    if (response.ok) {
-        const data = await response.json()
-        // console.log('look here', data)
-        dispatch(createPetAction(data.pet))
-        return data.pet
+    } catch (error) {
+        console.error('fetch error', error)
     }
 }
 export const updatePet = (petId, updatedPetData, images) => async (dispatch) => {
