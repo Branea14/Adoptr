@@ -7,6 +7,7 @@ import SwipingPage from '../components/SwipingPage';
 import CreatePets from '../components/CreatePets';
 import PetDetails from '../components/PetDetails'
 import ManagePets from '../components/ManagePets';
+import { UpdatePetListing, UpdatePetListingForm } from '../components/UpdatePetListing';
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,16 @@ export const router = createBrowserRouter([
       {
         path: "/pets/current",
         element: <ManagePets />
+      },
+      {
+        path: '/pets/:petId/edit',
+        element: <UpdatePetListing />,
+        children: [
+          {
+            path: '',
+            element: <UpdatePetListingForm />
+          }
+        ]
       }
     ],
   },
