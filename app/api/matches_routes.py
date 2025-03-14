@@ -10,7 +10,7 @@ matches_routes = Blueprint('matches', __name__)
 @login_required
 def all_approved_matches():
     matches = Match.query.options(
-        joinedload(Match.pets)
+        joinedload(Match.pets).joinedload(Pet.images)
     ).filter(
         ((Match.userId1 == current_user.id) | (Match.userId2 == current_user.id)) &
         (Match.status == 'APPROVED')
@@ -22,8 +22,8 @@ def all_approved_matches():
     match_data = []
     for match in matches:
         pet = match.pets
-
-        pet_image = PetImage.query.filter_by(petId=pet.id, preview=True).first()
+        pet_image = next((image for image in pet.images if image.preview), None)
+        # pet_image = PetImage.query.filter_by(petId=pet.id, preview=True).first()
 
         match_data.append({
         "id": match.id,
@@ -45,7 +45,11 @@ def all_approved_matches():
 @matches_routes.route('/requested')
 @login_required
 def all_requested_matches():
-    matches = Match.query.filter(
+    matches = Match.query.options(
+        joinedload(Match.pets).joinedload(Pet.images),
+        joinedload(Match.user1),
+        joinedload(Match.user2)
+    ).filter(
         ((Match.userId1 == current_user.id) | (Match.userId2 == current_user.id)) &
         (Match.status == 'REQUESTED')
     ).all()
@@ -53,15 +57,32 @@ def all_requested_matches():
     if not matches:
         return jsonify({"requested_matches": []}), 200
 
-    match_data = [{
-        "id": match.id,
-        "senderUserId1": match.userId1,
-        "receiverUserId2": match.userId2,
-        "petId": match.petId,
-        "status": match.status,
-        "createdAt": match.createdAt.isoformat(),
-        "updatedAt": match.updatedAt.isoformat()
-    } for match in matches]
+    match_data = []
+    for match in matches:
+        pet = match.pets
+        pet_image = next((image for image in pet.images if image.preview), None)
+
+        user1_avatar = match.user1.avatar if match.user1 else None
+        user2_avatar = match.user2.avatar if match.user2 else None
+
+        print('looooooooooooooooooooooook', user1_avatar)
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', user2_avatar)
+
+        match_data.append({
+            "id": match.id,
+            "senderUserId1": match.userId1,
+            "receiverUserId2": match.userId2,
+            "petId": match.petId,
+            "status": match.status,
+            "createdAt": match.createdAt.isoformat(),
+            "updatedAt": match.updatedAt.isoformat(),
+            "petName": pet.name if pet else None,
+            "sellerId": pet.sellerId,
+            "petImage": pet_image.url if pet_image else None,
+            "user1Avatar": user1_avatar,
+            "user2Avatar": user2_avatar
+        })
+
 
     return jsonify({"Matches": match_data}), 200
 
@@ -169,8 +190,12 @@ def create_match():
 @login_required
 def update_match(id):
     selected_match = Match.query.get_or_404(id, description="Match could not be found")
+    pet = Pet.query.get_or_404(selected_match.petId)
 
-    if selected_match.userId2 != current_user.id:
+    print('coming live', selected_match)
+    print('from NY', pet)
+
+    if pet.sellerId == current_user.id:
         return jsonify({"message": "Unauthorized. You cannot update this match"}), 403
 
     data = request.get_json()

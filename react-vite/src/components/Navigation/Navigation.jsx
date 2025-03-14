@@ -15,6 +15,7 @@ function Navigation() {
 
   const currentUser = useSelector((state) => state.session.user)
   const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
+  const refreshTriggered = useSelector((state) => state.refreshTriggered)
 
   const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match.sellerId !== currentUser.id);
 
@@ -24,6 +25,10 @@ function Navigation() {
       dispatch(thunkAuthenticate()),
       dispatch(approvedMatches())
     ]).finally(() => setLoading(false))
+  }, [dispatch, refreshTriggered])
+
+  useEffect(() => {
+    dispatch(approvedMatches())
   }, [dispatch])
 
   const handleProfileIconClick = () => {
@@ -84,7 +89,7 @@ function Navigation() {
                 </li>
 
                 <li>
-                  <Link>Matches</Link>
+                  <Link to="/matches/manage">Matches</Link>
                 </li>
 
                 <li>

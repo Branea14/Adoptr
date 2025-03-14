@@ -68,6 +68,8 @@ export const approvedMatches = () => async (dispatch) => {
             acc[match.petId] = match;
             return acc;
         }, {})
+        console.log('Normalized approved matches:', normalizedMatches); // Verify the data structure
+
         dispatch(approvedMatchAction(normalizedMatches))
         return data
     }
@@ -170,12 +172,14 @@ const matchReducer = (state= initialState, action) => {
         }
 
         case UPDATE_MATCH: {
+            console.log('Received UPDATE_MATCH action:', action.payload); // Log the payload to verify
+
             const updatedMatch = action.payload
             const {id, status} = updatedMatch
 
             const newState = {...state}
             if (state.requestedMatches[id]) delete newState.requestedMatches[id]
-            if (state.approvedMatches[id]) delete newState.approvedMatches[id]
+            // if (state.approvedMatches[id]) delete newState.approvedMatches[id]
             if (state.rejectedMatches[id]) delete newState.rejectedMatches[id]
 
             if (status === 'APPROVED') {
@@ -183,6 +187,8 @@ const matchReducer = (state= initialState, action) => {
             } else if (status === 'REJECTED') {
                 newState.rejectedMatches[id] = updatedMatch
             }
+            console.log('Updated state after applying UPDATE_MATCH:', newState); // Log updated state
+
             return newState
         }
 

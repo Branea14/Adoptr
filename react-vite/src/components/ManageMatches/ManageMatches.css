@@ -1,0 +1,40 @@
+.manage-matches-container {
+    /* margin-left: 200px; */
+    position: absolute;
+    top: 100px;
+    left: 300px;
+    width: calc(100% - 300px);
+    /* margin-top: 80px; */
+    /* padding: 20px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.manage-match-image-on-page {
+    width: 155px;
+    height: 155px;
+    border-radius: 50%;
+    /* object-fit: cover; *//
+    /* overflow: hidden; Ensures that the content fits within the circle */
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+  }
+
+  .manage-match-on-page {
+    display: flex;
+    flex-direction: row;
+  }
+
+.manage-match-image-on-page img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.manage-match-user-avatar {
+    width: 100%;
+    height: 100%;
+    font-size: 100px;
+}

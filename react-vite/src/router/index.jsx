@@ -9,6 +9,7 @@ import PetDetails from '../components/PetDetails'
 import ManagePets from '../components/ManagePets';
 import { UpdatePetListing, UpdatePetListingForm } from '../components/UpdatePetListing';
 import ApprovedMatches from '../components/ApprovedMatches';
+import ManageMatches from '../components/ManageMatches';
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "/matches/approved",
         element: <ApprovedMatches />
+      },
+      {
+        path: "/matches/manage",
+        element: <ManageMatches />
       },
       {
         path: '/pets/new',

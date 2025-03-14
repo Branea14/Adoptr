@@ -65,13 +65,12 @@ class Pet(db.Model):
 
     def __repr__(self):
         return (f"<Pet id={self.id}, name='{self.name}', breed='{self.breed}', "
-                f"age='{self.age.value}', sex='{self.sex.value}', size='{self.size.value}', "
+                f"age='{self.age}', sex='{self.sex}', size='{self.size}', "
                 f"color='{self.color}', vaccinated={self.vaccinated}, ownerSurrender={self.ownerSurrender}, "
-                f"adoptionStatus='{self.adoptionStatus.value}', loveLanguage='{self.loveLanguage.value}', "
-                f"lifestyle='{self.lifestyle.value}', household={self.household}, "
-                f"careAndBehavior={self.careAndBehavior}, geohash='{self.geohash}', "
-                f"latitude={float(self.latitude)}, longitude={float(self.longitude)}, "
-                f"daysOnAdoptr={self.days_on_adoptr}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>")
+                f"adoptionStatus='{self.adoptionStatus}', loveLanguage='{self.loveLanguage}', "
+                f"lifestyle='{self.lifestyle}, sellerId='{self.sellerId}', "
+                f"latitude={float(self.latitude)}, longitude={float(self.longitude)}, ")
+                # f"daysOnAdoptr={self.days_on_adoptr}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>")
 
     def to_dict(self):
         return {
