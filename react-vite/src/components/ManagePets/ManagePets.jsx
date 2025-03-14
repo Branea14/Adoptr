@@ -38,40 +38,43 @@ const ManagePets = () => {
     }, [dispatch, refreshTrigger])
 
     if (loading) return null
-    if (!pets || petsArray.length === 0) return <div>You have no pet listing to manage.</div>
 
     return (
         <div className='manage-pets-container'>
             <h1>Manage Pets</h1>
             <div className='create-pet-listing-link'>
-                {/* needs link below!!!!!! */}
                 <Link to='/pets/new'>
                     Create a New Pet Listing
                 </Link>
             </div>
 
-            <div className='pets-container'></div>
-            {petsWithPreview.map((pet) => (
-                <div key={pet.id} className='pet-tile-container'>
-                    <Link to={`/pets/${pet.id}`}>
-                        <div className='pet-tile'>
-                            <div className='pet-img-container'>
-                                <img src={pet.previewImageUrl} alt={pet.name} className='pet-img'/>
+            {petsArray.length === 0 ? (
+                <div className='no-pets'>You have no pet listing to manage.</div>
+            ) : (
+            <div className='pets-container'>
+                {petsWithPreview.map((pet) => (
+                    <div key={pet.id} className='pet-tile-container'>
+                        <Link to={`/pets/${pet.id}`}>
+                            <div className='pet-tile'>
+                                <div className='pet-img-container'>
+                                    <img src={pet.previewImageUrl} alt={pet.name} className='pet-img'/>
+                                </div>
+                                <div className='pet-info'>
+                                    <div className='pet-tile-name'>{pet.name}</div>
+                                    <div className='pet-tile-brief-info'>{pet.age} • {pet.breed}</div>
+                                    <div className='pet-tile-adoptionStatus'>{pet.adoptionStatus}</div>
+                                </div>
                             </div>
-                            <div className='pet-info'>
-                                <div className='pet-tile-name'>{pet.name}</div>
-                                <div className='pet-tile-brief-info'>{pet.age} • {pet.breed}</div>
-                                <div className='pet-tile-adoptionStatus'>{pet.adoptionStatus}</div>
-                            </div>
-                        </div>
-                    </Link>
+                        </Link>
 
-                    <div className='pet-actions'>
-                        <button className='update-pet-button' onClick={() => navigate(`/pets/${pet.id}/edit`)}>Update</button>
-                        <OpenModalButton className="delete-modal" buttonText="Delete" modalComponent={<DeletePetModal pet={pet} triggerRefresh={triggerRefresh}/>}/>
+                        <div className='pet-actions'>
+                            <button className='update-pet-button' onClick={() => navigate(`/pets/${pet.id}/edit`)}>Update</button>
+                            <OpenModalButton className="delete-modal" buttonText="Delete" modalComponent={<DeletePetModal pet={pet} triggerRefresh={triggerRefresh}/>}/>
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
+            )}
         </div>
     )
 }

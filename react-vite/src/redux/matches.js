@@ -179,7 +179,7 @@ const matchReducer = (state= initialState, action) => {
 
             const newState = {...state}
             if (state.requestedMatches[id]) delete newState.requestedMatches[id]
-            // if (state.approvedMatches[id]) delete newState.approvedMatches[id]
+            if (state.approvedMatches[id]) delete newState.approvedMatches[id]
             if (state.rejectedMatches[id]) delete newState.rejectedMatches[id]
 
             if (status === 'APPROVED') {

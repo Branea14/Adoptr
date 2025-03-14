@@ -2,9 +2,10 @@ import { useDispatch, useSelector } from "react-redux"
 import "./ManageMatches.css"
 import { useEffect, useState } from "react"
 import { thunkAuthenticate } from "../../redux/session"
-import { approvedMatches, createMatch, requestedMatches, updatedMatch } from "../../redux/matches"
+import { approvedMatches, createMatch, rejectedMatches, requestedMatches, updatedMatch } from "../../redux/matches"
 import { FaUserCircle } from 'react-icons/fa';
-import { triggerNavigationRefresh } from "../../redux/actions"
+import OpenModalButton from "../OpenModalButton"
+import UnmatchModal from "../UnmatchModal/UnmatchModal"
 
 
 const ManageMatches = () => {
@@ -50,18 +51,24 @@ const ManageMatches = () => {
                 status: 'APPROVED'
             }
 
-            console.log('Dispatching updated match:', updatedMatchData);
-
+            // console.log('Dispatching updated match:', updatedMatchData);
             await dispatch(updatedMatch(updatedMatchData))
-            // dispatch(approvedMatches())
+            dispatch(approvedMatches())
+            triggerRefresh()
+        }
+    }
 
-            dispatch({
-                type: "UPDATE_MATCH",
-                payload: updatedMatchData
-            })
+    const handleRejectMatch = async (matchId) => {
+        const matchToUpdate = requestedMatch[matchId]
 
-            dispatch(triggerNavigationRefresh())
-            // triggerRefresh()
+        if (matchToUpdate) {
+            const updatedMatchData = {
+                ...matchToUpdate,
+                status: "REJECTED"
+            }
+            await dispatch(updatedMatch(updatedMatchData))
+            dispatch(rejectedMatches())
+            triggerRefresh()
         }
     }
 
@@ -86,14 +93,35 @@ const ManageMatches = () => {
                                 </div>
                         <div className='pet-actions'>
                             <button onClick={() => handleApproveMatch(match.petId)}>Approve MATCH</button>
-                            {/* <OpenModalButton className="delete-modal" buttonText="Delete" modalComponent={<UnmatchModal match={match} triggerRefresh={triggerRefresh}/>}/> */}
+                            <button onClick={() => handleRejectMatch(match.petId)}>PASS</button>
                         </div>
                         </div>
                     ))
                 ) : (<p>No matches waiting.</p>)}
             </div>
             <>---------------------------------------------------------</>
+            <div className="outcoming-matches">
+                <h1>Awaiting Approval</h1>
+                {loading ? null : outcomingMatch.length > 0 ? (
+                    outcomingMatch.map((match) => (
+                        <div className="manage-match-tile" key={match.id}>
+                                <div className='manage-match-image-on-page'>
+                                    {/* {match.user1Avatar ? (
+                                        <img src={match.user1Avatar} alt="User Avatar"/>
+                                    ) : (
+                                        <FaUserCircle className="manage-matches-user-avatar"/>
+                                    )} */}
+                                                                    <h3>{match.petName}</h3>
+                                                                    <img className='approved-match-image-on-page' src={match.petImage} alt={`${match.petName}`}/>
 
+                                </div>
+                        <div className='pet-actions'>
+                            <OpenModalButton className="delete-modal" buttonText="UNMATCH" modalComponent={<UnmatchModal match={match} triggerRefresh={triggerRefresh}/>}/>
+                        </div>
+                        </div>
+                    ))
+                ) : (<p>No matches waiting.</p>)}
+            </div>
         </div>
     )
 }
