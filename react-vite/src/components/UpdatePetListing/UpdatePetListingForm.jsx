@@ -211,8 +211,7 @@ const UpdatePetListingForm = ({pet}) => {
                 setValidationErrors({})
                 navigate(`/pets/${petId}`)
             }
-        }
-        else {
+        } else {
             setErrors({})
             setValidationErrors({})
         }

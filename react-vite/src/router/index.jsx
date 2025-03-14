@@ -10,6 +10,8 @@ import ManagePets from '../components/ManagePets';
 import { UpdatePetListing, UpdatePetListingForm } from '../components/UpdatePetListing';
 import ApprovedMatches from '../components/ApprovedMatches';
 import ManageMatches from '../components/ManageMatches';
+import UpdateUser from '../components/UpdateUser/UpdateUser';
+import UpdateUserForm from '../components/UpdateUser/UpdateUserForm';
 
 export const router = createBrowserRouter([
   {
@@ -23,10 +25,16 @@ export const router = createBrowserRouter([
       //   path: "login",
       //   element: <LoginFormPage />,
       // },
-      // {
-      //   path: "signup",
-      //   element: <SignupFormPage />,
-      // },
+      {
+        path: "/user/edit",
+        element: <UpdateUser />,
+        children: [
+          {
+            path: '',
+            element: <UpdateUserForm />
+          }
+        ]
+      },
       {
         path: "/pets/swipe",
         element: <SwipingPage />

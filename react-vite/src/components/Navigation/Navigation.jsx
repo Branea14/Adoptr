@@ -5,17 +5,19 @@ import { approvedMatches } from "../../redux/matches";
 import { Link, useNavigate } from "react-router-dom"
 import { FaUserCircle } from 'react-icons/fa';
 import { thunkAuthenticate, thunkLogout } from "../../redux/session";
+import UpdateUserForm from "../UpdateUser/UpdateUserForm";
+import { useModal } from "../../context/Modal";
 
 
 function Navigation() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const {setModalContent} = useModal()
   const [loading, setLoading] = useState(true)
   const [shifted, setShifted] = useState(false)
 
   const currentUser = useSelector((state) => state.session.user)
   const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
-  const refreshTriggered = useSelector((state) => state.refreshTriggered)
 
   const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match.sellerId !== currentUser.id);
 
@@ -25,7 +27,7 @@ function Navigation() {
       dispatch(thunkAuthenticate()),
       dispatch(approvedMatches())
     ]).finally(() => setLoading(false))
-  }, [dispatch, refreshTriggered])
+  }, [dispatch])
 
   useEffect(() => {
     dispatch(approvedMatches())
@@ -33,6 +35,11 @@ function Navigation() {
 
   const handleProfileIconClick = () => {
     setShifted((prev) => !prev)
+  }
+
+  const handleEditProfileButton = async (e) => {
+    e.preventDefault()
+    setModalContent(<UpdateUserForm user={currentUser}/>)
   }
 
   const logout = (e) => {
@@ -92,9 +99,7 @@ function Navigation() {
                   <Link to="/matches/manage">Matches</Link>
                 </li>
 
-                <li>
-                  <Link>Edit Profile</Link>
-                </li>
+                <li onClick={handleEditProfileButton}>Edit Profile</li>
 
                 <li onClick={logout}>Logout</li>
 

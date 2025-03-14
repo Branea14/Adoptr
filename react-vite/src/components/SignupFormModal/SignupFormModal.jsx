@@ -21,7 +21,8 @@ function SignupFormModal() {
   const [avatar, setAvatar] = useState("")
   const [kids, setKids] = useState(null)
   const [hasBackyard, setHasBackyard] = useState(null)
-  const [otherPets, setOtherPets] = useState([])
+  // const [otherPets, setOtherPets] = useState([])
+  const [otherPets, setOtherPets] = useState(null)
   const [petExperience, setPetExperience] = useState(null)
   // const [latitude, setLatitude] = useState()
   // const [longitude, setLongitude] = useState()
@@ -62,11 +63,13 @@ function SignupFormModal() {
     if (!lastName.trim()) newErrors.lastName = "Last name is required"
     if (!username.trim()) newErrors.username = "Username is required"
     if (email && !validateEmail(email)) newErrors.email = "Please provide a valid email address";
-    // if (password && confirmPassword && password !== confirmPassword) newErrors.confirmPassword = "Passwords must match";
-    // if (password && password.length < 6) newErrors.password = "Password must be at least 6 characters long";
+    if (password && confirmPassword && password !== confirmPassword) newErrors.confirmPassword = "Passwords must match";
+    if (password && password.length < 6) newErrors.password = "Password must be at least 6 characters long";
+    if (!avatar.trim()) newErrors.avatar = "Profile picture is required"
+
     if (kids === null) newErrors.kids = "Please answer question."
     if (hasBackyard === null) newErrors.hasBackyard = "Please answer question."
-    if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
+    if (otherPets === null) newErrors.otherPets = "Please answer question."
     if (petExperience === null) newErrors.petExperience = "Please answer question"
 
 
@@ -165,12 +168,12 @@ function SignupFormModal() {
     }
   };
 
-  const handleOtherPetsChange = (e) => {
-    const {value, checked} = e.target
-    setOtherPets((prev) =>
-      checked ? [...prev, value] : prev.filter((pet) => pet !== value)
-    )
-  }
+  // const handleOtherPetsChange = (e) => {
+  //   const {value, checked} = e.target
+  //   setOtherPets((prev) =>
+  //     checked ? [...prev, value] : prev.filter((pet) => pet !== value)
+  //   )
+  // }
 
   return (
     <div className="signup-modal">
@@ -345,55 +348,60 @@ function SignupFormModal() {
 
             <label>Do you have any other pets?</label>
               <div>
+              <label>
                 <input
-                  type="checkbox"
-                  id='none'
+                  type="radio"
+                  name='otherPets'
                   value='none'
-                  checked={otherPets.includes("none")}
-                  onChange={handleOtherPetsChange}
+                  checked={otherPets === 'none'}
+                  onChange={(e) => setOtherPets(e.target.value)}
                   required
-                />
-                <label htmlFor='none'>None</label>
+                />None
+              </label>
 
+              <label>
                 <input
-                  type="checkbox"
-                  id='dogs'
+                  type="radio"
+                  name='otherPets'
                   value='dogsOnly'
-                  checked={otherPets.includes("dogsOnly")}
-                  onChange={handleOtherPetsChange}
+                  checked={otherPets === 'dogsOnly'}
+                  onChange={(e) => setOtherPets(e.target.value)}
                   required
-                />
-                <label htmlFor='dogs'>Dogs Only</label>
+                />Dogs Only
+              </label>
 
+              <label>
                 <input
-                  type="checkbox"
-                  id='cats'
+                  type="radio"
+                  name='otherPets'
                   value='catsOnly'
-                  checked={otherPets.includes("catsOnly")}
-                  onChange={handleOtherPetsChange}
+                  checked={otherPets === 'catsOnly'}
+                  onChange={(e) => setOtherPets(e.target.value)}
                   required
-                />
-                <label htmlFor='cats'>Cats Only</label>
+                />Cats Only
+              </label>
 
+              <label>
                 <input
-                  type="checkbox"
-                  id='both'
+                  type="radio"
+                  name='otherPets'
                   value='both'
-                  checked={otherPets.includes("both")}
-                  onChange={handleOtherPetsChange}
+                  checked={otherPets === 'both'}
+                  onChange={(e) => setOtherPets(e.target.value)}
                   required
-                />
-                <label htmlFor='both'>Both</label>
+                />Both
+              </label>
 
+              <label>
                 <input
-                  type="checkbox"
-                  id='other'
+                  type="radio"
+                  name='otherPets'
                   value='other'
-                  checked={otherPets.includes("other")}
-                  onChange={handleOtherPetsChange}
+                  checked={otherPets === 'other'}
+                  onChange={(e) => setOtherPets(e.target.value)}
                   required
-                />
-                <label htmlFor='other'>Other Only</label>
+                />Other
+              </label>
                 {errors.otherPets && <p className="signup-error-message">{errors.otherPets}</p>}
                 {validationErrors.otherPets && <p className="signup-error-message">{validationErrors.otherPets}</p>}
               </div>
