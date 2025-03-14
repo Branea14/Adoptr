@@ -4,6 +4,7 @@ import { getDetails } from "../../redux/pets";
 import { useDrag } from "@use-gesture/react";
 import { createMatch, deleteMatch, rejectedMatches, requestedMatches, updatedMatch } from "../../redux/matches";
 import { approvedMatches } from "../../redux/matches";
+import "./SwipingPage.css"
 
 const SwipingPage = () => {
     const dispatch = useDispatch()
@@ -135,7 +136,7 @@ const SwipingPage = () => {
     if (!pet && !loading) return <p>No more pets nearby!</p>
 
     return (
-        <>
+        <div className="swiping-page-container">
         {/* moved to navigation */}
             {/* <h2>Approved Matches</h2>
             <div>
@@ -178,7 +179,7 @@ const SwipingPage = () => {
                 ))} */}
                 </div>
             ) : <p>No more pets nearby</p>}
-        </>
+        </div>
     )
 }
 

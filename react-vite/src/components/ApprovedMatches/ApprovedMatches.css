@@ -1,0 +1,24 @@
+.approved-matches-container {
+    /* margin-left: 200px; */
+    position: absolute;
+    top: 100px;
+    left: 300px;
+    width: calc(100% - 300px);
+    /* margin-top: 80px; */
+    /* padding: 20px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.approved-match-image-on-page {
+    width: 155px;
+    height: 155px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .approved-match-on-page {
+    display: flex;
+    flex-direction: row;
+  }

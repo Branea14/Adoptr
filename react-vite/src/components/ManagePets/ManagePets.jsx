@@ -11,6 +11,7 @@ const ManagePets = () => {
     const dispatch = useDispatch()
 
     const [loading, setLoading] = useState(true)
+    const [refreshTrigger, setRefreshTrigger] = useState(0)
 
     // const currentUser = useSelector((state) => state.session.user)
     const pets = useSelector((state) => state.pet.pets)
@@ -25,13 +26,16 @@ const ManagePets = () => {
         };
       });
 
+    const triggerRefresh = () => {
+        setRefreshTrigger(prev => prev + 1)
+    }
 
     useEffect(() => {
         setLoading(true)
         Promise.all([
             dispatch(getPets())
         ]).finally(() => setLoading(false))
-    }, [dispatch])
+    }, [dispatch, refreshTrigger])
 
     if (loading) return null
     if (!pets || petsArray.length === 0) return <div>You have no pet listing to manage.</div>
@@ -64,7 +68,7 @@ const ManagePets = () => {
 
                     <div className='pet-actions'>
                         <button className='update-pet-button' onClick={() => navigate(`/pets/${pet.id}/edit`)}>Update</button>
-                        <OpenModalButton className="delete-modal" buttonText="Delete" modalComponent={<DeletePetModal pet={pet}/>}/>
+                        <OpenModalButton className="delete-modal" buttonText="Delete" modalComponent={<DeletePetModal pet={pet} triggerRefresh={triggerRefresh}/>}/>
                     </div>
                 </div>
             ))}

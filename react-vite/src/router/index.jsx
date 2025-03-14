@@ -8,6 +8,7 @@ import CreatePets from '../components/CreatePets';
 import PetDetails from '../components/PetDetails'
 import ManagePets from '../components/ManagePets';
 import { UpdatePetListing, UpdatePetListingForm } from '../components/UpdatePetListing';
+import ApprovedMatches from '../components/ApprovedMatches';
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: "/pets/swipe",
         element: <SwipingPage />
+      },
+      {
+        path: "/matches/approved",
+        element: <ApprovedMatches />
       },
       {
         path: '/pets/new',

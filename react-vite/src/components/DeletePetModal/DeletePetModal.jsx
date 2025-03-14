@@ -3,13 +3,14 @@ import { useModal } from "../../context/Modal";
 import { deletePet } from "../../redux/pets";
 import { useDispatch } from "react-redux";
 
-const DeletePetModal = ({pet}) => {
+const DeletePetModal = ({pet, triggerRefresh}) => {
     const {closeModal} = useModal()
     const dispatch = useDispatch()
 
     const handleDelete = async () => {
         await dispatch(deletePet(pet.id))
         closeModal();
+        triggerRefresh()
     }
 
     const handleCancelButton = async () => {

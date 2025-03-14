@@ -59,7 +59,11 @@ function Navigation() {
             </div>
           </li>
         </ul>
-        <h2>Approved Matches</h2>
+        <div>
+          <Link to='/matches/approved'>
+            <h2>Approved Matches</h2>
+          </Link>
+        </div>
             <div className="approved-match">
               {loading ? null : filteredApprovedMatches.length > 0 ? (
                 filteredApprovedMatches.map((match) => (
