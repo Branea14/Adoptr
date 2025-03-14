@@ -1,0 +1,12 @@
+.edit-pet-container {
+    /* margin-left: 200px; */
+    position: absolute;
+    top: 100px;
+    left: 300px;
+    width: calc(100% - 300px);
+    /* margin-top: 80px; */
+    /* padding: 20px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

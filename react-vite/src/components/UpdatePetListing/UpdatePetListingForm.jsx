@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import "./UpdatePetListing.css"
+import { updatePet } from "../../redux/pets";
 
 const UpdatePetListingForm = ({pet}) => {
     const [name, setName] = useState('')
@@ -14,7 +16,7 @@ const UpdatePetListingForm = ({pet}) => {
     const [houseTrained, setHouseTrained] = useState(null)
     const [specialNeeds, setSpecialNeeds] = useState(null)
     //checkbox
-    const [otherPets, setOtherPets] = useState([])
+    const [otherPets, setOtherPets] = useState(null)
     //radio
     const [age, setAge] = useState(null)
     const [sex, setSex] = useState(null)
@@ -30,9 +32,12 @@ const UpdatePetListingForm = ({pet}) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {petId} = useParams()
 
     useEffect(() => {
         if (pet) {
+            console.log('pet data', pet)
+
             setName(pet.name || "")
             setDescription(pet.description || "")
             setBreed(pet.breed || "")
@@ -42,15 +47,15 @@ const UpdatePetListingForm = ({pet}) => {
             setKids(pet.kids || null)
             setHouseTrained(pet.houseTrained || null)
             setSpecialNeeds(pet.specialNeeds || null)
-            setOtherPets(pet.otherPets || [])
+            setOtherPets(pet.otherPets || null)
             setAge(pet.age || null)
             setSex(pet.sex || null)
             setSize(pet.size || null)
             setAdoptionStatus(pet.adoptionStatus || null)
             setLoveLanguage(pet.loveLanguage || null)
             setLifestyle(pet.lifestyle || null)
-            setImages(pet.images || [])
-            setImageUrl(pet.imageUrl || "")
+            setImages(pet.PetImages || [])
+            // setImageUrl(pet.imageUrl || "")
         }
     }, [pet])
 
@@ -58,21 +63,26 @@ const UpdatePetListingForm = ({pet}) => {
     const updateDescription = (e) => setDescription(e.target.value)
     const updateBreed = (e) => setBreed(e.target.value)
     const updateColor = (e) => setColor(e.target.value)
-    const updateVaccinated = (e) => setVaccinated(!!e.target.value)
-    const updateOwnerSurrender = (e) => setOwnerSurrender(!!e.target.value)
-    const updateKids = (e) => setKids(!!e.target.value)
-    const updateHouseTrained = (e) => setHouseTrained(!!e.target.value)
-    const updateSpecialNeeds = (e) => setSpecialNeeds(!!e.target.value)
-    const updateOtherPets = (e) => {
-        const value = e.target.value
-        setOtherPets(prevState => {
-            if (e.target.checked) {
-                return [...prevState, value] //add value to array
-            } else {
-                return prevState.filter(item => item !== value) //remove value from the array
-            }
-        })
-    }
+    const updateVaccinated = (e) => setVaccinated(e.target.value === 'true' ? true : false)
+    const updateOwnerSurrender = (e) => setOwnerSurrender(e.target.value === 'true' ? true : false)
+    const updateKids = (e) => setKids(e.target.value === 'true' ? true : false)
+    const updateHouseTrained = (e) => setHouseTrained(e.target.value === 'true' ? true : false)
+    const updateSpecialNeeds = (e) => setSpecialNeeds(e.target.value === 'true' ? true : false)
+    // const updateOtherPets = (e) => {
+    //     const value = e.target.value
+
+    //     // console.log('value in otherPets', value)
+    //     setOtherPets(prevState => {
+    //         const currentPets = Array.isArray(prevState) ? prevState : [prevState]
+
+    //         if (e.target.checked) {
+    //             return [...currentPets, value] //add value to array
+    //         } else {
+    //             return currentPets.filter(item => item !== value) //remove value from the array
+    //         }
+    //     })
+    // }
+    const updateOtherPets = (e) => setOtherPets(e.target.value)
     const updateAge = (e) => setAge(e.target.value)
     const updateSex = (e) => setSex(e.target.value)
     const updateSize = (e) => setSize(e.target.value)
@@ -121,8 +131,8 @@ const UpdatePetListingForm = ({pet}) => {
         if (houseTrained === null) newErrors.houseTrained = "Please answer question."
         if (specialNeeds === null) newErrors.specialNeeds = "Please answer question."
 
-        if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
-
+        // if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
+        if (otherPets === null) newErrors.otherPets = "Please answer question."
         if (age === null) newErrors.age = "Please answer question."
         if (sex === null) newErrors.sex = "Please answer question."
         if (size === null) newErrors.size = "Please answer question."
@@ -150,7 +160,8 @@ const UpdatePetListingForm = ({pet}) => {
         if (houseTrained === null) newErrors.houseTrained = "Please answer question."
         if (specialNeeds === null) newErrors.specialNeeds = "Please answer question."
 
-        if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
+        // if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
+        if (otherPets === null) newErrors.otherPets = "Please answer question."
 
         if (age === null) newErrors.age = "Please answer question."
         if (sex === null) newErrors.sex = "Please answer question."
@@ -167,7 +178,8 @@ const UpdatePetListingForm = ({pet}) => {
         setValidationErrors({})
 
         const serverResponse = await dispatch(
-            createPet({
+            updatePet({
+                id: parseInt(petId),
                 name,
                 description,
                 breed,
@@ -188,16 +200,16 @@ const UpdatePetListingForm = ({pet}) => {
             })
         )
 
-        console.log('LOOOOOOOOK HERE /pets/', serverResponse.id)
+        console.log('LOOOOOOOOK HERE /pets/', serverResponse)
         if (serverResponse) {
             if(serverResponse.errors) setErrors(serverResponse.errors)
             else if (typeof serverResponse === 'object') setErrors(serverResponse)
             else setErrors({ general: serverResponse })
 
-            if (!serverResponse.errors && serverResponse.id) {
+            if (!serverResponse.errors) {
                 setErrors({})
                 setValidationErrors({})
-                navigate(`/pets/${serverResponse.id}`)
+                navigate(`/pets/${petId}`)
             }
         }
         else {
@@ -309,7 +321,6 @@ const UpdatePetListingForm = ({pet}) => {
                             value="true"
                             checked={ownerSurrender === true}
                             onChange={updateOwnerSurrender}
-                            required
                         /> Yes
                     </label>
 
@@ -320,7 +331,7 @@ const UpdatePetListingForm = ({pet}) => {
                             value="false"
                             checked={ownerSurrender === false}
                             onChange={updateOwnerSurrender}
-                            required
+
                         /> No
                     </label>
                         {errors.ownerSurrender && <p className="edit-pet-error-message">{errors.ownerSurrender}</p>}
@@ -408,7 +419,70 @@ const UpdatePetListingForm = ({pet}) => {
                         {validationErrors.specialNeeds && <p className="edit-pet-error-message">{validationErrors.specialNeeds}</p>}
                 </div>
 
+
                 <label>Good with other pets?</label>
+                <div>
+                <label>
+                    <input
+                    type="radio"
+                    name='otherPets'
+                    value='none'
+                    checked={otherPets === "none"}
+                    onChange={updateOtherPets}
+                    required
+                    />None
+                </label>
+
+                <label>
+                    <input
+                    type="radio"
+                    name='otherPets'
+                    value='dogsOnly'
+                    checked={otherPets === "dogsOnly"}
+                    onChange={updateOtherPets}
+                    required
+                    />Dogs Only
+                </label>
+
+                <label>
+                    <input
+                    type="radio"
+                    name='otherPets'
+                    value='catsOnly'
+                    checked={otherPets === "catsOnly"}
+                    onChange={updateOtherPets}
+                    required
+                    />Cats Only
+                </label>
+
+                <label>
+                    <input
+                    type="radio"
+                    name='otherPets'
+                    value='both'
+                    checked={otherPets === "both"}
+                    onChange={updateOtherPets}
+                    required
+                    />Both
+                </label>
+
+                <label>
+                    <input
+                    type="radio"
+                    name='otherPets'
+                    value='other'
+                    checked={otherPets === "other"}
+                    onChange={updateOtherPets}
+                    required
+                    />Other
+                </label>
+                {errors.otherPets && <p className="edit-pet-error-message">{errors.otherPets}</p>}
+                {validationErrors.otherPets && <p className="edit-pet-error-message">{validationErrors.otherPets}</p>}
+                </div>
+
+
+
+                {/* <label>Good with other pets?</label>
                 <div>
                     <input
                     type="checkbox"
@@ -456,7 +530,7 @@ const UpdatePetListingForm = ({pet}) => {
                     <label htmlFor='other'>Other</label>
                     {errors.otherPets && <p className="edit-pet-error-message">{errors.otherPets}</p>}
                     {validationErrors.otherPets && <p className="edit-pet-error-message">{validationErrors.otherPets}</p>}
-                </div>
+                </div> */}
 
                 <label>Age</label>
                 <div>
@@ -746,11 +820,12 @@ const UpdatePetListingForm = ({pet}) => {
                             <button type="button" onClick={() => setPreviewImage(index)}>
                                 {img.preview ? "Preview ✅" : "Set as Preview"}
                             </button>
+                            <button type="button" onClick={() => handleEditImage(index)}>Edit</button>
                             <button type="button" onClick={() => removeImage(index)}>Remove</button>
                         </div>
                     ))}
                 </div>
-                <button type="submit" onClick={() => navigate(``)}>edit Pet Listing</button>
+                <button type="submit" onClick={() => navigate(``)}>Edit Pet Listing</button>
             </form>
 
         </div>

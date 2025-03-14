@@ -16,7 +16,7 @@ const CreatePets = () => {
     const [houseTrained, setHouseTrained] = useState(null)
     const [specialNeeds, setSpecialNeeds] = useState(null)
     //checkbox
-    const [otherPets, setOtherPets] = useState([])
+    const [otherPets, setOtherPets] = useState(null)
     //radio
     const [age, setAge] = useState(null)
     const [sex, setSex] = useState(null)
@@ -48,7 +48,9 @@ const CreatePets = () => {
         if (houseTrained === null) newErrors.houseTrained = "Please answer question."
         if (specialNeeds === null) newErrors.specialNeeds = "Please answer question."
 
-        if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
+        // if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
+        if (otherPets === null) newErrors.otherPets = "Please answer question."
+
 
         if (age === null) newErrors.age = "Please answer question."
         if (sex === null) newErrors.sex = "Please answer question."
@@ -76,7 +78,9 @@ const CreatePets = () => {
         if (houseTrained === null) newErrors.houseTrained = "Please answer question."
         if (specialNeeds === null) newErrors.specialNeeds = "Please answer question."
 
-        if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
+        if (otherPets === null) newErrors.otherPets = "Please answer question."
+
+        // if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
 
         if (age === null) newErrors.age = "Please answer question."
         if (sex === null) newErrors.sex = "Please answer question."
@@ -132,12 +136,12 @@ const CreatePets = () => {
         }
     }
 
-    const handleOtherPetsChange = (e) => {
-        const {value, checked} = e.target
-        setOtherPets((prev) =>
-            checked ? [ ...prev, value ] : prev.filter((pet) => pet !== value)
-        )
-    }
+    // const handleOtherPetsChange = (e) => {
+    //     const {value, checked} = e.target
+    //     setOtherPets((prev) =>
+    //         checked ? [ ...prev, value ] : prev.filter((pet) => pet !== value)
+    //     )
+    // }
 
     const handleAddImage = () => {
         if (!imageUrl.trim()) return
@@ -385,7 +389,7 @@ const CreatePets = () => {
                         {validationErrors.specialNeeds && <p className="create-pet-error-message">{validationErrors.specialNeeds}</p>}
                 </div>
 
-                <label>Good with other pets?</label>
+                {/* <label>Good with other pets?</label>
                 <div>
                     <input
                     type="checkbox"
@@ -431,6 +435,63 @@ const CreatePets = () => {
                     onChange={handleOtherPetsChange}
                     />
                     <label htmlFor='other'>Other</label>
+                </div> */}
+<label>Good with other pets?</label>
+                <div>
+                <label>
+                    <input
+                    type="radio"
+                    name='otherPets'
+                    value='none'
+                    checked={otherPets === "none"}
+                    onChange={(e) => setOtherPets(e.target.value)}
+                    required
+                    />None
+                </label>
+
+                <label>
+                    <input
+                    type="radio"
+                    name='otherPets'
+                    value='dogsOnly'
+                    checked={otherPets === "dogsOnly"}
+                    onChange={(e) => setOtherPets(e.target.value)}
+                    required
+                    />Dogs Only
+                </label>
+
+                <label>
+                    <input
+                    type="radio"
+                    name='otherPets'
+                    value='catsOnly'
+                    checked={otherPets === "catsOnly"}
+                    onChange={(e) => setOtherPets(e.target.value)}
+                    required
+                    />Cats Only
+                </label>
+
+                <label>
+                    <input
+                    type="radio"
+                    name='otherPets'
+                    value='both'
+                    checked={otherPets === "both"}
+                    onChange={(e) => setOtherPets(e.target.value)}
+                    required
+                    />Both
+                </label>
+
+                <label>
+                    <input
+                    type="radio"
+                    name='otherPets'
+                    value='other'
+                    checked={otherPets === "other"}
+                    onChange={(e) => setOtherPets(e.target.value)}
+                    required
+                    />Other
+                </label>
                     {errors.otherPets && <p className="create-pet-error-message">{errors.otherPets}</p>}
                     {validationErrors.otherPets && <p className="create-pet-error-message">{validationErrors.otherPets}</p>}
                 </div>

@@ -1,4 +1,3 @@
-import { imageListClasses } from "@mui/material";
 import { csrfFetch } from "./csrf";
 
 //actions
@@ -96,25 +95,39 @@ export const createPet = (newPetData) => async (dispatch) => {
         console.error('fetch error', error)
     }
 }
-export const updatePet = (petId, updatedPetData, images) => async (dispatch) => {
-    const formattedImages = images.map((url, index) => ({
-        url,
+export const updatePet = (updatedPetData) => async (dispatch) => {
+    console.log('updatedPetData', updatedPetData)
+    // console.log(petId)
+    const formattedImages = updatedPetData.images.map((img, index) => ({
+        url: img.url,
         preview: index === 0
     }))
 
-    const responseData = {...updatedPetData, images: formattedImages}
+    const responseData = {
+        ...updatedPetData,
+        images: formattedImages,
+        // otherPets: Array.isArray(updatedPetData.otherPets)
+        //     ? updatedPetData.otherPets
+        //     : updatedPetData.otherPets ? [updatedPetData.otherPets] : []
+    }
 
-    const response = await csrfFetch(`/api/pets/${petId}`, {
-        method: "PUT",
-        headers: {"Content-Type": "application/json"},
-        credentials: "include",
-        body: JSON.stringify(responseData)
-    })
+    console.log('responseData', responseData)
+    try {
+        const response = await csrfFetch(`/api/pets/${updatedPetData.id}`, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            credentials: "include",
+            body: JSON.stringify(responseData)
+        })
 
-    if (response.ok) {
-        const data = await response.json()
-        dispatch(updatePetAction(data.pet))
-        return data.pet
+        if (response.ok) {
+            const data = await response.json()
+            console.log('look here', data)
+            dispatch(updatePetAction(data))
+            return data
+        }
+    } catch (error) {
+        console.error('fetch error', error)
     }
 }
 export const deletePet = (petId) => async (dispatch) => {

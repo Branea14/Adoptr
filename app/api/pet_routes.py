@@ -224,10 +224,10 @@ def create_pet_listing():
     current_user_id = current_user.id
     data = request.get_json()
 
-    # print('data from api route', data)
+    print('data from api route', data)
 
     images = data.get('images', [])
-    other_pets = data.get('otherPets', [])
+    # other_pets = data.get('otherPets', [])
 
     # validations
     errors = {}
@@ -250,8 +250,13 @@ def create_pet_listing():
         errors['houseTrained'] = "Must have Boolean value"
     if data.get('specialNeeds') is None or not isinstance(data.get('specialNeeds'), bool):
         errors['specialNeeds'] = "Must have Boolean value"
-    if not isinstance(other_pets, list) or any(item not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other'] for item in other_pets):
-        errors['age'] = "Invalid age selection"
+
+
+    # if not isinstance(other_pets, list) or any(item not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other'] for item in other_pets):
+    #     errors['otherPets'] = "Invalid other pet selection"
+    if data.get('otherPets') not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other']:
+        errors['otherPets'] = "Invalid other pet selection"
+
     if data.get('age') not in ['puppy', 'young', 'adult', 'senior']:
         errors['age'] = "Invalid age selection"
     if data.get('sex') not in ['male', 'female']:
@@ -267,7 +272,7 @@ def create_pet_listing():
     if not isinstance(images, list) or any(not isinstance(img, dict) or 'url' not in img for img in images):
         errors['images'] = "Image URLs must be a list of objects with 'url' key"
 
-    # print("LOOOOOOK HERE FOR ERRORS from backend", errors)
+    print("LOOOOOOK HERE FOR ERRORS from backend", errors)
 
     if errors:
         return jsonify({"message": "Bad Request", "errors": errors}), 400
@@ -349,7 +354,9 @@ def edit_pet_listing(petId):
 
     data = request.get_json()
     images = data.get('images', [])
+    # other_pets = data.get("otherPets", [])
 
+    print('data in api routes', data)
     # validate
     errors = {}
     if not data.get('name') or len(data['name']) >= 50:
@@ -374,6 +381,8 @@ def edit_pet_listing(petId):
 
     if data.get('otherPets') not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other']:
         errors['otherPets'] = "Invalid other pet selection"
+    # if not isinstance(other_pets, list) or any(item not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other'] for item in other_pets):
+    #     errors['otherPets'] = "Invalid other pet selection"
     if data.get('age') not in ['puppy', 'young', 'adult', 'senior']:
         errors['age'] = "Invalid age selection"
     if data.get('sex') not in ['male', 'female']:
@@ -388,6 +397,7 @@ def edit_pet_listing(petId):
         errors['lifestyle'] = "Invalid lifestyle selection"
     if not isinstance(images, list) or any(not isinstance(img, dict) or 'url' not in img for img in images):
         errors['images'] = "Image URLs must be a list of objects with 'url' key"
+    print('LOOOOOOOOOOOOOOOOOOOK', errors)
 
     if errors:
         return jsonify({"message": "Bad Request", "errors": errors}), 400
