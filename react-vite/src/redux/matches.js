@@ -79,7 +79,7 @@ export const requestedMatches = () => async (dispatch) => {
 
     if (response.ok) {
         const data = await response.json()
-        const normalizedMatches = data.Matches.reduce((acc, match) => {
+        const normalizedMatches = data.Matches?.reduce((acc, match) => {
             acc[match.petId] = match;
             return acc;
         }, {})

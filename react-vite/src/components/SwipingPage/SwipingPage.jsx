@@ -172,11 +172,11 @@ const SwipingPage = () => {
                 <p>Owner Surrender? {pet.ownerSurrender}</p>
                 <p>Vaccinated? {pet.vaccinated}</p>
                 <p>Special Needs? {pet.specialNeeds}</p>
-                {/* {pet?.PetImages.map((image, index) => (
+                {pet?.PetImages.map((image, index) => (
                     <div key={index}>
                         <img src={image.url}/>
                     </div>
-                ))} */}
+                ))}
                 </div>
             ) : <p>No more pets nearby</p>}
         </div>

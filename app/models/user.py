@@ -22,7 +22,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
-    avatar = db.Column(db.Text, nullable=True)
+    avatar = db.Column(db.Text, nullable=False)
 
     # household and preferences
     kids = db.Column(db.Boolean, nullable=False)

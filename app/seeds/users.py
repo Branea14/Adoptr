@@ -26,7 +26,8 @@ users_data = [
         # "idealSize": "medium",
         # "lifestyle": "active",
         "latitude": 38.8977,
-        "longitude": -77.0365
+        "longitude": -77.0365,
+        "avatar": 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600'
     },
     {
         "firstName": "Bob",
@@ -47,7 +48,8 @@ users_data = [
         # "idealSize": "large",
         # "lifestyle": "veryActive",
         "latitude": 40.7128,
-        "longitude": -74.0060
+        "longitude": -74.0060,
+        "avatar": 'https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg?auto=compress&cs=tinysrgb&w=600'
     },
     {
         "firstName": "Charlie",
@@ -69,6 +71,7 @@ users_data = [
         # "lifestyle": "lapPet",
         "latitude": 37.7749,
         "longitude": -122.4194,
+        "avatar": 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=600'
     },
     {
         "firstName": "Diana",
@@ -90,6 +93,7 @@ users_data = [
         # "lifestyle": "laidback",
         "latitude": 34.0522,
         "longitude": -118.2437,
+        "avatar": 'https://images.pexels.com/photos/1370719/pexels-photo-1370719.jpeg?auto=compress&cs=tinysrgb&w=600'
     },
     {
         "firstName": "Ethan",
@@ -111,6 +115,7 @@ users_data = [
         # "lifestyle": "active",
         "latitude": 41.8781,
         "longitude": -87.6298,
+        "avatar": 'https://images.pexels.com/photos/64385/pexels-photo-64385.jpeg?auto=compress&cs=tinysrgb&w=600'
     }
 ]
 
@@ -137,6 +142,7 @@ def seed_users():
             latitude=user_data["latitude"],
             longitude=user_data["longitude"],
             geohash=geohash.encode(user_data['latitude'], user_data['longitude'], precision=12),
+            avatar=user_data["avatar"],
             createdAt=datetime.now(timezone.utc),
             updatedAt=datetime.now(timezone.utc)
         )

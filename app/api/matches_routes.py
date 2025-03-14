@@ -195,7 +195,7 @@ def update_match(id):
     print('coming live', selected_match)
     print('from NY', pet)
 
-    if pet.sellerId == current_user.id:
+    if pet.sellerId != current_user.id:
         return jsonify({"message": "Unauthorized. You cannot update this match"}), 403
 
     data = request.get_json()

@@ -22,10 +22,10 @@ const ManageMatches = () => {
     console.log('requested matches', requestedMatch)
     console.log('rejected matches', rejectedMatch)
 
-    const incomingMatch = Object.values(requestedMatch || {}).filter(match => match.sellerId !== currentUser.id)
-    // console.log('incomingMatch', incomingMatch)
-    const outcomingMatch = Object.values(requestedMatch || {}).filter(match => match.sellerId === currentUser.id)
-
+    const incomingMatch = Object.values(requestedMatch || {}).filter(match => match.sellerId === currentUser.id)
+    console.log('incomingMatch', incomingMatch)
+    const outgoingMatch = Object.values(requestedMatch || {}).filter(match => match.sellerId !== currentUser.id)
+    console.log('outgoingMatch', outgoingMatch)
     const triggerRefresh = () => {
         setRefreshTrigger(prev => prev + 1)
     }
@@ -79,16 +79,15 @@ const ManageMatches = () => {
             <div className="incoming-matches">
                 <h1>Matches Waiting...</h1>
                 {loading ? null : incomingMatch.length > 0 ? (
-                    incomingMatch.map((match) => (
+                    incomingMatch?.map((match) => (
                         <div className="manage-match-tile" key={match.id}>
                                 <div className='manage-match-image-on-page'>
-                                    {/* {match.user1Avatar ? (
+                                    {currentUser.id === match.senderUserId1 ?
+                                        <img src={match.user2Avatar} alt="User Avatar"/> :
                                         <img src={match.user1Avatar} alt="User Avatar"/>
-                                    ) : (
-                                        <FaUserCircle className="manage-matches-user-avatar"/>
-                                    )} */}
+                                   }
                                                                     <h3>{match.petName}</h3>
-                                                                    <img className='approved-match-image-on-page' src={match.petImage} alt={`${match.petName}`}/>
+                                                                    {/* <img className='approved-match-image-on-page' src={match.petImage} alt={`${match.petName}`}/> */}
 
                                 </div>
                         <div className='pet-actions'>
@@ -100,10 +99,10 @@ const ManageMatches = () => {
                 ) : (<p>No matches waiting.</p>)}
             </div>
             <>---------------------------------------------------------</>
-            <div className="outcoming-matches">
+            <div className="outgoing-matches">
                 <h1>Awaiting Approval</h1>
-                {loading ? null : outcomingMatch.length > 0 ? (
-                    outcomingMatch.map((match) => (
+                {loading ? null : outgoingMatch.length > 0 ? (
+                    outgoingMatch.map((match) => (
                         <div className="manage-match-tile" key={match.id}>
                                 <div className='manage-match-image-on-page'>
                                     {/* {match.user1Avatar ? (
