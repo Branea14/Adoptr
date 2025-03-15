@@ -70,6 +70,7 @@ function LoginFormModal() {
       setErrors(serverResponse)
     } else {
       closeModal()
+      navigate('/pets/swipe')
     }
   }
 
