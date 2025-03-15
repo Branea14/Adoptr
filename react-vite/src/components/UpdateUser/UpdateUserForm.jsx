@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { editUserThunk, thunkAuthenticate } from "../../redux/session";
 import { useModal } from "../../context/Modal";
 import Slider from '@mui/material/Slider'
@@ -431,7 +431,7 @@ const UpdateUserForm = ({user}) => {
 
 
 
-                <label>What's your pet experience?</label>
+                <label>What&apos;s your pet experience?</label>
                 <div>
                   <label>
                     <input
@@ -530,7 +530,7 @@ const UpdateUserForm = ({user}) => {
                   </label>
                 </div>
 
-                <label>What's your ideal age?</label>
+                <label>What&apos;s your ideal age?</label>
                 <div>
                   <label>
                     <input
@@ -589,7 +589,7 @@ const UpdateUserForm = ({user}) => {
 
                 </div>
 
-                <label>What's your ideal sex?</label>
+                <label>What&apos;s your ideal sex?</label>
                 <div>
                   <label>
                     <input
@@ -625,7 +625,7 @@ const UpdateUserForm = ({user}) => {
                   </label>
                 </div>
 
-                <label>What's your ideal size?</label>
+                <label>What&apos;s your ideal size?</label>
                 <div>
                   <label>
                     <input
@@ -683,7 +683,7 @@ const UpdateUserForm = ({user}) => {
                   </label>
                 </div>
 
-                <label>What's your ideal lifestyle?</label>
+                <label>What&apos;s your ideal lifestyle?</label>
                 <div>
                   <label>
                     <input

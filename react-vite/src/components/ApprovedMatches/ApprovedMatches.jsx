@@ -39,12 +39,12 @@ const ApprovedMatches = () => {
             <div className="approved-match-on-page">
                 {loading ? null : filteredApprovedMatches.length > 0 ? (
                     filteredApprovedMatches.map((match) => (
-                        <div className="approved-match-tile">
+                        <div key={match.id} className="approved-match-tile">
                         <Link to={`/pets/${match.petId}`} key={match.id} className='pet-details-link'>
-                            <div key={match.id}>
+                            {/* <div key={match.id}> */}
                                 <img className='approved-match-image-on-page' src={match.petImage} alt={`${match.petName}`}/>
                                 <h3>{match.petName}</h3>
-                            </div>
+                            {/* </div> */}
                         </Link>
                         <div className='pet-actions'>
                             <OpenModalButton className="delete-modal" buttonText="Delete" modalComponent={<UnmatchModal match={match} triggerRefresh={triggerRefresh}/>}/>

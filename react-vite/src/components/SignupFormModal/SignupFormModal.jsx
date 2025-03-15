@@ -74,7 +74,7 @@ function SignupFormModal() {
 
 
     setValidationErrors(newErrors);
-  }, [firstName, lastName, username, email, kids, hasBackyard, otherPets, petExperience]);
+  }, [avatar, password, confirmPassword, firstName, lastName, username, email, kids, hasBackyard, otherPets, petExperience]);
 
 
   useEffect(() => {
@@ -408,7 +408,7 @@ function SignupFormModal() {
 
 
 
-            <label>What's your pet experience?</label>
+            <label>What&apos;s your pet experience?</label>
             <div>
               <label>
                 <input
@@ -507,7 +507,7 @@ function SignupFormModal() {
               </label>
             </div>
 
-            <label>What's your ideal age?</label>
+            <label>What&apos;s your ideal age?</label>
             <div>
               <label>
                 <input
@@ -566,7 +566,7 @@ function SignupFormModal() {
 
             </div>
 
-            <label>What's your ideal sex?</label>
+            <label>What&apos;s your ideal sex?</label>
             <div>
               <label>
                 <input
@@ -602,7 +602,7 @@ function SignupFormModal() {
               </label>
             </div>
 
-            <label>What's your ideal size?</label>
+            <label>What&apos;s your ideal size?</label>
             <div>
               <label>
                 <input
@@ -660,7 +660,7 @@ function SignupFormModal() {
               </label>
             </div>
 
-            <label>What's your ideal lifestyle?</label>
+            <label>What&apos;s your ideal lifestyle?</label>
             <div>
               <label>
                 <input

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getDetails } from "../../redux/pets";
 import { useDrag } from "@use-gesture/react";
-import { createMatch, deleteMatch, rejectedMatches, requestedMatches, updatedMatch } from "../../redux/matches";
+import { createMatch, rejectedMatches, requestedMatches } from "../../redux/matches";
 import { approvedMatches } from "../../redux/matches";
 import "./SwipingPage.css"
 
@@ -13,7 +13,7 @@ const SwipingPage = () => {
     const [position, setPosition] = useState(0)
     const [hidePets, setHidePets] = useState({})
 
-    const currentUser = useSelector((state) => state.session.user)
+    // const currentUser = useSelector((state) => state.session.user)
     const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
     const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
     const rejectedMatch = useSelector((state) => state.matches?.rejectedMatches)

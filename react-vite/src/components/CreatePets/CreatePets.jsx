@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createPet, getViewedPetDetailsThunk } from "../../redux/pets";
+import { useDispatch } from "react-redux";
+import { createPet } from "../../redux/pets";
 import "./CreatePets.css"
 import { useNavigate } from "react-router-dom";
 
