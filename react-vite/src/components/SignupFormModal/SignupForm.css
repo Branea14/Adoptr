@@ -1,7 +1,154 @@
-.signup-form {
+.signup-modal {
     /* position: absolute;
     top: -300px;
     /* left: 300px; */
     /* width: calc(100% - 300px); */
-    background-color: white;
+    max-width: 90%;
+    margin: auto;
+    background-color: #FAF2E5;
+    border-radius: 15px;
+    width: 400px;
+    height: 450px;
+    /* position: fixed */
+}
+
+.signup-form h1 {
+    text-align: center;
+    margin: 10px 50px 5px;
+    font-size: 30px;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.signup-form {
+    width: 100%;
+    /* max-width: 450px; */
+    margin: 0 auto;
+}
+
+.signup-form label {
+    display: flex;
+    flex-direction: column;
+    /* gap: 8px; */
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 8px;
+    /* align-items: center; */
+}
+
+.profile-container {
+    display: flex;
+    align-items: center;  /* Aligns items in the center */
+    gap: 16px;            /* Creates space between input and image */
+  }
+
+  .profile-label {
+    display: flex;
+    /* position: fixed; */
+    flex-direction: column; /* Keeps label and input stacked */
+    /* gap: 4px;              Small spacing between label and input */
+
+  }
+
+  .avatar-preview {
+    width: 80px;  /* Adjust size */
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+
+  .first-last-name-label {
+    display: flex;
+    flex-direction: column; /* Keeps label and input stacked */
+    /* gap: 4px; */
+}
+
+.first-last-name-container {
+      display: flex;
+      align-items: center;  /* Aligns items in the center */
+      gap: 16px;
+
+  }
+
+.password-container {
+    display: flex;
+    align-items: center;  /* Aligns items in the center */
+    gap: 16px;
+}
+
+.password-label {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-form button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #2C1B14;
+    color: #E9D0B0;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .signup-form button:hover {
+    transform: scale(1.02);
+  }
+
+  .next-button.disabled {
+    background-color: #ccc; /* Gray out when disabled */
+    cursor: not-allowed;
+  }
+
+.kids-container {
+    display: flex;
+    align-items: center;  /* Aligns items in the center */
+    gap: 50px;
+}
+
+.kids-label {
+    display: flex;
+    flex-direction: column;
+}
+
+.kids-answer-container {
+    display: flex;
+    align-items: center;  /* Aligns items in the center */
+    gap: 16px;
+    font-size: 14px;
+}
+
+.kids-question-label {
+    width: 40% !important;
+    margin-bottom: 12px !important;
+}
+
+.signup-otherPets-container {
+    display: flex;
+    align-items: center;  /* Aligns items in the center */
+    /* gap: 50px; */
+    flex-direction: column;
+}
+
+.signup-otherPets-label {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+}
+
+.signup-otherPets-answer-container {
+    display: flex;
+    /* flex-wrap: wrap; */
+    /* justify-content: center; */
+    align-items: center;  /* Aligns items in the center */
+    gap: 30px;
+    font-size: 14px;
+}
+
+.signup-otherPets-question-label {
+    width: 100% !important;
+    margin-bottom: 12px !important;
 }

@@ -30,7 +30,7 @@ function SignupFormModal() {
   const [radius, setRadius] = useState(5.0)
   const [errors, setErrors] = useState({});
   const [validationErrors, setValidationErrors] = useState({})
-
+  const [validationErrors2, setValidationErrors2] = useState({})
   const [showAdditionalModal1, setShowAdditionalModal1] = useState(false)
   const [showAdditionalModal2, setShowAdditionalModal2] = useState(false)
   const [houseTrained, setHouseTrained] = useState(null)
@@ -64,17 +64,25 @@ function SignupFormModal() {
     if (!username.trim()) newErrors.username = "Username is required"
     if (email && !validateEmail(email)) newErrors.email = "Please provide a valid email address";
     if (password && confirmPassword && password !== confirmPassword) newErrors.confirmPassword = "Passwords must match";
+    if (!confirmPassword) newErrors.confirmPassword = "Please confirm password"
     if (password && password.length < 6) newErrors.password = "Password must be at least 6 characters long";
     if (!avatar.trim()) newErrors.avatar = "Profile picture is required"
+
+
+
+    setValidationErrors(newErrors);
+  }, [avatar, password, confirmPassword, firstName, lastName, username, email]);
+
+  useEffect(() => {
+    const newErrors = {}
 
     if (kids === null) newErrors.kids = "Please answer question."
     if (hasBackyard === null) newErrors.hasBackyard = "Please answer question."
     if (otherPets === null) newErrors.otherPets = "Please answer question."
     if (petExperience === null) newErrors.petExperience = "Please answer question"
 
-
-    setValidationErrors(newErrors);
-  }, [avatar, password, confirmPassword, firstName, lastName, username, email, kids, hasBackyard, otherPets, petExperience]);
+    setValidationErrors2(newErrors)
+  }, [kids, hasBackyard, otherPets, petExperience])
 
 
   useEffect(() => {
@@ -174,6 +182,7 @@ function SignupFormModal() {
   //     checked ? [...prev, value] : prev.filter((pet) => pet !== value)
   //   )
   // }
+  console.log('look here for validation errors', validationErrors)
 
   return (
     <div className="signup-modal">
@@ -191,18 +200,47 @@ function SignupFormModal() {
               </div>
             )}
 
-            <label>
-                Avatar
-                <input type="text" placeholder="Avatar" value={avatar} onChange={(e) => setAvatar(e.target.value)} />
-            </label>
+            <div className="profile-container">
+              <label className="profile-label">
+                  Profile Picture
+                  <input type="text" value={avatar} onChange={(e) => setAvatar(e.target.value)} />
+              {validationErrors.avatar && <p className="login-error-message">{validationErrors.avatar}</p>}
+              </label>
 
-            {/* Show Image Preview */}
-            {avatar && !errors.avatar && (
-              <img src={avatar} alt="Avatar Preview" className="avatar-preview"/>
-            )}
-            {errors.avatar && <p className="error-message">{errors.avatar}</p>}
+              {/* Show Image Preview */}
+              {avatar && !errors.avatar && (
+                <img src={avatar} alt="Avatar Preview" className="avatar-preview"/>
+              )}
+            </div>
+              {errors.avatar && <p className="error-message">{errors.avatar}</p>}
 
+            <div className="first-last-name-container">
+              <label className="first-last-name-label">
+                First Name
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                />
 
+                {errors.firstName && <p className="login-error-message">{errors.firstName}</p>}
+              {validationErrors.firstName && <p className="login-error-message">{validationErrors.firstName}</p>}
+              </label>
+
+              <label className="first-last-name-label">
+                Last Name
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                />
+
+                {errors.lastName && <p className="login-error-message">{errors.lastName}</p>}
+              {validationErrors.lastName && <p className="login-error-message">{validationErrors.lastName}</p>}
+              </label>
+            </div>
 
             <label>
               Username
@@ -210,36 +248,14 @@ function SignupFormModal() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
                 className={errors.username ? 'error' : ''}
                 required
               />
-              {errors.username && <p className="signup-error-message">{errors.username}</p>}
+
+              {errors.username && <p className="login-error-message">{errors.username}</p>}
+              {validationErrors.username && <p className="login-error-message">{validationErrors.username}</p>}
             </label>
 
-            <label>
-              First Name
-              <input
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="First Name"
-                required
-              />
-              {errors.firstName && <p className="signup-error-message">{errors.firstName}</p>}
-            </label>
-
-            <label>
-              Last Name
-              <input
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder="Last Name"
-                required
-              />
-              {errors.lastName && <p className="signup-error-message">{errors.lastName}</p>}
-            </label>
 
             <label>
               Email
@@ -247,170 +263,185 @@ function SignupFormModal() {
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
                 className={errors.email ? 'error' : ''}
                 required
               />
-              {errors.email && <p className="signup-error-message">{errors.email}</p>}
-              {validationErrors.email && <p className="signup-error-message">{validationErrors.email}</p>}
+              {errors.email && <p className="login-error-message">{errors.email}</p>}
+              {validationErrors.email && <p className="login-error-message">{validationErrors.email}</p>}
             </label>
 
-            <label>
-              Password
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-              />
-              {errors.password && <p className="signup-error-message">{errors.password}</p>}
-              {validationErrors.password && <p className="signup-error-message">{validationErrors.password}</p>}
-            </label>
+            <div className='password-container'>
+              <label className="password-label">
+                Password
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                {errors.password && <p className="login-error-message">{errors.password}</p>}
+                {validationErrors.password && <p className="login-error-message">{validationErrors.password}</p>}
+              </label>
 
-            <label>
-              Confirm Password
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm Password"
-                required
-              />
-              {errors.confirmPassword && <p className="signup-error-message">{errors.confirmPassword}</p>}
-              {validationErrors.confirmPassword && (
-                <p className="signup-error-message">{validationErrors.confirmPassword}</p>
-              )}
-            </label>
-            <button type="button" onClick={() => setShowAdditionalModal1(true)}>Next</button>
+              <label className="password-label">
+                Confirm Password
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+                {errors.confirmPassword && <p className="login-error-message">{errors.confirmPassword}</p>}
+                {validationErrors.confirmPassword && (
+                  <p className="login-error-message">{validationErrors.confirmPassword}</p>
+                )}
+              </label>
+
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowAdditionalModal1(true)}
+              disabled={Object.keys(validationErrors).length > 0 || Object.keys(errors).length > 0}
+              className={`next-button ${Object.keys(validationErrors).length > 0 || Object.keys(errors).length > 0 ? 'disabled' : ''}`}
+            >Next
+            </button>
           </>
         )}
 
         {showAdditionalModal1 && !showAdditionalModal2 && (
           <>
-            <label>Radius</label>
-            <div><Slider aria-label="radius" value={radius} onChange={(e, value) => setRadius(value)}/></div>
+            <label>Radius (miles)</label>
+            <div><Slider aria-label="radius" valueLabelDisplay='on' min={1} max={50} step={1} value={radius} onChange={(e, value) => setRadius(value)}/></div>
 
-            <label>Do you have kids?</label>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  name='kids'
-                  value='true'
-                  checked={kids === true}
-                  onChange={() => setKids(true)}
-                  required
-                /> Yes
-              </label>
+            <div className="kids-container">
+              <label className="kids-question-label">Do you have kids?</label>
+              <div className="kids-answer-container">
+                <label className="kids-label">
+                  <input
+                    type="radio"
+                    name='kids'
+                    value='true'
+                    checked={kids === true}
+                    onChange={() => setKids(true)}
+                    required
+                  /> Yes
+                </label>
 
-              <label>
-                <input
-                  type="radio"
-                  name='kids'
-                  value='false'
-                  checked={kids === false}
-                  onChange={() => setKids(false)}
-                  required
-                /> No
-              </label>
-                {errors.kids && <p className="signup-error-message">{errors.kids}</p>}
-                {validationErrors.kids && <p className="signup-error-message">{validationErrors.kids}</p>}
+                <label className="kids-label">
+                  <input
+                    type="radio"
+                    name='kids'
+                    value='false'
+                    checked={kids === false}
+                    onChange={() => setKids(false)}
+                    required
+                  /> No
+                </label>
+                  {errors.kids && <p className="login-error-message">{errors.kids}</p>}
+                  {validationErrors2.kids && <p className="login-error-message">{validationErrors2.kids}</p>}
 
-            </div>
-
-            <label>Do you have a backyard?</label>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  name='hasBackyard'
-                  value='true'
-                  checked={hasBackyard === true}
-                  onChange={() => setHasBackyard(true)}
-                  required
-                /> Yes
-              </label>
-
-              <label>
-                <input
-                  type="radio"
-                  name='hasBackyard'
-                  value='false'
-                  checked={hasBackyard === false}
-                  onChange={() => setHasBackyard(false)}
-                  required
-                /> No
-              </label>
-                {errors.hasBackyard && <p className="signup-error-message">{errors.hasBackyard}</p>}
-                {validationErrors.hasBackyard && <p className="signup-error-message">{validationErrors.hasBackyard}</p>}
-            </div>
-
-            <label>Do you have any other pets?</label>
-              <div>
-              <label>
-                <input
-                  type="radio"
-                  name='otherPets'
-                  value='none'
-                  checked={otherPets === 'none'}
-                  onChange={(e) => setOtherPets(e.target.value)}
-                  required
-                />None
-              </label>
-
-              <label>
-                <input
-                  type="radio"
-                  name='otherPets'
-                  value='dogsOnly'
-                  checked={otherPets === 'dogsOnly'}
-                  onChange={(e) => setOtherPets(e.target.value)}
-                  required
-                />Dogs Only
-              </label>
-
-              <label>
-                <input
-                  type="radio"
-                  name='otherPets'
-                  value='catsOnly'
-                  checked={otherPets === 'catsOnly'}
-                  onChange={(e) => setOtherPets(e.target.value)}
-                  required
-                />Cats Only
-              </label>
-
-              <label>
-                <input
-                  type="radio"
-                  name='otherPets'
-                  value='both'
-                  checked={otherPets === 'both'}
-                  onChange={(e) => setOtherPets(e.target.value)}
-                  required
-                />Both
-              </label>
-
-              <label>
-                <input
-                  type="radio"
-                  name='otherPets'
-                  value='other'
-                  checked={otherPets === 'other'}
-                  onChange={(e) => setOtherPets(e.target.value)}
-                  required
-                />Other
-              </label>
-                {errors.otherPets && <p className="signup-error-message">{errors.otherPets}</p>}
-                {validationErrors.otherPets && <p className="signup-error-message">{validationErrors.otherPets}</p>}
               </div>
 
+            </div>
+
+            <div className="kids-container">
+              <label className="kids-question-label">Do you have a backyard?</label>
+              <div className="kids-answer-container">
+                <label className="kids-label">
+                  <input
+                    type="radio"
+                    name='hasBackyard'
+                    value='true'
+                    checked={hasBackyard === true}
+                    onChange={() => setHasBackyard(true)}
+                    required
+                  /> Yes
+                </label>
+
+                <label>
+                  <input
+                    type="radio"
+                    name='hasBackyard'
+                    value='false'
+                    checked={hasBackyard === false}
+                    onChange={() => setHasBackyard(false)}
+                    required
+                  /> No
+                </label>
+                  {errors.hasBackyard && <p className="login-error-message">{errors.hasBackyard}</p>}
+                  {validationErrors2.hasBackyard && <p className="login-error-message">{validationErrors2.hasBackyard}</p>}
+              </div>
+
+            </div>
+
+            <div className="signup-otherPets-container">
+              <label className="signup-otherPets-question-label">Do you have any other pets?</label>
+                <div className="signup-otherPets-answer-container">
+                <label className="signup-otherPets-label">
+                  <input
+                    type="radio"
+                    name='otherPets'
+                    value='none'
+                    checked={otherPets === 'none'}
+                    onChange={(e) => setOtherPets(e.target.value)}
+                    required
+                  />None
+                </label>
+
+                <label className="signup-otherPets-label">
+                  <input
+                    type="radio"
+                    name='otherPets'
+                    value='dogsOnly'
+                    checked={otherPets === 'dogsOnly'}
+                    onChange={(e) => setOtherPets(e.target.value)}
+                    required
+                  />Dogs Only
+                </label>
+
+                <label className="signup-otherPets-label">
+                  <input
+                    type="radio"
+                    name='otherPets'
+                    value='catsOnly'
+                    checked={otherPets === 'catsOnly'}
+                    onChange={(e) => setOtherPets(e.target.value)}
+                    required
+                  />Cats Only
+                </label>
+
+                <label className="signup-otherPets-label">
+                  <input
+                    type="radio"
+                    name='otherPets'
+                    value='both'
+                    checked={otherPets === 'both'}
+                    onChange={(e) => setOtherPets(e.target.value)}
+                    required
+                  />Both
+                </label>
+
+                <label className="signup-otherPets-label">
+                  <input
+                    type="radio"
+                    name='otherPets'
+                    value='other'
+                    checked={otherPets === 'other'}
+                    onChange={(e) => setOtherPets(e.target.value)}
+                    required
+                  />Other
+                </label>
+                  {errors.otherPets && <p className="login-error-message">{errors.otherPets}</p>}
+                  {validationErrors2.otherPets && <p className="login-error-message">{validationErrors2.otherPets}</p>}
+                </div>
+
+            </div>
 
 
-            <label>What&apos;s your pet experience?</label>
-            <div>
-              <label>
+          <div className="signup-otherPets-container">
+            <label className="signup-otherPets-question-label">What&apos;s your pet experience?</label>
+            <div className="signup-otherPets-answer-container">
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='petExperience'
@@ -421,7 +452,7 @@ function SignupFormModal() {
                 /> First Time
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='petExperience'
@@ -432,7 +463,7 @@ function SignupFormModal() {
                 /> Previous
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='petExperience'
@@ -442,11 +473,18 @@ function SignupFormModal() {
                   required
                 /> Current
               </label>
-                {errors.petExperience && <p className="signup-error-message">{errors.petExperience}</p>}
-                {validationErrors.petExperience && <p className="signup-error-message">{validationErrors.petExperience}</p>}
+                {errors.petExperience && <p className="login-error-message">{errors.petExperience}</p>}
+                {validationErrors2.petExperience && <p className="login-error-message">{validationErrors2.petExperience}</p>}
             </div>
+
+          </div>
             <button type="button" onClick={() => setShowAdditionalModal1(false)}>Back</button>
-            <button type="button" onClick={() => setShowAdditionalModal2(true)}>Next</button>
+            <button
+              type="button"
+              onClick={() => setShowAdditionalModal2(true)}
+              disabled={Object.keys(validationErrors2).length > 0 || Object.keys(errors).length > 0}
+              className={`next-button ${Object.keys(validationErrors2).length > 0 || Object.keys(errors).length > 0 ? 'disabled' : ''}`}
+              >Next</button>
 
 
           </>
@@ -457,41 +495,42 @@ function SignupFormModal() {
           <>
             <h2>Dog Preferences (Optional)</h2>
 
-            <label>House Trained?</label>
-            <div>
-              <label>
+          <div className="kids-container">
+            <label className="kids-question-label">House Trained?</label>
+            <div className="kids-answer-container">
+              <label className="kids-label">
                 <input
                   type="radio"
                   name='houseTrained'
                   value='true'
                   checked={houseTrained === true}
                   onChange={() => setHouseTrained(true)}
-                  required
                 /> Yes
               </label>
 
-              <label>
+              <label className="kids-label">
                 <input
                   type="radio"
                   name='houseTrained'
                   value='false'
                   checked={houseTrained === false}
                   onChange={() => setHouseTrained(false)}
-                  required
                 /> No
               </label>
             </div>
 
-            <label>Special Needs?</label>
-            <div>
-              <label>
+          </div>
+
+          <div className="kids-container">
+            <label className="kids-question-label">Special Needs?</label>
+            <div className="kids-answer-container">
+              <label className="kids-label">
                 <input
                   type="radio"
                   name='specialNeeds'
                   value='true'
                   checked={specialNeeds === true}
                   onChange={() => setSpecialNeeds(true)}
-                  required
                 /> Yes
               </label>
 
@@ -502,221 +541,216 @@ function SignupFormModal() {
                   value='false'
                   checked={specialNeeds === false}
                   onChange={() => setSpecialNeeds(false)}
-                  required
                 /> No
               </label>
             </div>
 
-            <label>What&apos;s your ideal age?</label>
-            <div>
-              <label>
+          </div>
+
+          <div className="signup-otherPets-container">
+            <label className="signup-otherPets-question-label">What&apos;s your ideal age?</label>
+            <div className="signup-otherPets-answer-container">
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealAge'
                   value='noPreference'
                   checked={idealAge === "noPreference"}
                   onChange={(e) => setIdealAge(e.target.value)}
-                  required
                 /> No Preference
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealAge'
                   value='puppy'
                   checked={idealAge === "puppy"}
                   onChange={(e) => setIdealAge(e.target.value)}
-                  required
                 /> Puppy
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealAge'
                   value='young'
                   checked={idealAge === "young"}
                   onChange={(e) => setIdealAge(e.target.value)}
-                  required
                 /> Young
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealAge'
                   value='adult'
                   checked={idealAge === "adult"}
                   onChange={(e) => setIdealAge(e.target.value)}
-                  required
                 /> Adult
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealAge'
                   value='senior'
                   checked={idealAge === "senior"}
                   onChange={(e) => setIdealAge(e.target.value)}
-                  required
                 /> Senior
               </label>
 
             </div>
 
-            <label>What&apos;s your ideal sex?</label>
-            <div>
-              <label>
+          </div>
+
+          <div className="signup-otherPets-container">
+            <label className="signup-otherPets-question-label">What&apos;s your ideal sex?</label>
+            <div className="signup-otherPets-answer-container">
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealSex'
                   value='noPreference'
                   checked={idealSex === "noPreference"}
                   onChange={(e) => setIdealSex(e.target.value)}
-                  required
                 /> No Preference
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealSex'
                   value='male'
                   checked={idealSex === "male"}
                   onChange={(e) => setIdealSex(e.target.value)}
-                  required
                 /> Male
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealSex'
                   value='female'
                   checked={idealSex === "female"}
                   onChange={(e) => setIdealSex(e.target.value)}
-                  required
                 /> Female
               </label>
             </div>
 
-            <label>What&apos;s your ideal size?</label>
-            <div>
-              <label>
+          </div>
+
+          <div className="signup-otherPets-container">
+            <label className="signup-otherPets-question-label">What&apos;s your ideal size?</label>
+            <div className="signup-otherPets-answer-container">
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealSize'
                   value='noPreference'
                   checked={idealSize === "noPreference"}
                   onChange={(e) => setIdealSize(e.target.value)}
-                  required
                 /> No Preference
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealSize'
                   value='small'
                   checked={idealSize === "small"}
                   onChange={(e) => setIdealSize(e.target.value)}
-                  required
                 /> Small
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealSize'
                   value='medium'
                   checked={idealSize === "medium"}
                   onChange={(e) => setIdealSize(e.target.value)}
-                  required
                 /> Medium
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealSize'
                   value='large'
                   checked={idealSize === "large"}
                   onChange={(e) => setIdealSize(e.target.value)}
-                  required
                 /> Large
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='idealSize'
                   value='xl'
                   checked={idealSize === "xl"}
                   onChange={(e) => setIdealSize(e.target.value)}
-                  required
                 /> XLarge
               </label>
             </div>
 
-            <label>What&apos;s your ideal lifestyle?</label>
-            <div>
-              <label>
+          </div>
+
+          <div className="signup-otherPets-container">
+            <label className="signup-otherPets-answer-label">What&apos;s your ideal lifestyle?</label>
+            <div className="signup-otherPets-answer-container">
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='lifestyle'
                   value='noPreference'
                   checked={lifestyle === "noPreference"}
                   onChange={(e) => setLifestyle(e.target.value)}
-                  required
                 /> No Preference
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='lifestyle'
                   value='veryActive'
                   checked={lifestyle === "veryActive"}
                   onChange={(e) => setLifestyle(e.target.value)}
-                  required
                 /> Very Active
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='lifestyle'
                   value='active'
                   checked={lifestyle === "active"}
                   onChange={(e) => setLifestyle(e.target.value)}
-                  required
                 /> Active
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='lifestyle'
                   value='laidback'
                   checked={lifestyle === "laidback"}
                   onChange={(e) => setLifestyle(e.target.value)}
-                  required
                 /> Laid-back
               </label>
 
-              <label>
+              <label className="signup-otherPets-label">
                 <input
                   type="radio"
                   name='lifestyle'
                   value='lapPet'
                   checked={lifestyle === "lapPet"}
                   onChange={(e) => setLifestyle(e.target.value)}
-                  required
                 /> Lap Pet
               </label>
             </div>
+
+          </div>
 
             <button type="button" onClick={() => {
               setShowAdditionalModal2(false)
