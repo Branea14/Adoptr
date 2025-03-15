@@ -29,10 +29,16 @@ const LandingPage = () => {
         if (swiped) setTimeout(() => setShowButtons(true), 300);
     }, [swiped]);
 
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setLoading(false);
+    //     }, 1500);
+    // }, []);
+
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 1500);
+        }, 3000);
     }, []);
 
     const handleLoginButton = async (e) => {
@@ -49,6 +55,7 @@ const LandingPage = () => {
         <div className={`container ${loading ? "loading" : "loaded"}`}>
             {loading ? (
                 <div className="loading-screen">
+                    <img src="/logo.png" alt="Adoptr Logo" className='landing-page-nav-logo'/>
                     <h1 className="brand">Adoptr</h1>
                 </div>
             ) : (
