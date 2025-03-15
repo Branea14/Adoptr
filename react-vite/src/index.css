@@ -1,1 +1,22 @@
 /* TODO: Add sitewide styles */
+:root {
+    --primary-dark: #2C1B14; /* Deep Espresso */
+    --primary-light: #E9D0B0; /* Warm Sand */
+    --accent: #D3A87C; /* Golden Brown */
+    --background: #FAF2E5; /* Soft Cream */
+    --highlight: #4B5A41; /* Muted Olive */
+}
+
+body {
+    background: var(--background);
+    color: var(--primary-dark);
+}
+
+/* .buttons button {
+    background: var(--primary-dark);
+    color: var(--primary-light);
+} */
+
+/* .buttons button:hover {
+    background: var(--accent);
+} */

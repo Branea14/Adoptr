@@ -1,0 +1,129 @@
+.login-modal-container h1 {
+    text-align: center;
+    margin: 10px 50px 5px;
+    font-size: 30px;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-modal-container {
+    /* padding: 20px; */
+    max-width: 90%;
+    margin: auto;
+    background-color: #FAF2E5;
+    border-radius: 15px;
+    width: 400px;
+    height: 350px;
+    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.login-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  width: 90%;
+  max-width: 90vw;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.login-form {
+  width: 100%;
+  /* max-width: 450px; */
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.login-form h1 {
+  /* color: black; */
+  text-align: center;
+  margin-bottom: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-form label {
+  display: flex;
+  flex-direction: column;
+  /* gap: 8px; */
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 8px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Can use below to add focus styling */
+/* .login-form input:focus {
+  outline: none;
+  border-color: #8b575c;
+  box-shadow: 0 0 0 2px rgba(139, 87, 92, 0.2);
+} */
+
+.login-form input.error {
+  border-color: #ff4444;
+  background-color: #fff8f8;
+  box-shadow: 0 0 0 1px #ff4444;
+}
+
+.login-error-message {
+  color: #ff4444;
+  font-size: 11px;
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+.login-error-banner {
+  background-color: #ffebee;
+  color: #ff4444;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+  width: 100%;
+  border: 1px solid #ffcdd2;
+}
+
+
+.login-form button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #2C1B14;
+  color: #E9D0B0;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  transform: scale(1.02);
+}
+
+
+.demo-login {
+  margin-top: 10px !important;
+  color: whitesmoke !important;
+  background-color: #8b575c !important;
+}
+
+.demo-login:hover {
+  transform: scale(1.02);
+}
+
+.login-button {
+    margin-top: 5px;
+}
