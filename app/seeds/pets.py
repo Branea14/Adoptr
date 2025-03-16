@@ -8,24 +8,24 @@ def seed_pets():
         # Pets listed by Seller ID 1 (Alice)
         (1, "Buddy", "A playful Golden Retriever who loves the outdoors.", "Golden Retriever", True, False, "puppy", "male", "large", "available", "play", "veryActive", True, True, False, "dogsOnly"),
         (1, "Shadow", "A shy but affectionate mixed breed pup.", "Mixed Breed", False, True, "puppy", "male", "medium", "available", "physicalTouch", "laidback", False, True, False, "none"),
-        (1, "Hazel", "A calm and loving senior dog.", "Cocker Spaniel", True, False, "senior", "female", "small", "pendingAdoption", "physicalTouch", "laidback", False, False, True, "both"),
+        (1, "Hazel", "A calm and loving senior dog.", "Cocker Spaniel", True, False, "senior", "female", "small", "available", "physicalTouch", "laidback", False, False, True, "both"),
         (1, "Rex", "A highly intelligent and obedient German Shepherd.", "German Shepherd", True, False, "adult", "male", "large", "available", "training", "active", True, False, True, "none"),
 
         # Pets listed by Seller ID 2 (Bob)
-        (2, "Max", "A gentle giant who loves belly rubs.", "Great Dane", True, False, "adult", "male", "xl", "pendingAdoption", "treats", "laidback", True, True, True, "none"),
-        (2, "Ginger", "A sweet and loving Golden Retriever.", "Golden Retriever", True, False, "young", "female", "large", "pendingAdoption", "play", "veryActive", True, False, True, "dogsOnly"),
+        (2, "Max", "A gentle giant who loves belly rubs.", "Great Dane", True, False, "adult", "male", "xl", "available", "treats", "laidback", True, True, True, "none"),
+        (2, "Ginger", "A sweet and loving Golden Retriever.", "Golden Retriever", True, False, "young", "female", "large", "available", "play", "veryActive", True, False, True, "dogsOnly"),
         (2, "Duke", "A strong and protective Rottweiler.", "Rottweiler", True, False, "adult", "male", "large", "available", "training", "veryActive", False, False, False, "none"),
         (2, "Maggie", "A small but brave Yorkshire Terrier.", "Yorkshire Terrier", True, False, "young", "female", "small", "available", "independent", "lapPet", True, True, False, "none"),
 
         # Pets listed by Seller ID 3 (Charlie)
-        (3, "Rocky", "An energetic Labrador Retriever who needs space to run.", "Labrador Retriever", True, False, "young", "male", "large", "adopted", "play", "active", True, False, False, "none"),
+        (3, "Rocky", "An energetic Labrador Retriever who needs space to run.", "Labrador Retriever", True, False, "young", "male", "large", "available", "play", "active", True, False, False, "none"),
         (3, "Milo", "A small dog with a big personality!", "Jack Russell Terrier", True, False, "adult", "male", "small", "available", "training", "veryActive", False, True, False, "dogsOnly"),
         (3, "Thor", "A strong and protective Husky.", "Siberian Husky", False, False, "adult", "male", "large", "available", "training", "veryActive", True, False, False, "none"),
         (3, "Rusty", "A playful and energetic mixed breed.", "Mixed Breed", False, True, "puppy", "male", "medium", "available", "training", "veryActive", True, True, False, "none"),
 
         # Pets listed by Seller ID 4 (Diana)
         (4, "Bella", "A loyal and protective German Shepherd.", "German Shepherd", True, False, "adult", "female", "large", "available", "physicalTouch", "active", True, False, True, "none"),
-        (4, "Charlie", "A laidback and friendly Basset Hound.", "Basset Hound", True, False, "senior", "male", "medium", "pendingAdoption", "independent", "laidback", False, True, False, "none"),
+        (4, "Charlie", "A laidback and friendly Basset Hound.", "Basset Hound", True, False, "senior", "male", "medium", "available", "independent", "laidback", False, True, False, "none"),
         (4, "Sasha", "A playful and social Poodle.", "Poodle", True, False, "young", "female", "small", "available", "play", "active", True, True, False, "none"),
 
         # Pets listed by Seller ID 5 (Ethan)

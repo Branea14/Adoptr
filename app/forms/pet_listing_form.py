@@ -13,7 +13,6 @@ class PetListingForm(FlaskForm):
     description = TextAreaField('Description', validators=[DataRequired()])
     breed = StringField('Breed', validators=[DataRequired()])
     vaccinated = BooleanField('Vaccinated', validators=[InputRequired()])
-    # color = StringField('Color', validators=[DataRequired()])
     ownerSurrender = BooleanField('Owner Surrender', validators=[InputRequired()])
 
     kids = BooleanField('Kids', validators=[InputRequired()])

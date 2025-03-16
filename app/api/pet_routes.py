@@ -97,14 +97,11 @@ def get_pet(id):
         "description": pet.description,
         "breed": pet.breed,
         "vaccinated": pet.vaccinated,
-        # # "color": pet.color,
         "ownerSurrender": pet.ownerSurrender,
-
         "kids": pet.kids,
         "houseTrained": pet.houseTrained,
         "specialNeeds": pet.specialNeeds,
         "otherPets": pet.otherPets,
-
         "age": pet.age,
         "sex": pet.sex,
         "size": pet.size,
@@ -166,8 +163,8 @@ def pet_details():
         ~Pet.id.in_(swiped_pets_ids) #exclude swiped pets
     ).all()
 
-    print("Fetched pets:", [pet.id for pet in nearby_pets_query])  # Debugging Line
-    print('hungry not really', [pet.__dict__ for pet in nearby_pets_query])
+    # print("Fetched pets:", [pet.id for pet in nearby_pets_query])  # Debugging Line
+    # print('hungry not really', [pet.__dict__ for pet in nearby_pets_query])
 
     if not nearby_pets_query:
         return jsonify({"pet": "No nearby pets found"}), 404
@@ -191,14 +188,11 @@ def pet_details():
         "description": pet.description,
         "breed": pet.breed,
         "vaccinated": pet.vaccinated,
-        # # "color": pet.color,
         "ownerSurrender": pet.ownerSurrender,
-
         "kids": pet.kids,
         "houseTrained": pet.houseTrained,
         "specialNeeds": pet.specialNeeds,
         "otherPets": pet.otherPets,
-
         "age": pet.age,
         "sex": pet.sex,
         "size": pet.size,
@@ -223,8 +217,7 @@ def create_pet_listing():
 
     current_user_id = current_user.id
     data = request.get_json()
-
-    print('data from api route', data)
+    # print('data from api route', data)
 
     images = data.get('images', [])
     # other_pets = data.get('otherPets', [])
@@ -239,32 +232,24 @@ def create_pet_listing():
         errors['breed'] = "Breed is required and must be less than 50 characters"
     if data.get('vaccinated') is None or not isinstance(data.get('vaccinated'), bool):
         errors['vaccinated'] = "Must have Boolean value"
-    # # if not data.get('color') or len(data['color']) >= 50:
-        # # errors['color'] = "Color is required and must be less than 50 characters"
     if data.get('ownerSurrender') is None or not isinstance(data.get('ownerSurrender'), bool):
         errors['ownerSurrender'] = "Must have Boolean value"
-
     if data.get('kids') is None or not isinstance(data.get('kids'), bool):
         errors['kids'] = "Must have Boolean value"
     if data.get('houseTrained') is None or not isinstance(data.get('houseTrained'), bool):
         errors['houseTrained'] = "Must have Boolean value"
     if data.get('specialNeeds') is None or not isinstance(data.get('specialNeeds'), bool):
         errors['specialNeeds'] = "Must have Boolean value"
-
-
-    # if not isinstance(other_pets, list) or any(item not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other'] for item in other_pets):
-    #     errors['otherPets'] = "Invalid other pet selection"
     if data.get('otherPets') not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other']:
         errors['otherPets'] = "Invalid other pet selection"
-
     if data.get('age') not in ['puppy', 'young', 'adult', 'senior']:
         errors['age'] = "Invalid age selection"
     if data.get('sex') not in ['male', 'female']:
         errors['sex'] = "Invalid sex selection"
     if data.get('size') not in ['small', 'medium', 'large', 'xl']:
         errors['size'] = "Invalid size selection"
-    if data.get('adoptionStatus') not in ['available', 'pendingAdoption', 'adopted']:
-        errors['adoptionStatus'] = "Invalid adoption status selection"
+    # if data.get('adoptionStatus') not in ['available', 'pendingAdoption', 'adopted']:
+    #     errors['adoptionStatus'] = "Invalid adoption status selection"
     if data.get('loveLanguage') not in ['physicalTouch', 'treats', 'play', 'training', 'independent']:
         errors['loveLanguage'] = "Invalid loveLanguage selection"
     if data.get('lifestyle') not in ['veryActive', 'active', 'laidback', 'lapPet']:
@@ -272,21 +257,10 @@ def create_pet_listing():
     if not isinstance(images, list) or any(not isinstance(img, dict) or 'url' not in img for img in images):
         errors['images'] = "Image URLs must be a list of objects with 'url' key"
 
-    print("LOOOOOOK HERE FOR ERRORS from backend", errors)
+    # print("LOOOOOOK HERE FOR ERRORS from backend", errors)
 
     if errors:
         return jsonify({"message": "Bad Request", "errors": errors}), 400
-
-    # if not isinstance(data.get('household'), dict):
-    #     return jsonify({"message": "Household inform must be JSON"}), 400
-
-    # household = data['household']
-    # if 'otherPets' not in household:
-    #     household['otherPets'] = None
-
-    # care_and_behavior = data.get('careAndBehavior', None)
-    # if care_and_behavior == []:
-    #     care_and_behavior = None
 
     form = PetListingForm(data=data)
     # form['csrf_token'].data = request.cookies['csrf_token']
@@ -300,18 +274,15 @@ def create_pet_listing():
         description=form.data['description'],
         breed=form.data['breed'],
         vaccinated=form.data['vaccinated'],
-        # # color=form.data['color'],
         ownerSurrender=form.data['ownerSurrender'],
-
         kids=form.data['kids'],
         houseTrained=form.data['houseTrained'],
         specialNeeds=form.data['specialNeeds'],
         otherPets=form.data['otherPets'],
-
         age=form.data['age'],
         sex=form.data['sex'],
         size=form.data['size'],
-        adoptionStatus=form.data['adoptionStatus'],
+        adoptionStatus='available',
         loveLanguage=form.data['loveLanguage'],
         lifestyle=form.data['lifestyle']
     )
@@ -355,8 +326,8 @@ def edit_pet_listing(petId):
     data = request.get_json()
     images = data.get('images', [])
     # other_pets = data.get("otherPets", [])
+    # print('data in api routes', data)
 
-    print('data in api routes', data)
     # validate
     errors = {}
     if not data.get('name') or len(data['name']) >= 50:
@@ -367,8 +338,7 @@ def edit_pet_listing(petId):
         errors['breed'] = "Breed is required and must be less than 50 characters"
     if data.get('vaccinated') is None or not isinstance(data.get('vaccinated'), bool):
         errors['vaccinated'] = "Must have Boolean value"
-    # # if not data.get('color') or len(data['color']) >= 50:
-        # # errors['color'] = "Color is required and must be less than 50 characters"
+
     if data.get('ownerSurrender') is None or not isinstance(data.get('ownerSurrender'), bool):
         errors['ownerSurrender'] = "Must have Boolean value"
 
@@ -378,11 +348,9 @@ def edit_pet_listing(petId):
         errors['houseTrained'] = "Must have Boolean value"
     if data.get('specialNeeds') is None or not isinstance(data.get('specialNeeds'), bool):
         errors['specialNeeds'] = "Must have Boolean value"
-
     if data.get('otherPets') not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other']:
         errors['otherPets'] = "Invalid other pet selection"
-    # if not isinstance(other_pets, list) or any(item not in ['none', 'dogsOnly', 'catsOnly', 'both', 'other'] for item in other_pets):
-    #     errors['otherPets'] = "Invalid other pet selection"
+
     if data.get('age') not in ['puppy', 'young', 'adult', 'senior']:
         errors['age'] = "Invalid age selection"
     if data.get('sex') not in ['male', 'female']:
@@ -406,7 +374,6 @@ def edit_pet_listing(petId):
     pet.description = data['description']
     pet.breed = data['breed']
     pet.vaccinated = data['vaccinated']
-    # # pet.color = data['color']
     pet.ownerSurrender = data['ownerSurrender']
     pet.kids = data['kids']
     pet.houseTrained = data['houseTrained']
