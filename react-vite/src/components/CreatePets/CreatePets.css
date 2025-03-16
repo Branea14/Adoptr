@@ -9,9 +9,229 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
+    /* gap: 1.2rem; */
 }
 
 /* .image-preview {
     height: 50px;
     width: auto;
 } */
+
+.create-pet-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.create-pet-header h1 {
+    text-align: center;
+    color: #2C1B14; /* Deep Espresso */
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.create-pet-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 80%;
+    /* text-align: center; */
+
+}
+
+.create-pet-form label {
+    font-weight: bold;
+    color: #4B5A41; /* Muted Olive */
+    /* margin-bottom: 5px; */
+    display: block;
+    font-size: 20px;
+}
+
+.create-pet-form input[type="text"],
+.create-pet-form input[type="radio"],
+.create-pet-form button {
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.create-pet-form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #D3A87C; /* Golden Brown */
+    background: #fff;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.create-pet-form input[type="text"]:focus {
+    border-color: #2C5F90; /* Dark Blue */
+    outline: none;
+}
+
+.create-pet-form div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.create-pet-form input[type="radio"] {
+    margin-right: 5px;
+}
+
+.create-pet-form label input[type="radio"] + span {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: #E9D0B0; /* Warm Sand */
+    transition: background 0.3s ease-in-out;
+}
+
+.create-pet-form input[type="radio"]:checked + span {
+    background: #D3A87C; /* Golden Brown */
+    color: white;
+}
+
+.create-pet-form button {
+    padding: 12px;
+    background: #3B4E32; /* Muted Olive */
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+    border-radius: 5px;
+    /* width: 100%; */
+}
+
+.create-pet-form button:hover {
+    background:  #2A3D26; /* Dark Blue */
+}
+
+.create-pet-error-message {
+    display: block;
+    color: red;
+    font-size: 14px;
+    margin-top: 3px;
+    text-align: left;
+    /* padding-left: 5px; */
+    visibility: visible;
+    min-height: 18px;
+}
+
+.create-pet-error-message.active {
+    visibility: hidden;
+}
+
+.image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.image-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.image-preview img {
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.image-preview button {
+    background: #D3A87C; /* Golden Brown */
+    padding: 5px;
+    font-size: 12px;
+}
+
+.image-preview button:hover {
+    background: #4B5A41; /* Muted Olive */
+}
+
+.textarea-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #D3A87C; /* Golden Brown */
+    background: #fff;
+    border-radius: 5px;
+    resize: vertical; /* Allows user to resize vertically */
+    min-height: 100px; /* Ensures a decent default height */
+    transition: border-color 0.3s ease-in-out;
+}
+
+.textarea-input:focus {
+    border-color: #2C5F90; /* Dark Blue */
+    outline: none;
+}
+
+/* Error Styling */
+.error.textarea-input {
+    border-color: red;
+    background: #ffe6e6; /* Light red background for visibility */
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column; /* Stacks radio buttons vertically */
+    gap: 5px;
+}
+
+.radio-group-label {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: #4B5A41 !important;
+    font-weight: normal !important;
+    cursor: pointer;
+}
+
+.split-columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 35px !important;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.column {
+    flex: 1;
+    min-width: 300px; /* Prevents columns from shrinking too much */
+}
+
+.form-section {
+    margin-bottom: 20px; /* Adds spacing between sections */
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    min-width: 135px;
+    min-height: 110px;
+    /* align-items: center; */
+}
+
+.form-section-label {
+    font-size: 18px;
+    font-weight: bold !important;
+    color: #2C1B14 !important;
+    display: block !important;
+    /* margin-bottom: 5px; */
+}
+
+.back-arrow-pet-details {
+    position: absolute;
+    top: 35px;
+    left: 120px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+}
+
+.back-arrow-pet-details:hover {
+    transform: scale(1.1);
+}
