@@ -15,7 +15,7 @@ class Pet(db.Model):
     description = db.Column(db.Text, nullable=False)
     breed = db.Column(db.String(50), nullable=False)
     vaccinated = db.Column(db.Boolean, nullable=False)
-    color = db.Column(db.String(50), nullable=False)
+    # color = db.Column(db.String(50), nullable=False)
     ownerSurrender = db.Column(db.Boolean, nullable=False)
 
     kids = db.Column(db.Boolean, nullable=False)
@@ -66,7 +66,7 @@ class Pet(db.Model):
     def __repr__(self):
         return (f"<Pet id={self.id}, name='{self.name}', breed='{self.breed}', "
                 f"age='{self.age}', sex='{self.sex}', size='{self.size}', "
-                f"color='{self.color}', vaccinated={self.vaccinated}, ownerSurrender={self.ownerSurrender}, "
+                f"vaccinated={self.vaccinated}, ownerSurrender={self.ownerSurrender}, "
                 f"adoptionStatus='{self.adoptionStatus}', loveLanguage='{self.loveLanguage}', "
                 f"lifestyle='{self.lifestyle}, sellerId='{self.sellerId}', "
                 f"latitude={float(self.latitude)}, longitude={float(self.longitude)}, ")
@@ -80,7 +80,7 @@ class Pet(db.Model):
             'description': self.description,
             'breed': self.breed,
             'vaccinated': self.vaccinated,
-            'color': self.color,
+            # 'color': self.color,
             'ownerSurrender': self.ownerSurrender,
 
             'kids': self.kids,

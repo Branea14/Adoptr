@@ -51,7 +51,7 @@ def current_pets():
         "description": pet.description,
         "breed": pet.breed,
         "vaccinated": pet.vaccinated,
-        "color": pet.color,
+        # "color": pet.color,
         "ownerSurrender": pet.ownerSurrender,
 
         "kids": pet.kids,
@@ -97,7 +97,7 @@ def get_pet(id):
         "description": pet.description,
         "breed": pet.breed,
         "vaccinated": pet.vaccinated,
-        "color": pet.color,
+        # # "color": pet.color,
         "ownerSurrender": pet.ownerSurrender,
 
         "kids": pet.kids,
@@ -191,7 +191,7 @@ def pet_details():
         "description": pet.description,
         "breed": pet.breed,
         "vaccinated": pet.vaccinated,
-        "color": pet.color,
+        # # "color": pet.color,
         "ownerSurrender": pet.ownerSurrender,
 
         "kids": pet.kids,
@@ -239,8 +239,8 @@ def create_pet_listing():
         errors['breed'] = "Breed is required and must be less than 50 characters"
     if data.get('vaccinated') is None or not isinstance(data.get('vaccinated'), bool):
         errors['vaccinated'] = "Must have Boolean value"
-    if not data.get('color') or len(data['color']) >= 50:
-        errors['color'] = "Color is required and must be less than 50 characters"
+    # # if not data.get('color') or len(data['color']) >= 50:
+        # # errors['color'] = "Color is required and must be less than 50 characters"
     if data.get('ownerSurrender') is None or not isinstance(data.get('ownerSurrender'), bool):
         errors['ownerSurrender'] = "Must have Boolean value"
 
@@ -300,7 +300,7 @@ def create_pet_listing():
         description=form.data['description'],
         breed=form.data['breed'],
         vaccinated=form.data['vaccinated'],
-        color=form.data['color'],
+        # # color=form.data['color'],
         ownerSurrender=form.data['ownerSurrender'],
 
         kids=form.data['kids'],
@@ -367,8 +367,8 @@ def edit_pet_listing(petId):
         errors['breed'] = "Breed is required and must be less than 50 characters"
     if data.get('vaccinated') is None or not isinstance(data.get('vaccinated'), bool):
         errors['vaccinated'] = "Must have Boolean value"
-    if not data.get('color') or len(data['color']) >= 50:
-        errors['color'] = "Color is required and must be less than 50 characters"
+    # # if not data.get('color') or len(data['color']) >= 50:
+        # # errors['color'] = "Color is required and must be less than 50 characters"
     if data.get('ownerSurrender') is None or not isinstance(data.get('ownerSurrender'), bool):
         errors['ownerSurrender'] = "Must have Boolean value"
 
@@ -406,7 +406,7 @@ def edit_pet_listing(petId):
     pet.description = data['description']
     pet.breed = data['breed']
     pet.vaccinated = data['vaccinated']
-    pet.color = data['color']
+    # # pet.color = data['color']
     pet.ownerSurrender = data['ownerSurrender']
     pet.kids = data['kids']
     pet.houseTrained = data['houseTrained']
@@ -462,7 +462,7 @@ def edit_pet_listing(petId):
         "description": pet.description,
         "breed": pet.breed,
         "vaccinated": pet.vaccinated,
-        "color": pet.color,
+        # # "color": pet.color,
         "ownerSurrender": pet.ownerSurrender,
         "kids": pet.kids,
         "houseTrained": pet.houseTrained,

@@ -1,7 +1,7 @@
 """recreate migration again
 
 Revision ID: 54f46e6e59c0
-Revises: 
+Revises:
 Create Date: 2025-02-27 22:55:41.907383
 
 """
@@ -61,7 +61,6 @@ def upgrade():
     sa.Column('description', sa.Text(), nullable=False),
     sa.Column('breed', sa.String(length=50), nullable=False),
     sa.Column('vaccinated', sa.Boolean(), nullable=False),
-    sa.Column('color', sa.String(length=50), nullable=False),
     sa.Column('ownerSurrender', sa.Boolean(), nullable=False),
     sa.Column('kids', sa.Boolean(), nullable=False),
     sa.Column('houseTrained', sa.Boolean(), nullable=False),
