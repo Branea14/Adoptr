@@ -113,7 +113,7 @@ const SwipingPage = () => {
         ]).finally(() => setLoading(false));
     }, [dispatch, swipeAction]);
 
-    const handleSwipe = async (id) => {
+    const handleSwipe = async () => {
         setLoading(true)
 
         setTimeout( async () => {

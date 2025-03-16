@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getViewedPetDetailsThunk } from "../../redux/pets"
-import { useNavigate, useParams } from "react-router-dom"
+import {  useParams } from "react-router-dom"
 import "./PetDetails.css"
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
-import { FaArrowLeft } from "react-icons/fa";
 
 const PetDetails = () => {
     const dispatch = useDispatch()
     const { petId } = useParams()
     const [loading, setLoading] = useState(true)
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
-    const navigate = useNavigate()
 
     const pet = useSelector((state) => state.pet.viewedPetDetails)
 

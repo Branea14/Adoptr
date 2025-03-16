@@ -107,7 +107,7 @@ function Navigation() {
                   </li>
 
                   <li className="additional-menu-links">
-                    <Link to="/matches/manage">Matches</Link>
+                    <Link to="/matches/manage">My Matches</Link>
                   </li>
 
                   <li className="additional-menu-links" onClick={handleEditProfileButton}>Edit Profile</li>
