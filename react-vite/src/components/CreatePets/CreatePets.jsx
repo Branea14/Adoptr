@@ -8,18 +8,16 @@ import { FaArrowLeft } from "react-icons/fa";
 
 const CreatePets = () => {
     const [name, setName] = useState('')
-    const [description, setDescription] = useState('') //text field
+    const [description, setDescription] = useState('')
     const [breed, setBreed] = useState('')
-    const [color, setColor] = useState('')
     // boolean /radio
     const [vaccinated, setVaccinated] = useState(null)
     const [ownerSurrender, setOwnerSurrender] = useState(null)
     const [kids, setKids] = useState(null)
     const [houseTrained, setHouseTrained] = useState(null)
     const [specialNeeds, setSpecialNeeds] = useState(null)
-    //checkbox
-    const [otherPets, setOtherPets] = useState(null)
     //radio
+    const [otherPets, setOtherPets] = useState(null)
     const [age, setAge] = useState(null)
     const [sex, setSex] = useState(null)
     const [size, setSize] = useState(null)
@@ -42,18 +40,12 @@ const CreatePets = () => {
         if (!name.trim()) newErrors.name = "Name is required"
         if (!description) newErrors.description = "Description is required"
         if (!breed || breed?.length > 50) newErrors.breed = "Breed is required"
-        if (!color || color?.length > 50) newErrors.color = "Color is required"
-
         if (vaccinated === null) newErrors.vaccinated = "Please answer question."
         if (ownerSurrender === null) newErrors.ownerSurrender = "Please answer question."
         if (kids === null) newErrors.kids = "Please answer question."
         if (houseTrained === null) newErrors.houseTrained = "Please answer question."
         if (specialNeeds === null) newErrors.specialNeeds = "Please answer question."
-
-        // if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
         if (otherPets === null) newErrors.otherPets = "Please answer question."
-
-
         if (age === null) newErrors.age = "Please answer question."
         if (sex === null) newErrors.sex = "Please answer question."
         if (size === null) newErrors.size = "Please answer question."
@@ -62,7 +54,7 @@ const CreatePets = () => {
         if (lifestyle === null) newErrors.lifestyle = "Please answer question."
 
         setValidationErrors(newErrors)
-    }, [name, description, breed, color, vaccinated, ownerSurrender, kids, houseTrained, specialNeeds, otherPets, age, sex, size, adoptionStatus, loveLanguage, lifestyle])
+    }, [name, description, breed, vaccinated, ownerSurrender, kids, houseTrained, specialNeeds, otherPets, age, sex, size, adoptionStatus, loveLanguage, lifestyle])
 
 
     const handleSubmit = async (e) => {
@@ -72,18 +64,12 @@ const CreatePets = () => {
         if (!name.trim()) newErrors.name = "Name is required"
         if (!description) newErrors.description = "Description is required"
         if (!breed && breed?.length <= 50) newErrors.breed = "Breed is required"
-        if (!color && color?.length <= 50) newErrors.color = "Color is required"
-
         if (vaccinated === null) newErrors.vaccinated = "Please answer question."
         if (ownerSurrender === null) newErrors.ownerSurrender = "Please answer question."
         if (kids === null) newErrors.kids = "Please answer question."
         if (houseTrained === null) newErrors.houseTrained = "Please answer question."
         if (specialNeeds === null) newErrors.specialNeeds = "Please answer question."
-
         if (otherPets === null) newErrors.otherPets = "Please answer question."
-
-        // if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
-
         if (age === null) newErrors.age = "Please answer question."
         if (sex === null) newErrors.sex = "Please answer question."
         if (size === null) newErrors.size = "Please answer question."
@@ -103,7 +89,6 @@ const CreatePets = () => {
                 name,
                 description,
                 breed,
-                color,
                 vaccinated: Boolean(vaccinated),
                 ownerSurrender: Boolean(ownerSurrender),
                 kids: Boolean(kids),
@@ -233,20 +218,6 @@ const CreatePets = () => {
                         required
                     />
                     {errors.breed && <p className="create-pet-error-message">{errors.breed}</p>}
-                </label>
-
-
-                <label>
-                    Color
-                    <input
-                        type="text"
-                        value={color}
-                        onChange={(e) => setColor(e.target.value)}
-                        placeholder="Color"
-                        className={errors.color ? 'error' : ''}
-                        required
-                    />
-                    {errors.color && <p className="create-pet-error-message">{errors.color}</p>}
                 </label>
 
                 <div className="split-columns">

@@ -9,16 +9,14 @@ const UpdatePetListingForm = ({pet}) => {
     const [name, setName] = useState('')
     const [description, setDescription] = useState('') //text field
     const [breed, setBreed] = useState('')
-    const [color, setColor] = useState('')
     // boolean /radio
     const [vaccinated, setVaccinated] = useState(null)
     const [ownerSurrender, setOwnerSurrender] = useState(null)
     const [kids, setKids] = useState(null)
     const [houseTrained, setHouseTrained] = useState(null)
     const [specialNeeds, setSpecialNeeds] = useState(null)
-    //checkbox
-    const [otherPets, setOtherPets] = useState(null)
     //radio
+    const [otherPets, setOtherPets] = useState(null)
     const [age, setAge] = useState(null)
     const [sex, setSex] = useState(null)
     const [size, setSize] = useState(null)
@@ -42,7 +40,6 @@ const UpdatePetListingForm = ({pet}) => {
             setName(pet.name || "")
             setDescription(pet.description || "")
             setBreed(pet.breed || "")
-            setColor(pet.color || "")
             setVaccinated(pet.vaccinated || null)
             setOwnerSurrender(pet.ownerSurrender || null)
             setKids(pet.kids || null)
@@ -63,26 +60,11 @@ const UpdatePetListingForm = ({pet}) => {
     const updateName = (e) => setName(e.target.value)
     const updateDescription = (e) => setDescription(e.target.value)
     const updateBreed = (e) => setBreed(e.target.value)
-    const updateColor = (e) => setColor(e.target.value)
     const updateVaccinated = (e) => setVaccinated(e.target.value === 'true' ? true : false)
     const updateOwnerSurrender = (e) => setOwnerSurrender(e.target.value === 'true' ? true : false)
     const updateKids = (e) => setKids(e.target.value === 'true' ? true : false)
     const updateHouseTrained = (e) => setHouseTrained(e.target.value === 'true' ? true : false)
     const updateSpecialNeeds = (e) => setSpecialNeeds(e.target.value === 'true' ? true : false)
-    // const updateOtherPets = (e) => {
-    //     const value = e.target.value
-
-    //     // console.log('value in otherPets', value)
-    //     setOtherPets(prevState => {
-    //         const currentPets = Array.isArray(prevState) ? prevState : [prevState]
-
-    //         if (e.target.checked) {
-    //             return [...currentPets, value] //add value to array
-    //         } else {
-    //             return currentPets.filter(item => item !== value) //remove value from the array
-    //         }
-    //     })
-    // }
     const updateOtherPets = (e) => setOtherPets(e.target.value)
     const updateAge = (e) => setAge(e.target.value)
     const updateSex = (e) => setSex(e.target.value)
@@ -124,15 +106,11 @@ const UpdatePetListingForm = ({pet}) => {
         if (!name.trim()) newErrors.name = "Name is required"
         if (!description) newErrors.description = "Description is required"
         if (!breed || breed?.length <= 50) newErrors.breed = "Breed is required"
-        if (!color || color?.length <= 50) newErrors.color = "Color is required"
-
         if (vaccinated === null) newErrors.vaccinated = "Please answer question."
         if (ownerSurrender === null) newErrors.ownerSurrender = "Please answer question."
         if (kids === null) newErrors.kids = "Please answer question."
         if (houseTrained === null) newErrors.houseTrained = "Please answer question."
         if (specialNeeds === null) newErrors.specialNeeds = "Please answer question."
-
-        // if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
         if (otherPets === null) newErrors.otherPets = "Please answer question."
         if (age === null) newErrors.age = "Please answer question."
         if (sex === null) newErrors.sex = "Please answer question."
@@ -142,7 +120,7 @@ const UpdatePetListingForm = ({pet}) => {
         if (lifestyle === null) newErrors.lifestyle = "Please answer question."
 
         setValidationErrors(newErrors)
-    }, [name, description, breed, color, vaccinated, ownerSurrender, kids, houseTrained, specialNeeds, otherPets, age, sex, size, adoptionStatus, loveLanguage, lifestyle])
+    }, [name, description, breed, vaccinated, ownerSurrender, kids, houseTrained, specialNeeds, otherPets, age, sex, size, adoptionStatus, loveLanguage, lifestyle])
 
 
 
@@ -153,17 +131,12 @@ const UpdatePetListingForm = ({pet}) => {
         if (!name.trim()) newErrors.name = "Name is required"
         if (!description) newErrors.description = "Description is required"
         if (!breed && breed?.length <= 50) newErrors.breed = "Breed is required"
-        if (!color && color?.length <= 50) newErrors.color = "Color is required"
-
         if (vaccinated === null) newErrors.vaccinated = "Please answer question."
         if (ownerSurrender === null) newErrors.ownerSurrender = "Please answer question."
         if (kids === null) newErrors.kids = "Please answer question."
         if (houseTrained === null) newErrors.houseTrained = "Please answer question."
         if (specialNeeds === null) newErrors.specialNeeds = "Please answer question."
-
-        // if (otherPets.length === 0) newErrors.otherPets = "Please make selection(s)"
         if (otherPets === null) newErrors.otherPets = "Please answer question."
-
         if (age === null) newErrors.age = "Please answer question."
         if (sex === null) newErrors.sex = "Please answer question."
         if (size === null) newErrors.size = "Please answer question."
@@ -184,7 +157,6 @@ const UpdatePetListingForm = ({pet}) => {
                 name,
                 description,
                 breed,
-                color,
                 vaccinated: Boolean(vaccinated),
                 ownerSurrender: Boolean(ownerSurrender),
                 kids: Boolean(kids),
@@ -247,13 +219,12 @@ const UpdatePetListingForm = ({pet}) => {
 
         <label>
             Description
-            <input
-                type="text"
+            <textarea
                 value={description || ""}
                 onChange={updateDescription}
-                placeholder="Description"
-                className={errors.description ? 'error' : ''}
+                className={errors.description ? 'error textarea-input' : 'textarea-input'}
                 required
+                rows='4'
             />
             {errors.description && <p className="create-pet-error-message">{errors.description}</p>}
         </label>
@@ -269,19 +240,6 @@ const UpdatePetListingForm = ({pet}) => {
                 required
             />
             {errors.breed && <p className="create-pet-error-message">{errors.breed}</p>}
-        </label>
-
-        <label>
-            Color
-            <input
-                type="text"
-                value={color || ""}
-                onChange={updateColor}
-                placeholder="Color"
-                className={errors.color ? 'error' : ''}
-                required
-            />
-            {errors.color && <p className="create-pet-error-message">{errors.color}</p>}
         </label>
 
         <div className="split-columns">

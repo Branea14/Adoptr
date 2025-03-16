@@ -162,6 +162,7 @@
     resize: vertical; /* Allows user to resize vertically */
     min-height: 100px; /* Ensures a decent default height */
     transition: border-color 0.3s ease-in-out;
+    font-family: "Open Sans";
 }
 
 .textarea-input:focus {
