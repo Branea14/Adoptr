@@ -1,25 +1,93 @@
-/* .pet-name {
-    background-color: red;
-} */
-
-.pet-details-container {
-    /* position: relative;
-    margin-left: 300px;
-    padding: 20px; */
-    /* margin-left: 200px; */
-    position: absolute;
-    top: 100px;
-    left: 300px;
-    width: calc(100% - 300px);
-    /* margin-top: 80px; */
-    /* padding: 20px; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.pet-adoption-status {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+    text-transform: capitalize;
 }
 
-/* If navbar has fixed positioning, add padding to body */
-/* body {
-    margin: 0;
-    display: flex;
-} */
+.adopt-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4B5A41;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background 0.3s ease-in-out;
+}
+
+.adopt-button:hover {
+    background-color: #37402e;
+}
+
+.details-pet-name {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.details-description {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.details-age-sex-size {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: capitalize;
+}
+
+.details-lifestyle {
+    font-size: 16px;
+    font-weight: bold;
+    color: #4B5A41;
+}
+
+.details-divider {
+    border: none;
+    height: 1px;
+    background: #D3A87C;
+    margin: 12px 0;
+}
+
+.details-attributes {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 5px 15px;
+    font-size: 14px;
+    color: #2C1B14;
+}
+
+.details-attributes span {
+    font-weight: bold;
+}
+
+.yes {
+    color: green;
+}
+
+.no {
+    color: red;
+}
+
+.back-arrow-pet-details {
+    position: absolute;
+    top: 5px;
+    left: 35px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+}
+
+.back-arrow-pet-details:hover {
+    transform: scale(1.1);
+}

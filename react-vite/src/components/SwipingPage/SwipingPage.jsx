@@ -5,7 +5,7 @@ import { useDrag } from "@use-gesture/react";
 import { createMatch, rejectedMatches, requestedMatches } from "../../redux/matches";
 import { approvedMatches } from "../../redux/matches";
 import "./SwipingPage.css"
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
 const SwipingPage = () => {
     const dispatch = useDispatch()
@@ -169,9 +169,9 @@ const SwipingPage = () => {
                 <div className="swipe-card"{...bind()} style={{transform: `translate(${position}px)`}}>
                     {images && images.length > 1 ? (
                         <div className="swipe-image-container">
-                        <FaArrowLeft className='arrow-icon-left-swipe' onClick={handlePrevImage}/>
+                        <FaChevronLeft className='arrow-icon-left-swipe' onClick={handlePrevImage}/>
                         <img src={currentImage} alt={pet.name} className="swipe-pet-images" />
-                        <FaArrowRight className='arrow-icon-right-swipe' onClick={handleNextImage}/>
+                        <FaChevronRight className='arrow-icon-right-swipe' onClick={handleNextImage}/>
                         </div>
                     ) :
                     (pet?.PetImages.map((image, index) => (

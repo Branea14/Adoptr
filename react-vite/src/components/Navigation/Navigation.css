@@ -232,3 +232,7 @@ letter-spacing: 2px;
   transform: translateX(-50%);
   text-align: center;
 }
+
+.profile-button {
+  cursor: pointer;
+}
