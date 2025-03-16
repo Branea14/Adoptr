@@ -106,6 +106,8 @@
     /* font-size: clamp(16px, 3vw, 55px); Adjust based on preference */
     max-width: 90%; /* Prevents text from stretching too much */
     white-space: nowrap; /* Prevents text wrapping */
+    user-select: none;
+    pointer-events: auto;
 }
 
 .slogan {

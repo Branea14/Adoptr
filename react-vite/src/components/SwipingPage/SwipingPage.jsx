@@ -12,7 +12,7 @@ const SwipingPage = () => {
     const [loading, setLoading] = useState(true)
     const [swipeAction, setSwipeAction] = useState(false)
     const [position, setPosition] = useState(0)
-    const [hidePets, setHidePets] = useState({})
+    // const [hidePets, setHidePets] = useState({})
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
     const currentUser = useSelector((state) => state.session.user)
@@ -42,7 +42,8 @@ const SwipingPage = () => {
 
     const pet = useSelector((state) => {
         const petDetails = state.pet.petDetails;
-        if (!petDetails || hidePets[petDetails.id]) return null;
+        if (!petDetails) return null;
+        // if (!petDetails || hidePets[petDetails.id]) return null;
 
         console.log("Currently Displayed Pet:", petDetails);
 
@@ -90,37 +91,37 @@ const SwipingPage = () => {
         ]).finally(() => setLoading(false));
     }, [dispatch, swipeAction]);
 
-    // useEffect(() => {
-    //     console.log("Approved Matches:", approvedMatch);
-    //     console.log("Requested Matches:", requestedMatch);
-    //     console.log("Rejected Matches:", rejectedMatch);
-    // }, [approvedMatch, requestedMatch, rejectedMatch]);
-
-
-
     const handleSwipe = async (id) => {
         setLoading(true)
 
-        await Promise.all([
-            dispatch(requestedMatches()),
-            dispatch(approvedMatches()),
-            dispatch(rejectedMatches())
-        ])
+        setTimeout( async () => {
+            await Promise.all([
+                dispatch(requestedMatches()),
+                dispatch(approvedMatches()),
+                dispatch(rejectedMatches())
+            ])
 
-        console.log("fetching a new pet after swipe......")
+            console.log("fetching a new pet after swipe......")
 
-        // const newPet = await dispatch(getDetails())
-        dispatch(getDetails()).then((newPet) => {
-            if (newPet) {
-                setTimeout(() => {
-                    setHidePets((prev) => ({...prev, [id]: true}))
-                    setPosition(0);
-                    setCurrentImgIndex(0)
-                }, 300)
-            }
-            setLoading(false)
-        })
+            dispatch(getDetails()).then((newPet) => {
+                if (!newPet) {
+                    console.log("No more pets available")
+                    setLoading(false)
+                    return
+                }
+                setPosition(0);
+                setCurrentImgIndex(0)
+                setLoading(false)
+            }).catch((error) => {
+                console.error("Error fetching new pet", error)
+                if (error.response?.status === 400) {
+                    console.log("no more pets to swipe")
+                }
+                setLoading(false)
+            })
+        }, 300)
     }
+
     //if swipe right xDir > 0
     //creates match (POST)
     //sets status to REQUESTED
@@ -131,17 +132,6 @@ const SwipingPage = () => {
         const minVelocity = 0.01;
 
         if (!down && velocity[0] > minVelocity && Math.abs(x) > requiredDistance) {
-            // const existingMatch = requestedMatch ? requestedMatch[pet.id] : null
-            // let matchStatus = xDir > 0 ? "APPROVED" : "REJECTED"
-
-            // if (existingMatch) {
-            //     dispatch(updatedMatch({id: existingMatch.id, status: matchStatus}))
-            //         .then(() => {
-            //             if (matchStatus === 'APPROVED') return dispatch(approvedMatches())
-            //             if (matchStatus === 'REJECTED') return dispatch(rejectedMatches())
-            //         })
-            //         .then(() => handleSwipe(pet.id))
-            // } else {
                 let matchStatus = xDir > 0 ? "REQUESTED" : "REJECTED"
                 dispatch(createMatch(pet, matchStatus))
                     .then(() => {
@@ -149,7 +139,6 @@ const SwipingPage = () => {
                         if (matchStatus === 'REJECTED') return dispatch(rejectedMatches())
                     })
                     .then(() => handleSwipe(pet.id))
-            // }
 
             setTimeout(() => {
                 setSwipeAction(true)
@@ -161,34 +150,22 @@ const SwipingPage = () => {
 
 
     if (!pet && loading) return <p>Loading pet details...</p>
-    if (!pet && !loading) return <p>No more pets nearby!</p>
+    if (!pet) return <p>No more pets nearby!</p>
 
     return (
-        <div className="swiping-page-container">
-        {/* moved to navigation */}
-            {/* <h2>Approved Matches</h2>
-            <div>
-                {filteredApprovedMatches.length > 0 ? (
-                    filteredApprovedMatches.map((match) => (
-                        <div key={match.id}>
-                            <h3>{match.petName}</h3>
-                            <img src={match.petImage} alt={`${match.petName}`}/>
-                        </div>
-                    ))
-                ) : null}
-            </div> */}
+        <div className="swiping-page-container" {...bind()} style={{transform: `translate(${position}px)`}}>
             {pet && Object.keys(pet).length > 0 ? (
-                <div className="swipe-card"{...bind()} style={{transform: `translate(${position}px)`}}>
+                <div className="swipe-card">
                     {images && images.length > 1 ? (
                         <div className="swipe-image-container">
                         <FaChevronLeft className='arrow-icon-left-swipe' onClick={handlePrevImage}/>
-                        <img src={currentImage} alt={pet.name} className="swipe-pet-images" />
+                        <img draggable='false' src={currentImage} alt={pet.name} className="swipe-pet-images" />
                         <FaChevronRight className='arrow-icon-right-swipe' onClick={handleNextImage}/>
                         </div>
                     ) :
                     (pet?.PetImages.map((image, index) => (
                         <div key={index}>
-                            <img className='swipe-pet-image' src={image.url}/>
+                            <img draggable='false' className='swipe-pet-image' src={image.url}/>
                         </div>
                     )))
                     }
@@ -211,12 +188,7 @@ const SwipingPage = () => {
                                     <p><span>Vaccinated:</span> <strong className={pet.vaccinated ? "yes" : "no"}>{pet.vaccinated ? "Yes" : "No"}</strong></p>
                                     <p><span>Special Needs:</span> <strong className={pet.specialNeeds ? "yes" : "no"}>{pet.specialNeeds ? "Yes" : "No"}</strong></p>
                                     </div>
-                            {/* <p className="swipe-housetrained">HouseTrained? {pet.houseTrained ? "Yes" : "No"}</p>
-                            <p className="swipe-kids">Good with kids? {pet.kids ? "Yes" : "No"}</p>
-                            <p className="swipe-otherpets">Good with other pets? {pet.otherPet ? "Yes" : "No"}</p>
-                            <p className="swipe-owner-surrender">Owner Surrender? {pet.ownerSurrender ? "Yes" : "No"}</p>
-                            <p className="swipe-vaccinated">Vaccinated? {pet.vaccinated ? "Yes" : "No"}</p>
-                            <p className="swipe-special-needs">Special Needs? {pet.specialNeeds ? "Yes" : "No"}</p> */}
+
                         </div>
                     </div>
             ) : <p>No more pets nearby</p>}
