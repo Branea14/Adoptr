@@ -5,6 +5,7 @@ import { useDrag } from "@use-gesture/react";
 import { createMatch, rejectedMatches, requestedMatches } from "../../redux/matches";
 import { approvedMatches } from "../../redux/matches";
 import "./SwipingPage.css"
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const SwipingPage = () => {
     const dispatch = useDispatch()
@@ -12,8 +13,8 @@ const SwipingPage = () => {
     const [swipeAction, setSwipeAction] = useState(false)
     const [position, setPosition] = useState(0)
     const [hidePets, setHidePets] = useState({})
+    const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
-    // const currentUser = useSelector((state) => state.session.user)
     const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
     const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
     const rejectedMatch = useSelector((state) => state.matches?.rejectedMatches)
@@ -52,6 +53,20 @@ const SwipingPage = () => {
     //moved to navigation
     // const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match.sellerId !== currentUser.id);
 
+    const images = pet?.PetImages || [];
+    const currentImage = images.length > 0 ? images[currentImgIndex]?.url : "";
+
+    const handleNextImage = () => {
+        if (images.length > 0) {
+            setCurrentImgIndex((prevIndex) => (prevIndex + 1) % images.length)
+        }
+    }
+
+    const handlePrevImage = () => {
+        if (images.length > 0) {
+          setCurrentImgIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+        }
+      };
 
     useEffect(() => {
         setLoading(true);
@@ -87,7 +102,8 @@ const SwipingPage = () => {
             if (newPet) {
                 setTimeout(() => {
                     setHidePets((prev) => ({...prev, [id]: true}))
-                    setPosition(0)
+                    setPosition(0);
+                    setCurrentImgIndex(0)
                 }, 300)
             }
             setLoading(false)
@@ -150,34 +166,46 @@ const SwipingPage = () => {
                 ) : null}
             </div> */}
             {pet && Object.keys(pet).length > 0 ? (
-                <div {...bind()} style={{
-                    border: "2px solid red",
-                    padding: "16px",
-                    borderRadius: "8px",
-                    maxWidth: "400px",
-                    margin: "20px auto",
-                    transform: `translate(${position}px)`
-                }}>
-                <h1>{pet.name}, {pet.breed}</h1>
-                <p>{pet.description}</p>
-                <p>Age: {pet.age}</p>
-                <p>Color: {pet.color}</p>
-                <p>Lifestyle: {pet.lifestyle}</p>
-                <p>Size: {pet.size}</p>
-                <p>Sex: {pet.sex}</p>
-                <p>Love Language: {pet.loveLanguage}</p>
-                <p>HouseTrained? {pet.houseTrained}</p>
-                <p>Good with kids? {pet.kids}</p>
-                <p>Good with other pet? {pet.otherPet}</p>
-                <p>Owner Surrender? {pet.ownerSurrender}</p>
-                <p>Vaccinated? {pet.vaccinated}</p>
-                <p>Special Needs? {pet.specialNeeds}</p>
-                {pet?.PetImages.map((image, index) => (
-                    <div key={index}>
-                        <img src={image.url}/>
+                <div className="swipe-card"{...bind()} style={{transform: `translate(${position}px)`}}>
+                    {images && images.length > 1 ? (
+                        <div className="swipe-image-container">
+                        <FaArrowLeft className='arrow-icon-left-swipe' onClick={handlePrevImage}/>
+                        <img src={currentImage} alt={pet.name} className="swipe-pet-images" />
+                        <FaArrowRight className='arrow-icon-right-swipe' onClick={handleNextImage}/>
+                        </div>
+                    ) :
+                    (pet?.PetImages.map((image, index) => (
+                        <div key={index}>
+                            <img className='swipe-pet-image' src={image.url}/>
+                        </div>
+                    )))
+                    }
+
+                        <div className="swipe-details-container">
+                            <h1 className="swipe-pet-name">{pet.name} &middot; {pet.breed}</h1>
+                            <p className="swipe-description">{pet.description}</p>
+                            <p className="swipe-age-sex-size"><strong>{pet.age} &middot; {pet.sex} &middot; {pet.size}</strong></p>
+                            {/* <p>Color: {pet.color}</p> */}
+                            <p className="swipe-lifestyle"><strong>Lifestyle:</strong> {pet.lifestyle} &middot; <strong>Love Language:</strong> {pet.loveLanguage}</p>
+
+                            <hr className="swipe-divider" />
+
+                                <div className="swipe-attributes">
+                                    <p><span>House Trained:</span> <strong className={pet.houseTrained ? "yes" : "no"}>{pet.houseTrained ? "Yes" : "No"}</strong></p>
+                                    <p><span>Good with Kids:</span> <strong className={pet.kids ? "yes" : "no"}>{pet.kids ? "Yes" : "No"}</strong></p>
+                                    <p><span>Good with Other Pets:</span> <strong className={pet.otherPet ? "yes" : "no"}>{pet.otherPet ? "Yes" : "No"}</strong></p>
+                                    <p><span>Owner Surrender:</span> <strong className={pet.ownerSurrender ? "yes" : "no"}>{pet.ownerSurrender ? "Yes" : "No"}</strong></p>
+                                    <p><span>Vaccinated:</span> <strong className={pet.vaccinated ? "yes" : "no"}>{pet.vaccinated ? "Yes" : "No"}</strong></p>
+                                    <p><span>Special Needs:</span> <strong className={pet.specialNeeds ? "yes" : "no"}>{pet.specialNeeds ? "Yes" : "No"}</strong></p>
+                                    </div>
+                            {/* <p className="swipe-housetrained">HouseTrained? {pet.houseTrained ? "Yes" : "No"}</p>
+                            <p className="swipe-kids">Good with kids? {pet.kids ? "Yes" : "No"}</p>
+                            <p className="swipe-otherpets">Good with other pets? {pet.otherPet ? "Yes" : "No"}</p>
+                            <p className="swipe-owner-surrender">Owner Surrender? {pet.ownerSurrender ? "Yes" : "No"}</p>
+                            <p className="swipe-vaccinated">Vaccinated? {pet.vaccinated ? "Yes" : "No"}</p>
+                            <p className="swipe-special-needs">Special Needs? {pet.specialNeeds ? "Yes" : "No"}</p> */}
+                        </div>
                     </div>
-                ))}
-                </div>
             ) : <p>No more pets nearby</p>}
         </div>
     )
