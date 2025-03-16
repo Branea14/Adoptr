@@ -9,6 +9,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    padding: 20px;
 }
 
 .approved-match-image-on-page {
@@ -16,9 +18,69 @@
     height: 155px;
     border-radius: 50%;
     object-fit: cover;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
   }
+
+.approved-match-image-on-page:hover {
+  transform: scale(1.05);
+}
 
   .approved-match-on-page {
     display: flex;
-    flex-direction: row;
+    flex-direction: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 20px;
   }
+
+.approved-match-tile {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  width: 160px;
+  text-align: center;
+}
+
+
+.pet-details-link h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2C5F90;
+  margin-top: 8px;
+
+}
+.delete-modal {
+  background-color: #B22222;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  font-family: "Open Sans";
+  min-width: 100px;
+}
+
+/* Hover effect */
+.delete-modal:hover {
+  background-color: #8B0000;
+}
+
+a {
+  text-decoration: none;
+  font-family: "Open Sans";
+}
+ h1 {
+  font-family: "Open Sans";
+ }
+
+ .approved-matches-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2C1B14;
+  margin-bottom: 20px;
+  text-align: center;
+}

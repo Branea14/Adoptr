@@ -35,7 +35,7 @@ const ApprovedMatches = () => {
 
     return (
         <div className="approved-matches-container">
-            <h1>Approved Matches</h1>
+            <h1 className="approved-matches-title">Approved Matches</h1>
             <div className="approved-match-on-page">
                 {loading ? null : filteredApprovedMatches.length > 0 ? (
                     filteredApprovedMatches.map((match) => (
@@ -47,9 +47,9 @@ const ApprovedMatches = () => {
                             {/* </div> */}
                         </Link>
                         <div className='pet-actions'>
-                            <OpenModalButton className="delete-modal" buttonText="Delete" modalComponent={<UnmatchModal match={match} triggerRefresh={triggerRefresh}/>}/>
+                            <OpenModalButton className="delete-modal" buttonText="UNMATCH" modalComponent={<UnmatchModal match={match} triggerRefresh={triggerRefresh}/>}/>
                         </div>
-                        </div>
+                    </div>
                     ))
                 ) : (<p>No approved matches yet</p>)}
             </div>
