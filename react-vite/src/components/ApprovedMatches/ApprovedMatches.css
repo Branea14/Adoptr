@@ -50,7 +50,7 @@
   margin-top: 8px;
 
 }
-.delete-modal {
+.delete-modal-button {
   background-color: #B22222;
   color: white;
   border: none;
@@ -65,7 +65,7 @@
 }
 
 /* Hover effect */
-.delete-modal:hover {
+.delete-modal-button:hover {
   background-color: #8B0000;
 }
 

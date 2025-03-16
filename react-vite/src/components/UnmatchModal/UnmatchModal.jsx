@@ -18,7 +18,7 @@ const UnmatchModal = ({match, triggerRefresh}) => {
     }
 
     return (
-        <div className="modal-container">
+        <div className="modal-container delete-modal">
             <h1 className="delete-pet-header">Confirm Unmatch</h1>
             <div className="confirmation-question">Are you sure you want to unmatch?</div>
             <div className="action-buttons">

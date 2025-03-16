@@ -115,7 +115,7 @@ const ManageMatches = () => {
 
                                 </div>
                         <div className='pet-actions'>
-                            <OpenModalButton className="delete-modal" buttonText="UNMATCH" modalComponent={<UnmatchModal match={match} triggerRefresh={triggerRefresh}/>}/>
+                            <OpenModalButton className="delete-modal-button" buttonText="UNMATCH" modalComponent={<UnmatchModal match={match} triggerRefresh={triggerRefresh}/>}/>
                         </div>
                         </div>
                     ))

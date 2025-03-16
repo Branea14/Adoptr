@@ -18,7 +18,7 @@ const DeletePetModal = ({pet, triggerRefresh}) => {
     }
 
     return (
-        <div className="modal-container">
+        <div className="modal-container delete-modal">
             <h1 className="delete-pet-header">Confirm Delete</h1>
             <div className="confirmation-question">Are you sure you want to remove this pet listing?</div>
             <div className="action-buttons">

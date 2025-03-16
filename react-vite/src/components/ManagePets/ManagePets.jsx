@@ -73,7 +73,7 @@ const ManagePets = () => {
 
                         <div className='pet-actions'>
                             <button className='update-pet-button' onClick={() => navigate(`/pets/${pet.id}/edit`)}>Update</button>
-                            <OpenModalButton className="delete-modal" buttonText="Delete" modalComponent={<DeletePetModal pet={pet} triggerRefresh={triggerRefresh}/>}/>
+                            <OpenModalButton className="delete-modal-button" buttonText="Delete" modalComponent={<DeletePetModal pet={pet} triggerRefresh={triggerRefresh}/>}/>
                         </div>
                     </div>
                 ))}
