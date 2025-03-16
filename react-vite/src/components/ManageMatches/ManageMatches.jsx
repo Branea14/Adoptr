@@ -92,6 +92,7 @@ const ManageMatches = () => {
                                             <img className="approved-match-image-on-page" src={match.user1Avatar} alt="User Avatar"/>
                                         )}
                                         {/* <h3>{match.petName}</h3> */}
+                                        <span className="tooltiptext">Interested in {match.petName}</span>
                                     </div>
                                     <div className="pet-actions-matches">
                                         <button className='update-pet-button' onClick={() => handleApproveMatch(match.petId)}>APPROVE</button>
