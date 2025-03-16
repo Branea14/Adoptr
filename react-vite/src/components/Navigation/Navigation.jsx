@@ -20,6 +20,7 @@ function Navigation() {
   const currentUser = useSelector((state) => state.session.user)
   const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
 
+  console.log('approvedMatch', approvedMatch)
   const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match.sellerId !== currentUser.id);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ function Navigation() {
       dispatch(thunkAuthenticate()),
       dispatch(approvedMatches())
     ]).finally(() => setLoading(false))
-  }, [dispatch])
+  }, [dispatch, approvedMatches])
 
   useEffect(() => {
     dispatch(approvedMatches())

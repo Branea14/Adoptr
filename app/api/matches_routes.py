@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request, session
 from flask_login import login_required, current_user
 from app.models import db, Match, Pet, PetImage
 from sqlalchemy.orm import joinedload
+from sqlalchemy import desc
 
 matches_routes = Blueprint('matches', __name__)
 
@@ -14,7 +15,7 @@ def all_approved_matches():
     ).filter(
         ((Match.userId1 == current_user.id) | (Match.userId2 == current_user.id)) &
         (Match.status == 'APPROVED')
-    ).all()
+    ).order_by(desc(Match.createdAt)).all()
 
     if not matches:
         return jsonify({"approved_matches": []}), 200
@@ -91,7 +92,9 @@ def all_requested_matches():
 @matches_routes.route('/rejected')
 @login_required
 def all_rejected_matches():
-    matches = Match.query.filter(
+    matches = Match.query.options(
+        joinedload(Match.pets)
+    ).filter(
         ((Match.userId1 == current_user.id) | (Match.userId2 == current_user.id)) &
         (Match.status == 'REJECTED')
     ).all()
@@ -99,15 +102,21 @@ def all_rejected_matches():
     if not matches:
         return jsonify({"rejected_matches": []}), 200
 
-    match_data = [{
-        "id": match.id,
-        "senderUserId1": match.userId1,
-        "receiverUserId2": match.userId2,
-        "petId": match.petId,
-        "status": match.status,
-        "createdAt": match.createdAt.isoformat(),
-        "updatedAt": match.updatedAt.isoformat()
-    } for match in matches]
+
+    match_data = []
+    for match in matches:
+        pet = match.pets
+
+        match_data.append({
+            "id": match.id,
+            "senderUserId1": match.userId1,
+            "receiverUserId2": match.userId2,
+            "petId": match.petId,
+            "status": match.status,
+            "createdAt": match.createdAt.isoformat(),
+            "updatedAt": match.updatedAt.isoformat(),
+            "sellerId": pet.sellerId
+        })
 
     return jsonify({"Matches": match_data}), 200
 

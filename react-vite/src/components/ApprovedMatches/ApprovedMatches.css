@@ -8,7 +8,7 @@
     /* padding: 20px; */
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     text-align: center;
     padding: 20px;
 }
@@ -29,9 +29,10 @@
   .approved-match-on-page {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 25px;
     margin-top: 20px;
+    margin-left: 10px;
   }
 
 .approved-match-tile {

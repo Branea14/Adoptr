@@ -15,28 +15,40 @@ const SwipingPage = () => {
     const [hidePets, setHidePets] = useState({})
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
+    const currentUser = useSelector((state) => state.session.user)
     const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
     const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
     const rejectedMatch = useSelector((state) => state.matches?.rejectedMatches)
+
+    const filteredApprovedMatches = Object.values(approvedMatch || {})
+        .filter(match => match.sellerId !== currentUser.id)
+        .reduce((acc, match) => {
+            acc[match.petId] = match
+            return acc;
+        }, {})
+    const filteredRequestedMatches = Object.values(requestedMatch || {})
+        .filter(match => match.sellerId !== currentUser.id)
+        .reduce((acc, match) => {
+            acc[match.petId] = match
+            return acc;
+        }, {})
+    const filteredRejectedMatches = Object.values(rejectedMatch || {})
+        .filter(match => match.sellerId !== currentUser.id)
+        .reduce((acc, match) => {
+            acc[match.petId] = match
+            return acc
+        }, {})
+
+
     const pet = useSelector((state) => {
-        // const petDetails = state.pet.petDetails
-
-        // if (petDetails && !hidePets[petDetails.id]) {
-        //     if (approvedMatch && approvedMatch[petDetails.id]) return null;
-        //     if (rejectedMatch && rejectedMatch[petDetails.id]) return null
-        //     // if (requestedMatch && requestedMatch[petDetails.id]?.receiverUserId2 === currentUser.id) return null
-
-        //     return petDetails
-        // }
-        // return null;
         const petDetails = state.pet.petDetails;
         if (!petDetails || hidePets[petDetails.id]) return null;
 
         console.log("Currently Displayed Pet:", petDetails);
 
-        const isApproved = Object.values(approvedMatch || {}).some(match => match.petId === petDetails.id);
-        const isRejected = Object.values(rejectedMatch || {}).some(match => match.petId === petDetails.id);
-        const isRequested = Object.values(requestedMatch || {}).some(match => match.petId === petDetails.id);
+        const isApproved = Object.values(filteredApprovedMatches || {}).some(match => match.petId === petDetails.id);
+        const isRejected = Object.values(filteredRejectedMatches || {}).some(match => match.petId === petDetails.id);
+        const isRequested = Object.values(filteredRequestedMatches || {}).some(match => match.petId === petDetails.id);
 
         console.log("Is Approved:", isApproved, "Is Requested:", isRequested, "Is Rejected:", isRejected);
 
@@ -46,12 +58,12 @@ const SwipingPage = () => {
     })
 
     console.log('loooook here', pet)
-    console.log('approved matches', approvedMatch)
+    // console.log('approved matches', approvedMatch)
+    console.log('filteredApproved', filteredApprovedMatches)
     console.log('requested matches', requestedMatch)
-    console.log('rejected matches', rejectedMatch)
-
-    //moved to navigation
-    // const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match.sellerId !== currentUser.id);
+    console.log('filteredRequested', filteredRequestedMatches)
+    // console.log('rejected matches', rejectedMatch)
+    console.log('filteredRejected', filteredRejectedMatches)
 
     const images = pet?.PetImages || [];
     const currentImage = images.length > 0 ? images[currentImgIndex]?.url : "";
@@ -183,6 +195,7 @@ const SwipingPage = () => {
 
                         <div className="swipe-details-container">
                             <h1 className="swipe-pet-name">{pet.name} &middot; {pet.breed}</h1>
+                            <p>{pet.id}</p>
                             <p className="swipe-description">{pet.description}</p>
                             <p className="swipe-age-sex-size"><strong>{pet.age} &middot; {pet.sex} &middot; {pet.size}</strong></p>
                             {/* <p>Color: {pet.color}</p> */}

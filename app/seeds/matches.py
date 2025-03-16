@@ -5,30 +5,30 @@ from datetime import datetime, timezone
 
 def seed_matches():
     match_data = [
-        # Approved Matches
-        (1, 2, 3, "APPROVED"),
-        (2, 3, 5, "APPROVED"),
-        (3, 4, 7, "APPROVED"),
-        (4, 5, 10, "APPROVED"),
-        (5, 1, 12, "APPROVED"),
-        (1, 3, 15, "APPROVED"),
-        (2, 4, 17, "APPROVED"),
-        (3, 5, 19, "APPROVED"),
+        (1, 2, 6, "APPROVED"),
+        (1, 4, 15, "REJECTED"),
+        (1, 3, 10, "APPROVED"),
+        (1, 5, 18, "REQUESTED"),
 
-        # Requested Matches
+        (2, 3, 11, "APPROVED"),
         (2, 1, 4, "REQUESTED"),
-        (3, 2, 6, "REQUESTED"),
-        (4, 3, 8, "REQUESTED"),
-        (5, 4, 11, "REQUESTED"),
-        (1, 5, 13, "REQUESTED"),
-        (3, 1, 16, "REQUESTED"),
-        (4, 2, 18, "REQUESTED"),
+        (2, 5, 19, "REJECTED"),
+        (2, 4, 14, "APPROVED"),
 
-        # Rejected Matches
-        (1, 4, 2, "REJECTED"),
-        (2, 5, 9, "REJECTED"),
-        (3, 1, 14, "REJECTED"),
-        (4, 3, 1, "REJECTED"),
+        (3, 4, 13, "APPROVED"),
+        (3, 2, 6, "REQUESTED"),
+        (3, 5, 17, "APPROVED"),
+        (3, 1, 1, "REQUESTED"),
+        (3, 1, 2, "REJECTED"),
+
+        (4, 5, 16, "APPROVED"),
+        (4, 3, 9, "REQUESTED"),
+        (4, 2, 8, "REQUESTED"),
+        (4, 3, 11, "REJECTED"),
+
+        (5, 1, 3, "APPROVED"),
+        (5, 4, 13, "REQUESTED"),
+
     ]
 
     match_objects = []

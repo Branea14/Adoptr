@@ -6,6 +6,7 @@ import { approvedMatches, rejectedMatches, requestedMatches, updatedMatch } from
 // import { FaUserCircle } from 'react-icons/fa';
 import OpenModalButton from "../OpenModalButton"
 import UnmatchModal from "../UnmatchModal/UnmatchModal"
+import { Link } from "react-router-dom"
 
 
 const ManageMatches = () => {
@@ -76,53 +77,57 @@ const ManageMatches = () => {
 
     return (
         <div className="manage-matches-container">
-            <div className="incoming-matches">
-                <h1>Matches Waiting...</h1>
-                {loading ? null : incomingMatch.length > 0 ? (
-                    incomingMatch?.map((match) => (
-                        <div className="manage-match-tile" key={match.id}>
-                                <div className='manage-match-image-on-page'>
-                                    {currentUser.id === match.senderUserId1 ?
-                                        <img src={match.user2Avatar} alt="User Avatar"/> :
-                                        <img src={match.user1Avatar} alt="User Avatar"/>
-                                   }
-                                                                    <h3>{match.petName}</h3>
-                                                                    {/* <img className='approved-match-image-on-page' src={match.petImage} alt={`${match.petName}`}/> */}
-
+            <div className="matches-section">
+                {/* Incoming Matches Section */}
+                <div className="matches-container">
+                    <h1 className="approved-matches-title">New Matches</h1>
+                    <div className="approved-match-on-page">
+                        {loading ? null : incomingMatch.length > 0 ? (
+                            incomingMatch.map((match) => (
+                                <div className="approved-match-tile" key={match.id}>
+                                    <div className="manage-match-image-on-page">
+                                        {currentUser.id === match.senderUserId1 ? (
+                                            <img className="approved-match-image-on-page" src={match.user2Avatar} alt="User Avatar"/>
+                                        ) : (
+                                            <img className="approved-match-image-on-page" src={match.user1Avatar} alt="User Avatar"/>
+                                        )}
+                                        {/* <h3>{match.petName}</h3> */}
+                                    </div>
+                                    <div className="pet-actions-matches">
+                                        <button className='update-pet-button' onClick={() => handleApproveMatch(match.petId)}>APPROVE</button>
+                                        <button className="delete-modal-button" onClick={() => handleRejectMatch(match.petId)}>PASS</button>
+                                    </div>
                                 </div>
-                        <div className='pet-actions'>
-                            <button onClick={() => handleApproveMatch(match.petId)}>Approve MATCH</button>
-                            <button onClick={() => handleRejectMatch(match.petId)}>PASS</button>
-                        </div>
-                        </div>
-                    ))
-                ) : (<p>No matches waiting.</p>)}
-            </div>
-            <>---------------------------------------------------------</>
-            <div className="outgoing-matches">
-                <h1>Awaiting Approval</h1>
-                {loading ? null : outgoingMatch.length > 0 ? (
-                    outgoingMatch.map((match) => (
-                        <div className="manage-match-tile" key={match.id}>
-                                <div className='manage-match-image-on-page'>
-                                    {/* {match.user1Avatar ? (
-                                        <img src={match.user1Avatar} alt="User Avatar"/>
-                                    ) : (
-                                        <FaUserCircle className="manage-matches-user-avatar"/>
-                                    )} */}
-                                                                    <h3>{match.petName}</h3>
-                                                                    <img className='approved-match-image-on-page' src={match.petImage} alt={`${match.petName}`}/>
+                            ))
+                        ) : (<p>No matches waiting.</p>)}
+                    </div>
+                </div>
 
+                {/* Separator Line */}
+                <hr className="matches-separator"/>
+
+                {/* Outgoing Matches Section */}
+                <div className="matches-container">
+                    <h1 className="approved-matches-title">Pending Matches</h1>
+                    <div className="approved-match-on-page">
+                        {loading ? null : outgoingMatch.length > 0 ? (
+                            outgoingMatch.map((match) => (
+                                <div className="approved-match-tile" key={match.id}>
+                                    <Link to={`/pets/${match.petId}`} className="pet-details-link">
+                                        <img className="approved-match-image-on-page" src={match.petImage} alt={`${match.petName}`}/>
+                                        <h3>{match.petName}</h3>
+                                    </Link>
+                                    <div className="pet-actions">
+                                        <OpenModalButton className="delete-modal-button" buttonText="UNMATCH" modalComponent={<UnmatchModal match={match} triggerRefresh={triggerRefresh}/>}/>
+                                    </div>
                                 </div>
-                        <div className='pet-actions'>
-                            <OpenModalButton className="delete-modal-button" buttonText="UNMATCH" modalComponent={<UnmatchModal match={match} triggerRefresh={triggerRefresh}/>}/>
-                        </div>
-                        </div>
-                    ))
-                ) : (<p>No matches waiting.</p>)}
+                            ))
+                        ) : (<p>No matches waiting.</p>)}
+                    </div>
+                </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default ManageMatches

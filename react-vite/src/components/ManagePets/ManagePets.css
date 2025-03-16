@@ -30,7 +30,7 @@
     flex-wrap: wrap;
     /* grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); */
     gap: 20px;
-    justify-content: flex-start !important;
+    justify-content: flex-start;
     padding: 20px;
 }
 
@@ -144,7 +144,7 @@
     background-color: #4B5A41;
     color: white;
     padding: 6px 12px;
-    /* border-radius: 5px; */
+    border-radius: 5px !important;
     cursor: pointer;
     transition: background 0.3s ease-in-out;
     font-size: 14px;
