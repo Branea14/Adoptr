@@ -52,9 +52,10 @@ const CreatePets = () => {
         // if (adoptionStatus === null) newErrors.adoptionStatus = "Please answer question."
         if (loveLanguage === null) newErrors.loveLanguage = "Please answer question."
         if (lifestyle === null) newErrors.lifestyle = "Please answer question."
+        if (images.length === 0) newErrors.images = "Please upload a photo."
 
         setValidationErrors(newErrors)
-    }, [name, description, breed, vaccinated, ownerSurrender, kids, houseTrained, specialNeeds, otherPets, age, sex, size, loveLanguage, lifestyle])
+    }, [name, description, breed, vaccinated, ownerSurrender, kids, houseTrained, specialNeeds, otherPets, age, sex, size, loveLanguage, lifestyle, images])
 
 
     const handleSubmit = async (e) => {
@@ -76,6 +77,7 @@ const CreatePets = () => {
         // if (adoptionStatus === null) newErrors.adoptionStatus = "Please answer question."
         if (loveLanguage === null) newErrors.loveLanguage = "Please answer question."
         if (lifestyle === null) newErrors.lifestyle = "Please answer question."
+        if (images.length === 0) newErrors.images = "Please upload a photo."
 
         if (Object.keys(newErrors).length > 0) {
             return setErrors((prev) => ({ ...prev, ...newErrors}))
@@ -723,6 +725,8 @@ const CreatePets = () => {
                 </div>
 
                 <label>Image URL</label>
+                {errors.images && <p className="create-pet-error-message">{errors.images}</p>}
+                {validationErrors.images && <p className="create-pet-error-message">{validationErrors.images}</p>}
                 <input
                     type='text'
                     value={imageUrl}

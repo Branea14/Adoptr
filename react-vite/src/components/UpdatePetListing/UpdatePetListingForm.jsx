@@ -40,11 +40,11 @@ const UpdatePetListingForm = ({pet}) => {
             setName(pet.name || "")
             setDescription(pet.description || "")
             setBreed(pet.breed || "")
-            setVaccinated(pet.vaccinated || null)
-            setOwnerSurrender(pet.ownerSurrender || null)
-            setKids(pet.kids || null)
-            setHouseTrained(pet.houseTrained || null)
-            setSpecialNeeds(pet.specialNeeds || null)
+            setVaccinated(pet.vaccinated !== undefined ? pet.vaccinated : null)
+            setOwnerSurrender(pet.ownerSurrender !== undefined ? pet.ownerSurrender : null)
+            setKids(pet.kids !== undefined ? pet.kids : null)
+            setHouseTrained(pet.houseTrained !== undefined ? pet.houseTrained : null)
+            setSpecialNeeds(pet.specialNeeds !== undefined ? pet.specialNeeds : null)
             setOtherPets(pet.otherPets || null)
             setAge(pet.age || null)
             setSex(pet.sex || null)
@@ -118,9 +118,10 @@ const UpdatePetListingForm = ({pet}) => {
         if (adoptionStatus === null) newErrors.adoptionStatus = "Please answer question."
         if (loveLanguage === null) newErrors.loveLanguage = "Please answer question."
         if (lifestyle === null) newErrors.lifestyle = "Please answer question."
+        if (images.length === 0) newErrors.images = "A pet listing must have at least one photo"
 
         setValidationErrors(newErrors)
-    }, [name, description, breed, vaccinated, ownerSurrender, kids, houseTrained, specialNeeds, otherPets, age, sex, size, adoptionStatus, loveLanguage, lifestyle])
+    }, [name, images, description, breed, vaccinated, ownerSurrender, kids, houseTrained, specialNeeds, otherPets, age, sex, size, adoptionStatus, loveLanguage, lifestyle])
 
 
 
@@ -143,6 +144,7 @@ const UpdatePetListingForm = ({pet}) => {
         if (adoptionStatus === null) newErrors.adoptionStatus = "Please answer question."
         if (loveLanguage === null) newErrors.loveLanguage = "Please answer question."
         if (lifestyle === null) newErrors.lifestyle = "Please answer question."
+        if (images.length === 0) newErrors.images = "A pet listing must have at least one photo"
 
         if (Object.keys(newErrors).length > 0) {
             return setErrors((prev) => ({ ...prev, ...newErrors}))
@@ -742,6 +744,8 @@ const UpdatePetListingForm = ({pet}) => {
             </div>
 
                     <label>Image URL</label>
+                    {errors.images && <p className="create-pet-error-message">{errors.images}</p>}
+                    {validationErrors.images && <p className="create-pet-error-message">{validationErrors.images}</p>}
                     <input
                         type='text'
                         value={imageUrl}
