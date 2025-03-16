@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import "./UpdatePetListing.css"
 import { updatePet } from "../../redux/pets";
+import "../CreatePets/CreatePets.css"
+import { FaArrowLeft } from "react-icons/fa";
 
 const UpdatePetListingForm = ({pet}) => {
     const [name, setName] = useState('')
@@ -219,615 +220,593 @@ const UpdatePetListingForm = ({pet}) => {
 
 
     return (
-<div className="edit-pet-container">
-    <div className="edit-pet-title">Update Pet Listing</div>
-            <form className="edit-pet-form" onSubmit={handleSubmit}>
-                {/* <div className="edit-pet-header">
-                    <h1>edit a Pet Listing</h1>
-                </div> */}
-                {/* {errors.general && (
-                    <div className="error-banner">
-                        {errors.general}
-                    </div>
-                )} */}
-
-                <label>
-                    Name
-                    <input
-                        type="text"
-                        value={name || ""}
-                        onChange={updateName}
-                        placeholder="Name"
-                        className={errors.name ? 'error' : ''}
-                        required
-                    />
-                    {errors.name && <p className="edit-pet-error-message">{errors.name}</p>}
-                </label>
-
-                <label>
-                    Description
-                    <input
-                        type="text"
-                        value={description || ""}
-                        onChange={updateDescription}
-                        placeholder="Description"
-                        className={errors.description ? 'error' : ''}
-                        required
-                    />
-                    {errors.description && <p className="edit-pet-error-message">{errors.description}</p>}
-                </label>
-
-                <label>
-                    Breed
-                    <input
-                        type="text"
-                        value={breed || ""}
-                        onChange={updateBreed}
-                        placeholder="Breed"
-                        className={errors.breed ? 'error' : ''}
-                        required
-                    />
-                    {errors.breed && <p className="edit-pet-error-message">{errors.breed}</p>}
-                </label>
-
-
-                <label>
-                    Color
-                    <input
-                        type="text"
-                        value={color || ""}
-                        onChange={updateColor}
-                        placeholder="Color"
-                        className={errors.color ? 'error' : ''}
-                        required
-                    />
-                    {errors.color && <p className="edit-pet-error-message">{errors.color}</p>}
-                </label>
-
-                <label>Vaccinated?</label>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="vaccinated"
-                            value="true"
-                            checked={vaccinated === true}
-                            onChange={updateVaccinated}
-                            required
-                        /> Yes
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="vaccinated"
-                            value="false"
-                            checked={vaccinated === false}
-                            onChange={updateVaccinated}
-                            required
-                        /> No
-                    </label>
-                        {errors.vaccinated && <p className="edit-pet-error-message">{errors.vaccinated}</p>}
-                        {validationErrors.vaccinated && <p className="edit-pet-error-message">{validationErrors.vaccinated}</p>}
-                </div>
-
-                <label>Need to be rehomed? (Owner Surrender)</label>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="ownerSurrender"
-                            value="true"
-                            checked={ownerSurrender === true}
-                            onChange={updateOwnerSurrender}
-                        /> Yes
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="ownerSurrender"
-                            value="false"
-                            checked={ownerSurrender === false}
-                            onChange={updateOwnerSurrender}
-
-                        /> No
-                    </label>
-                        {errors.ownerSurrender && <p className="edit-pet-error-message">{errors.ownerSurrender}</p>}
-                        {validationErrors.ownerSurrender && <p className="edit-pet-error-message">{validationErrors.ownerSurrender}</p>}
-                </div>
-
-                <label>Good with kids?</label>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="kids"
-                            value="true"
-                            checked={kids === true}
-                            onChange={updateKids}
-                            required
-                        /> Yes
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="kids"
-                            value="false"
-                            checked={kids === false}
-                            onChange={updateKids}
-                            required
-                        /> No
-                    </label>
-                        {errors.kids && <p className="edit-pet-error-message">{errors.kids}</p>}
-                        {validationErrors.kids && <p className="edit-pet-error-message">{validationErrors.kids}</p>}
-                </div>
-
-                <label>House-Trained?</label>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="houseTrained"
-                            value="true"
-                            checked={houseTrained === true}
-                            onChange={updateHouseTrained}
-                            required
-                        /> Yes
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="houseTrained"
-                            value="false"
-                            checked={houseTrained === false}
-                            onChange={updateHouseTrained}
-                            required
-                        /> No
-                    </label>
-                        {errors.houseTrained && <p className="edit-pet-error-message">{errors.houseTrained}</p>}
-                        {validationErrors.houseTrained && <p className="edit-pet-error-message">{validationErrors.houseTrained}</p>}
-                </div>
-
-                <label>Special Needs?</label>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="specialNeeds"
-                            value="true"
-                            checked={specialNeeds === true}
-                            onChange={updateSpecialNeeds}
-                            required
-                        /> Yes
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="specialNeeds"
-                            value="false"
-                            checked={specialNeeds === false}
-                            onChange={updateSpecialNeeds}
-                            required
-                        /> No
-                    </label>
-                        {errors.specialNeeds && <p className="edit-pet-error-message">{errors.specialNeeds}</p>}
-                        {validationErrors.specialNeeds && <p className="edit-pet-error-message">{validationErrors.specialNeeds}</p>}
-                </div>
-
-
-                <label>Good with other pets?</label>
-                <div>
-                <label>
-                    <input
-                    type="radio"
-                    name='otherPets'
-                    value='none'
-                    checked={otherPets === "none"}
-                    onChange={updateOtherPets}
-                    required
-                    />None
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='otherPets'
-                    value='dogsOnly'
-                    checked={otherPets === "dogsOnly"}
-                    onChange={updateOtherPets}
-                    required
-                    />Dogs Only
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='otherPets'
-                    value='catsOnly'
-                    checked={otherPets === "catsOnly"}
-                    onChange={updateOtherPets}
-                    required
-                    />Cats Only
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='otherPets'
-                    value='both'
-                    checked={otherPets === "both"}
-                    onChange={updateOtherPets}
-                    required
-                    />Both
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='otherPets'
-                    value='other'
-                    checked={otherPets === "other"}
-                    onChange={updateOtherPets}
-                    required
-                    />Other
-                </label>
-                {errors.otherPets && <p className="edit-pet-error-message">{errors.otherPets}</p>}
-                {validationErrors.otherPets && <p className="edit-pet-error-message">{validationErrors.otherPets}</p>}
-                </div>
-
-
-
-                {/* <label>Good with other pets?</label>
-                <div>
-                    <input
-                    type="checkbox"
-                    id='none'
-                    value='none'
-                    checked={otherPets.includes("none")}
-                    onChange={updateOtherPets}
-                    />
-                    <label htmlFor='none'>None</label>
-
-                    <input
-                    type="checkbox"
-                    id='dogs'
-                    value='dogsOnly'
-                    checked={otherPets.includes("dogsOnly")}
-                    onChange={updateOtherPets}
-                    />
-                    <label htmlFor='dogs'>Dogs Only</label>
-
-                    <input
-                    type="checkbox"
-                    id='cats'
-                    value='catsOnly'
-                    checked={otherPets.includes("catsOnly")}
-                    onChange={updateOtherPets}
-                    />
-                    <label htmlFor='cats'>Cats Only</label>
-
-                    <input
-                    type="checkbox"
-                    id='both'
-                    value='both'
-                    checked={otherPets.includes("both")}
-                    onChange={updateOtherPets}
-                    />
-                    <label htmlFor='both'>Both</label>
-
-                    <input
-                    type="checkbox"
-                    id='other'
-                    value='other'
-                    checked={otherPets.includes("other")}
-                    onChange={updateOtherPets}
-                    />
-                    <label htmlFor='other'>Other</label>
-                    {errors.otherPets && <p className="edit-pet-error-message">{errors.otherPets}</p>}
-                    {validationErrors.otherPets && <p className="edit-pet-error-message">{validationErrors.otherPets}</p>}
-                </div> */}
-
-                <label>Age</label>
-                <div>
-                <label>
-                    <input
-                    type="radio"
-                    name='age'
-                    value='puppy'
-                    checked={age === "puppy"}
-                    onChange={updateAge}
-                    required
-                    />Puppy
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='age'
-                    value='young'
-                    checked={age === "young"}
-                    onChange={updateAge}
-                    required
-                    />Young
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='age'
-                    value='adult'
-                    checked={age === "adult"}
-                    onChange={updateAge}
-                    required
-                    />Adult
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='age'
-                    value='senior'
-                    checked={age === "senior"}
-                    onChange={updateAge}
-                    required
-                    />Senior
-                </label>
-                    {errors.age && <p className="edit-pet-error-message">{errors.age}</p>}
-                    {validationErrors.age && <p className="edit-pet-error-message">{validationErrors.age}</p>}
-                </div>
-
-
-                <label>Sex</label>
-                <div>
-                <label>
-                    <input
-                    type="radio"
-                    name='sex'
-                    value='male'
-                    checked={sex === "male"}
-                    onChange={updateSex}
-                    required
-                    />Male
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='sex'
-                    value='female'
-                    checked={sex === "female"}
-                    onChange={updateSex}
-                    required
-                    />Female
-                </label>
-                    {errors.sex && <p className="edit-pet-error-message">{errors.sex}</p>}
-                    {validationErrors.sex && <p className="edit-pet-error-message">{validationErrors.sex}</p>}
-                </div>
-
-                <label>Size</label>
-                <div>
-                <label>
-                    <input
-                    type="radio"
-                    name='size'
-                    value='small'
-                    checked={size === "small"}
-                    onChange={updateSize}
-                    required
-                    />Small
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='size'
-                    value='medium'
-                    checked={size === "medium"}
-                    onChange={updateSize}
-                    required
-                    />Medium
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='size'
-                    value='large'
-                    checked={size === "large"}
-                    onChange={updateSize}
-                    required
-                    />Large
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='size'
-                    value='xl'
-                    checked={size === "xl"}
-                    onChange={updateSize}
-                    required
-                    />XLarge
-                </label>
-                    {errors.size && <p className="edit-pet-error-message">{errors.size}</p>}
-                    {validationErrors.size && <p className="edit-pet-error-message">{validationErrors.size}</p>}
-                </div>
-
-                <label>Adoption Status</label>
-                <div>
-                <label>
-                    <input
-                    type="radio"
-                    name='adoptionStatus'
-                    value='available'
-                    checked={adoptionStatus === "available"}
-                    onChange={updateAdoptionStatus}
-                    required
-                    />Available
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='adoptionStatus'
-                    value='pendingAdoption'
-                    checked={adoptionStatus === "pendingAdoption"}
-                    onChange={updateAdoptionStatus}
-                    required
-                    />Pending Adoption
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='adoptionStatus'
-                    value='adopted'
-                    checked={adoptionStatus === "adopted"}
-                    onChange={updateAdoptionStatus}
-                    required
-                    />Adopted
-                </label>
-                    {errors.adoptionStatus && <p className="edit-pet-error-message">{errors.adoptionStatus}</p>}
-                    {validationErrors.adoptionStatus && <p className="edit-pet-error-message">{validationErrors.adoptionStatus}</p>}
-                </div>
-
-                <label>Love Language</label>
-                <div>
-                <label>
-                    <input
-                    type="radio"
-                    name='loveLanguage'
-                    value='physicalTouch'
-                    checked={loveLanguage === "physicalTouch"}
-                    onChange={updateLoveLanguage}
-                    required
-                    />Physical Touch
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='loveLanguage'
-                    value='treats'
-                    checked={loveLanguage === "treats"}
-                    onChange={updateLoveLanguage}
-                    required
-                    />Treats
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='loveLanguage'
-                    value='play'
-                    checked={loveLanguage === "play"}
-                    onChange={updateLoveLanguage}
-                    required
-                    />Play
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='loveLanguage'
-                    value='training'
-                    checked={loveLanguage === "training"}
-                    onChange={updateLoveLanguage}
-                    required
-                    />Training
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='loveLanguage'
-                    value='independent'
-                    checked={loveLanguage === "independent"}
-                    onChange={updateLoveLanguage}
-                    required
-                    />Independent
-                </label>
-                    {errors.loveLanguage && <p className="edit-pet-error-message">{errors.loveLanguage}</p>}
-                    {validationErrors.loveLanguage && <p className="edit-pet-error-message">{validationErrors.loveLanguage}</p>}
-                </div>
-
-                <label>Lifestyle</label>
-                <div>
-                <label>
-                    <input
-                    type="radio"
-                    name='lifestyle'
-                    value='veryActive'
-                    checked={lifestyle === "veryActive"}
-                    onChange={updateLifestyle}
-                    required
-                    />Very Active
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='lifestyle'
-                    value='active'
-                    checked={lifestyle === "active"}
-                    onChange={updateLifestyle}
-                    required
-                    />Active
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='lifestyle'
-                    value='laidback'
-                    checked={lifestyle === "laidback"}
-                    onChange={updateLifestyle}
-                    required
-                    />Laid-back
-                </label>
-
-                <label>
-                    <input
-                    type="radio"
-                    name='lifestyle'
-                    value='lapPet'
-                    checked={lifestyle === "lapPet"}
-                    onChange={updateLifestyle}
-                    required
-                    />Lap Pet
-                </label>
-                    {errors.lifestyle && <p className="edit-pet-error-message">{errors.lifestyle}</p>}
-                    {validationErrors.lifestyle && <p className="edit-pet-error-message">{validationErrors.lifestyle}</p>}
-                </div>
-
-                <label>Image URL</label>
-                <input
-                    type='text'
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    placeholder="Enter Image URL"
-                />
-                <button type="button" onClick={handleAddorEditImage}>Add Image</button>
-                <div className="image-preview-container">
-                    {images.map((img, index) => (
-                        <div key={index} className="image-preview">
-                            <img src={img.url} alt={`Uploaded ${index}`} width="100"/>
-                            <button type="button" onClick={() => setPreviewImage(index)}>
-                                {img.preview ? "Preview ✅" : "Set as Preview"}
-                            </button>
-                            <button type="button" onClick={() => handleEditImage(index)}>Edit</button>
-                            <button type="button" onClick={() => removeImage(index)}>Remove</button>
-                        </div>
-                    ))}
-                </div>
-                <button type="submit" onClick={() => navigate(``)}>Edit Pet Listing</button>
-            </form>
-
+<div className="create-pet-container">
+    <FaArrowLeft className="back-arrow-pet-details" onClick={() => navigate('/pets/current')}/>
+    <form className="create-pet-form" onSubmit={handleSubmit}>
+        <div className="create-pet-header">
+            <h1>Update Pet Listing</h1>
         </div>
+        {errors.general && (
+            <div className="error-banner">
+                {errors.general}
+            </div>
+        )}
+
+        <label>
+            Name
+            <input
+                type="text"
+                value={name || ""}
+                onChange={updateName}
+                placeholder="Name"
+                className={errors.name ? 'error' : ''}
+                required
+            />
+            {errors.name && <p className="create-pet-error-message">{errors.name}</p>}
+        </label>
+
+        <label>
+            Description
+            <input
+                type="text"
+                value={description || ""}
+                onChange={updateDescription}
+                placeholder="Description"
+                className={errors.description ? 'error' : ''}
+                required
+            />
+            {errors.description && <p className="create-pet-error-message">{errors.description}</p>}
+        </label>
+
+        <label>
+            Breed
+            <input
+                type="text"
+                value={breed || ""}
+                onChange={updateBreed}
+                placeholder="Breed"
+                className={errors.breed ? 'error' : ''}
+                required
+            />
+            {errors.breed && <p className="create-pet-error-message">{errors.breed}</p>}
+        </label>
+
+        <label>
+            Color
+            <input
+                type="text"
+                value={color || ""}
+                onChange={updateColor}
+                placeholder="Color"
+                className={errors.color ? 'error' : ''}
+                required
+            />
+            {errors.color && <p className="create-pet-error-message">{errors.color}</p>}
+        </label>
+
+        <div className="split-columns">
+            <div className="column">
+
+                <div className="form-section">
+                    <label className="form-section-label">Age</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='age'
+                            value='puppy'
+                            checked={age === "puppy"}
+                            onChange={updateAge}
+                            required
+                            />Puppy
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='age'
+                            value='young'
+                            checked={age === "young"}
+                            onChange={updateAge}
+                            required
+                            />Young
+                        </label >
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='age'
+                            value='adult'
+                            checked={age === "adult"}
+                            onChange={updateAge}
+                            required
+                            />Adult
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='age'
+                            value='senior'
+                            checked={age === "senior"}
+                            onChange={updateAge}
+                            required
+                            />Senior
+                        </label>
+                    </div>
+                    {errors.age && <p className="create-pet-error-message">{errors.age}</p>}
+                    {validationErrors.age && <p className="create-pet-error-message">{validationErrors.age}</p>}
+                </div>
+
+                <div className="form-section">
+                    <label className="form-section-label">Sex</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='sex'
+                            value='male'
+                            checked={sex === "male"}
+                            onChange={updateSex}
+                            required
+                            />Male
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='sex'
+                            value='female'
+                            checked={sex === "female"}
+                            onChange={updateSex}
+                            required
+                            />Female
+                        </label>
+                    </div>
+                    {errors.sex && <p className="create-pet-error-message">{errors.sex}</p>}
+                    {validationErrors.sex && <p className="create-pet-error-message">{validationErrors.sex}</p>}
+                </div>
+
+                <div className="form-section">
+                    <label className="form-section-label">Size</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='size'
+                            value='small'
+                            checked={size === "small"}
+                            onChange={updateSize}
+                            required
+                            />Small
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='size'
+                            value='medium'
+                            checked={size === "medium"}
+                            onChange={updateSize}
+                            required
+                            />Medium
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='size'
+                            value='large'
+                            checked={size === "large"}
+                            onChange={updateSize}
+                            required
+                            />Large
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='size'
+                            value='xl'
+                            checked={size === "xl"}
+                            onChange={updateSize}
+                            required
+                            />XLarge
+                        </label>
+                    </div>
+                    {errors.size && <p className="create-pet-error-message">{errors.size}</p>}
+                    {validationErrors.size && <p className="create-pet-error-message">{validationErrors.size}</p>}
+                </div>
+
+                <div className="form-section">
+                    <label className="form-section-label">House-Trained?</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                                type="radio"
+                                name="houseTrained"
+                                value="true"
+                                checked={houseTrained === true}
+                                onChange={updateHouseTrained}
+                                required
+                            /> Yes
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                                type="radio"
+                                name="houseTrained"
+                                value="false"
+                                checked={houseTrained === false}
+                                onChange={updateHouseTrained}
+                                required
+                            /> No
+                        </label>
+                    </div>
+                    {errors.houseTrained && <p className="create-pet-error-message">{errors.houseTrained}</p>}
+                    {validationErrors.houseTrained && <p className="create-pet-error-message">{validationErrors.houseTrained}</p>}
+                </div>
+
+                <div className="form-section">
+                    <label className="form-section-label">Special Needs?</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                                type="radio"
+                                name="specialNeeds"
+                                value="true"
+                                checked={specialNeeds === true}
+                                onChange={updateSpecialNeeds}
+                                required
+                            /> Yes
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                                type="radio"
+                                name="specialNeeds"
+                                value="false"
+                                checked={specialNeeds === false}
+                                onChange={updateSpecialNeeds}
+                                required
+                            /> No
+                        </label>
+                    </div>
+                    {errors.specialNeeds && <p className="create-pet-error-message">{errors.specialNeeds}</p>}
+                    {validationErrors.specialNeeds && <p className="create-pet-error-message">{validationErrors.specialNeeds}</p>}
+                </div>
+
+                <div className="form-section">
+                    <label className="form-section-label">Vaccinated?</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                                type="radio"
+                                name="vaccinated"
+                                value="true"
+                                checked={vaccinated === true}
+                                onChange={updateVaccinated}
+                                required
+                            /> Yes
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                                type="radio"
+                                name="vaccinated"
+                                value="false"
+                                checked={vaccinated === false}
+                                onChange={updateVaccinated}
+                                required
+                            /> No
+                        </label>
+                    </div>
+                    {errors.vaccinated && <p className="create-pet-error-message">{errors.vaccinated}</p>}
+                    {validationErrors.vaccinated && <p className="create-pet-error-message">{validationErrors.vaccinated}</p>}
+                </div>
+
+                <div className="form-section">
+                    <label className="form-section-label">Need to be rehomed?</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                                type="radio"
+                                name="ownerSurrender"
+                                value="true"
+                                checked={ownerSurrender === true}
+                                onChange={updateOwnerSurrender}
+                            /> Yes
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                                type="radio"
+                                name="ownerSurrender"
+                                value="false"
+                                checked={ownerSurrender === false}
+                                onChange={updateOwnerSurrender}
+
+                            /> No
+                        </label>
+                    </div>
+                    {errors.ownerSurrender && <p className="create-pet-error-message">{errors.ownerSurrender}</p>}
+                    {validationErrors.ownerSurrender && <p className="create-pet-error-message">{validationErrors.ownerSurrender}</p>}
+                </div>
+            </div>
+
+
+            <div className="column">
+                <div className="form-section">
+                    <label className="form-section-label">Good with kids?</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                                type="radio"
+                                name="kids"
+                                value="true"
+                                checked={kids === true}
+                                onChange={updateKids}
+                                required
+                            /> Yes
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                                type="radio"
+                                name="kids"
+                                value="false"
+                                checked={kids === false}
+                                onChange={updateKids}
+                                required
+                            /> No
+                        </label>
+                    </div>
+                    {errors.kids && <p className="create-pet-error-message">{errors.kids}</p>}
+                    {validationErrors.kids && <p className="create-pet-error-message">{validationErrors.kids}</p>}
+                </div>
+
+                <div className="form-section">
+                    <label className="form-section-label">Good with other pets?</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='otherPets'
+                            value='none'
+                            checked={otherPets === "none"}
+                            onChange={updateOtherPets}
+                            required
+                            />None
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='otherPets'
+                            value='dogsOnly'
+                            checked={otherPets === "dogsOnly"}
+                            onChange={updateOtherPets}
+                            required
+                            />Dogs Only
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='otherPets'
+                            value='catsOnly'
+                            checked={otherPets === "catsOnly"}
+                            onChange={updateOtherPets}
+                            required
+                            />Cats Only
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='otherPets'
+                            value='both'
+                            checked={otherPets === "both"}
+                            onChange={updateOtherPets}
+                            required
+                            />Both
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='otherPets'
+                            value='other'
+                            checked={otherPets === "other"}
+                            onChange={updateOtherPets}
+                            required
+                            />Other
+                        </label>
+                    </div>
+                    {errors.otherPets && <p className="create-pet-error-message">{errors.otherPets}</p>}
+                    {validationErrors.otherPets && <p className="create-pet-error-message">{validationErrors.otherPets}</p>}
+                </div>
+
+                <div className="form-section">
+                    <label className="form-section-label">Love Language</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='loveLanguage'
+                            value='physicalTouch'
+                            checked={loveLanguage === "physicalTouch"}
+                            onChange={updateLoveLanguage}
+                            required
+                            />Physical Touch
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='loveLanguage'
+                            value='treats'
+                            checked={loveLanguage === "treats"}
+                            onChange={updateLoveLanguage}
+                            required
+                            />Treats
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='loveLanguage'
+                            value='play'
+                            checked={loveLanguage === "play"}
+                            onChange={updateLoveLanguage}
+                            required
+                            />Play
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='loveLanguage'
+                            value='training'
+                            checked={loveLanguage === "training"}
+                            onChange={updateLoveLanguage}
+                            required
+                            />Training
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='loveLanguage'
+                            value='independent'
+                            checked={loveLanguage === "independent"}
+                            onChange={updateLoveLanguage}
+                            required
+                            />Independent
+                        </label>
+                    </div>
+                    {errors.loveLanguage && <p className="create-pet-error-message">{errors.loveLanguage}</p>}
+                    {validationErrors.loveLanguage && <p className="create-pet-error-message">{validationErrors.loveLanguage}</p>}
+                </div>
+
+                <div className="form-section">
+                    <label className="form-section-label">Lifestyle</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='lifestyle'
+                            value='veryActive'
+                            checked={lifestyle === "veryActive"}
+                            onChange={updateLifestyle}
+                            required
+                            />Very Active
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='lifestyle'
+                            value='active'
+                            checked={lifestyle === "active"}
+                            onChange={updateLifestyle}
+                            required
+                            />Active
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='lifestyle'
+                            value='laidback'
+                            checked={lifestyle === "laidback"}
+                            onChange={updateLifestyle}
+                            required
+                            />Laid-back
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='lifestyle'
+                            value='lapPet'
+                            checked={lifestyle === "lapPet"}
+                            onChange={updateLifestyle}
+                            required
+                            />Lap Pet
+                        </label>
+                    </div>
+                    {errors.lifestyle && <p className="create-pet-error-message">{errors.lifestyle}</p>}
+                    {validationErrors.lifestyle && <p className="create-pet-error-message">{validationErrors.lifestyle}</p>}
+                </div>
+
+                <div className="form-section">
+                    <label className="form-section-label">Adoption Status</label>
+                    <div className="radio-group">
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='adoptionStatus'
+                            value='available'
+                            checked={adoptionStatus === "available"}
+                            onChange={updateAdoptionStatus}
+                            required
+                            />Available
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='adoptionStatus'
+                            value='pendingAdoption'
+                            checked={adoptionStatus === "pendingAdoption"}
+                            onChange={updateAdoptionStatus}
+                            required
+                            />Pending Adoption
+                        </label>
+
+                        <label className="radio-group-label">
+                            <input
+                            type="radio"
+                            name='adoptionStatus'
+                            value='adopted'
+                            checked={adoptionStatus === "adopted"}
+                            onChange={updateAdoptionStatus}
+                            required
+                            />Adopted
+                        </label>
+                    </div>
+                    {errors.adoptionStatus && <p className="create-pet-error-message">{errors.adoptionStatus}</p>}
+                    {validationErrors.adoptionStatus && <p className="create-pet-error-message">{validationErrors.adoptionStatus}</p>}
+                </div>
+
+            </div>
+            </div>
+
+                    <label>Image URL</label>
+                    <input
+                        type='text'
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
+                        placeholder="Enter Image URL"
+                    />
+                    <button type="button" onClick={handleAddorEditImage}>Add Image</button>
+                    <div className="image-preview-container">
+                        {images.map((img, index) => (
+                            <div key={index} className="image-preview">
+                                <img src={img.url} alt={`Uploaded ${index}`} width="100"/>
+                                <button type="button" onClick={() => setPreviewImage(index)}>
+                                    {img.preview ? "Preview ✅" : "Set as Preview"}
+                                </button>
+                                <button type="button" onClick={() => handleEditImage(index)}>Edit</button>
+                                <button type="button" onClick={() => removeImage(index)}>Remove</button>
+                            </div>
+                        ))}
+                    </div>
+                    <button type="submit" onClick={() => navigate(``)}>Edit Pet Listing</button>
+                </form>
+
+            </div>
     )
 }
 
