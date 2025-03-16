@@ -18,6 +18,28 @@ const PetDetails = () => {
     const images = pet?.PetImages || [];
     const currentImage = images.length > 0 ? images[currentImgIndex]?.url : ""
 
+    const LIFESTYLE_DISPLAY = {
+        "veryActive": "Very Active",
+        "active": "Active",
+        "laidback": "Laidback",
+        "lapPet": "Lap Pet"
+    }
+
+    const LOVE_LANGUAGE_DISPLAY = {
+        "physicalTouch": "Physical Touch",
+        "treats": "Treats",
+        "play": "Play",
+        "training": "Training",
+        "independent": "Independent"
+    }
+
+    const SIZE_DISPLAY = {
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "xl": "X-Large"
+    }
+
     const handleNextImage = () => {
         if (images.length > 0) {
             setCurrentImgIndex((prevIndex) => (prevIndex + 1) % images.length)
@@ -68,10 +90,10 @@ const PetDetails = () => {
                     <h1 className="details-pet-name">{pet.name} &middot; {pet.breed}</h1>
                     <p className="details-description">{pet.description}</p>
                     <p className="details-age-sex-size">
-                        <strong>{pet.age} &middot; {pet.sex} &middot; {pet.size}</strong>
+                        <strong>{pet.age} &middot; {pet.sex} &middot; {SIZE_DISPLAY[pet.size]}</strong>
                     </p>
                     <p className="details-lifestyle">
-                        <strong>Lifestyle:</strong> {pet.lifestyle} &middot; <strong>Love Language:</strong> {pet.loveLanguage}
+                        <strong>Lifestyle:</strong> {LIFESTYLE_DISPLAY[pet.lifestyle]} &middot; <strong>Love Language:</strong> {LOVE_LANGUAGE_DISPLAY[pet.loveLanguage]}
                     </p>
 
                     <hr className="details-divider" />

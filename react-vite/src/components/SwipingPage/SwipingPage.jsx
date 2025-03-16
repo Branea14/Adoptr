@@ -15,6 +15,28 @@ const SwipingPage = () => {
     // const [hidePets, setHidePets] = useState({})
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
+    const LIFESTYLE_DISPLAY = {
+        "veryActive": "Very Active",
+        "active": "Active",
+        "laidback": "Laidback",
+        "lapPet": "Lap Pet"
+    }
+
+    const LOVE_LANGUAGE_DISPLAY = {
+        "physicalTouch": "Physical Touch",
+        "treats": "Treats",
+        "play": "Play",
+        "training": "Training",
+        "independent": "Independent"
+    }
+
+    const SIZE_DISPLAY = {
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "xl": "X-Large"
+    }
+
     const currentUser = useSelector((state) => state.session.user)
     const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
     const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
@@ -163,7 +185,7 @@ const SwipingPage = () => {
                         <FaChevronRight className='arrow-icon-right-swipe' onClick={handleNextImage}/>
                         </div>
                     ) :
-                    (pet?.PetImages.map((image, index) => (
+                    (pet?.PetImages?.map((image, index) => (
                         <div key={index}>
                             <img draggable='false' className='swipe-pet-image' src={image.url}/>
                         </div>
@@ -172,11 +194,11 @@ const SwipingPage = () => {
 
                         <div className="swipe-details-container">
                             <h1 className="swipe-pet-name">{pet.name} &middot; {pet.breed}</h1>
-                            <p>{pet.id}</p>
+                            {/* <p>{pet.id}</p> */}
                             <p className="swipe-description">{pet.description}</p>
-                            <p className="swipe-age-sex-size"><strong>{pet.age} &middot; {pet.sex} &middot; {pet.size}</strong></p>
+                            <p className="swipe-age-sex-size"><strong>{pet.age} &middot; {pet.sex} &middot; {SIZE_DISPLAY[pet.size]}</strong></p>
                             {/* <p>Color: {pet.color}</p> */}
-                            <p className="swipe-lifestyle"><strong>Lifestyle:</strong> {pet.lifestyle} &middot; <strong>Love Language:</strong> {pet.loveLanguage}</p>
+                            <p className="swipe-lifestyle"><strong>Lifestyle:</strong> {LIFESTYLE_DISPLAY[pet.lifestyle]} &middot; <strong>Love Language:</strong> {LOVE_LANGUAGE_DISPLAY[pet.loveLanguage]}</p>
 
                             <hr className="swipe-divider" />
 

@@ -21,7 +21,7 @@ const CreatePets = () => {
     const [age, setAge] = useState(null)
     const [sex, setSex] = useState(null)
     const [size, setSize] = useState(null)
-    const [adoptionStatus, setAdoptionStatus] = useState(null)
+    // const [adoptionStatus, setAdoptionStatus] = useState(null)
     const [loveLanguage, setLoveLanguage] = useState(null)
     const [lifestyle, setLifestyle] = useState(null)
 
@@ -49,12 +49,12 @@ const CreatePets = () => {
         if (age === null) newErrors.age = "Please answer question."
         if (sex === null) newErrors.sex = "Please answer question."
         if (size === null) newErrors.size = "Please answer question."
-        if (adoptionStatus === null) newErrors.adoptionStatus = "Please answer question."
+        // if (adoptionStatus === null) newErrors.adoptionStatus = "Please answer question."
         if (loveLanguage === null) newErrors.loveLanguage = "Please answer question."
         if (lifestyle === null) newErrors.lifestyle = "Please answer question."
 
         setValidationErrors(newErrors)
-    }, [name, description, breed, vaccinated, ownerSurrender, kids, houseTrained, specialNeeds, otherPets, age, sex, size, adoptionStatus, loveLanguage, lifestyle])
+    }, [name, description, breed, vaccinated, ownerSurrender, kids, houseTrained, specialNeeds, otherPets, age, sex, size, loveLanguage, lifestyle])
 
 
     const handleSubmit = async (e) => {
@@ -73,7 +73,7 @@ const CreatePets = () => {
         if (age === null) newErrors.age = "Please answer question."
         if (sex === null) newErrors.sex = "Please answer question."
         if (size === null) newErrors.size = "Please answer question."
-        if (adoptionStatus === null) newErrors.adoptionStatus = "Please answer question."
+        // if (adoptionStatus === null) newErrors.adoptionStatus = "Please answer question."
         if (loveLanguage === null) newErrors.loveLanguage = "Please answer question."
         if (lifestyle === null) newErrors.lifestyle = "Please answer question."
 
@@ -98,7 +98,7 @@ const CreatePets = () => {
                 age,
                 sex,
                 size,
-                adoptionStatus,
+                // adoptionStatus,
                 loveLanguage,
                 lifestyle,
                 images
@@ -679,7 +679,7 @@ const CreatePets = () => {
                             {validationErrors.lifestyle && <p className="create-pet-error-message">{validationErrors.lifestyle}</p>}
                         </div>
 
-                        <div className="form-section">
+                        {/* <div className="form-section">
                             <label className="form-section-label">Adoption Status</label>
                             <div className="radio-group">
                                 <label className="radio-group-label">
@@ -717,7 +717,7 @@ const CreatePets = () => {
                             </div>
                             {errors.adoptionStatus && <p className={`create-pet-error-message ${errors.adoptionStatus ? "active" : ''}`}>{errors.adoptionStatus}</p>}
                             {validationErrors.adoptionStatus && <p className="create-pet-error-message">{validationErrors.adoptionStatus}</p>}
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>
