@@ -11,5 +11,151 @@
     /* padding: 20px; */
     display: flex;
     flex-direction: column;
+    /* align-items: center; */
+    text-align: center;
+    padding: 20px;
+}
+
+.manage-pets-header {
+    font-size: 28px;
+      pointer-events: none;
+      font-weight: bold;
+    color:#2C1B14;
+    margin-bottom: 15px;
+    font-family: "Open Sans";
+}
+
+.pets-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); */
+    gap: 20px;
+    justify-content: flex-start !important;
+    padding: 20px;
+}
+
+.pet-tile-container {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    width: 280px;
+    background: #E9D0B0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.create-pet-listing-link {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; /* Adds space between header and link */
+    text-align: center;
+}
+
+.create-pet-listing-link a {
+    /* display: inline-block; */
+    background-color: #2C5F90; /* Match theme */
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    font-family: "Open Sans";
+}
+
+.create-pet-listing-link a:hover {
+    background-color: #1E4A74;
+}
+.no-pets {
+    text-align: left;
+    font-size: 20px;
+    color: #f8f8f2;
+}
+
+.pet-img-container {
+    width: 100%;
+    height: 180px; /* Fixed height */
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.pet-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pet-img img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 10px;
+}
+
+.pet-info {
+    padding: 10px;
+    /* background-color: #181825; */
+    background-color: #E9D0B0;
+    padding: 12px;
+    border-radius: 0 0 8px 8px;
+}
+
+.pet-info-inside-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+}
+
+.pet-tile-name {
+    /* font-size: 1rem; */
+    font-size: 1.09rem;
+    margin-bottom: 5px;
+    color: #2C1B14;
+    max-width: 135px; /* Adjust the width as needed */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.pet-tile-adoptionStatus  {
+    color: #2C1B14;
+    font-size: 1rem;
+    text-transform: capitalize;
+
+}
+
+.pet-tile-brief-info {
+    font-size: 1rem;
+    color: #2C1B14;
+    margin-bottom: 5px;
+    margin-top: 2px;
+    text-transform: capitalize;
+    text-align: left;
+}
+
+.pet-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.update-pet-button {
+    background-color: #4B5A41;
+    color: white;
+    padding: 6px 12px;
+    /* border-radius: 5px; */
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 3px;
+    cursor: pointer;
+    border: none;
+    box-shadow: none;
+    /* transition: background 0.3s ease-in-out; */
+}
+
+.update-pet-button:hover {
+    background-color: #37402e;
 }

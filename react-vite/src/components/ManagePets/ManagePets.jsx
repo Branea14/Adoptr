@@ -41,7 +41,7 @@ const ManagePets = () => {
 
     return (
         <div className='manage-pets-container'>
-            <h1>Manage Pets</h1>
+            <h1 className="approved-matches-title">Manage Pets</h1>
             <div className='create-pet-listing-link'>
                 <Link to='/pets/new'>
                     Create a New Pet Listing
@@ -60,9 +60,13 @@ const ManagePets = () => {
                                     <img src={pet.previewImageUrl} alt={pet.name} className='pet-img'/>
                                 </div>
                                 <div className='pet-info'>
-                                    <div className='pet-tile-name'>{pet.name}</div>
-                                    <div className='pet-tile-brief-info'>{pet.age} • {pet.breed}</div>
-                                    <div className='pet-tile-adoptionStatus'>{pet.adoptionStatus}</div>
+                                    <div className='pet-info-inside-container'>
+                                        <div className='pet-tile-name'>{pet.name}</div>
+                                        <div className='pet-tile-adoptionStatus'>{pet.adoptionStatus}</div>
+                                    </div>
+                                    <div className='pet-info-outside-container'>
+                                        <div className='pet-tile-brief-info'>{pet.age} • {pet.breed}</div>
+                                    </div>
                                 </div>
                             </div>
                         </Link>

@@ -39,7 +39,7 @@ const PetDetails = () => {
 
     return (
         <div className="swiping-page-container">
-            <FaArrowLeft className="back-arrow-pet-details" onClick={() => navigate('/matches/approved')}/>
+            {/* <FaArrowLeft className="back-arrow-pet-details" onClick={() => navigate('/matches/approved')}/> */}
             <div className="swipe-card">
 
                 {images && images.length > 1 ? (

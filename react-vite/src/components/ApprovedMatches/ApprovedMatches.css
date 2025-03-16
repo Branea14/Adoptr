@@ -28,7 +28,7 @@
 
   .approved-match-on-page {
     display: flex;
-    flex-direction: wrap;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 25px;
     margin-top: 20px;
