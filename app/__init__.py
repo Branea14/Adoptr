@@ -20,12 +20,12 @@ from .sockets import socketio
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
-# @app.route('/run-migrations')
-# def run_migrations():
-#     """Forces Alembic to update the database on Render"""
-#     stamp()  # Marks the database as up to date
-#     upgrade()  # Runs all missing migrations
-#     return "Migrations Applied Successfully!", 200
+@app.route('/run-migrations')
+def run_migrations():
+    """Forces Alembic to update the database on Render"""
+    stamp()  # Marks the database as up to date
+    upgrade()  # Runs all missing migrations
+    return "Migrations Applied Successfully!", 200
 
 
 # Setup login manager
