@@ -1,3 +1,54 @@
 .avatar-preview {
     width: 100px;
 }
+
+.use-location-button {
+    width: 180px !important;
+}
+
+.location-label {
+    display: flex;
+    flex-direction: column; /* Keeps label and input stacked */
+    /* gap: 4px; */
+    margin-bottom: 0px !important;
+}
+
+.location-container {
+      display: flex;
+      align-items: center;  /* Aligns items in the center */
+      gap: 16px;
+
+  }
+
+  .preferences-container,
+.preferences-otherPets-container {
+  display: flex;
+  align-items: center; /* Aligns text and radio buttons horizontally */
+  justify-content: space-between;
+  /* margin-bottom: 10px; */
+  width: 100%;
+}
+
+/* Ensures radio buttons stay in line */
+.preferences-answer-container,
+.preferences-otherPets-answer-container {
+  display: flex;
+  gap: 15px; /* Adds spacing between options */
+}
+
+/* Aligns labels properly with radio buttons */
+.preferences-label,
+.preferences-otherPets-label {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Adds space between radio button and text */
+  white-space: nowrap; /* Prevents text from wrapping */
+}
+
+/* Makes the question labels uniform in width */
+.preferences-question-label,
+.preferences-otherPets-question-label {
+  font-weight: bold;
+  min-width: 150px; /* Ensures labels align neatly */
+  text-align: left;
+}

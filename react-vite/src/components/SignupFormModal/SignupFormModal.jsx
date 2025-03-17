@@ -29,8 +29,10 @@ function SignupFormModal() {
   const [location, setLocation] = useState({latitude: null, longitude: null});
   const [radius, setRadius] = useState(5.0)
   const [errors, setErrors] = useState({});
+
   const [validationErrors, setValidationErrors] = useState({})
   const [validationErrors2, setValidationErrors2] = useState({})
+
   const [showAdditionalModal1, setShowAdditionalModal1] = useState(false)
   const [showAdditionalModal2, setShowAdditionalModal2] = useState(false)
   const [houseTrained, setHouseTrained] = useState(null)
@@ -175,14 +177,6 @@ function SignupFormModal() {
       navigate("/pets/swipe");
     }
   };
-
-  // const handleOtherPetsChange = (e) => {
-  //   const {value, checked} = e.target
-  //   setOtherPets((prev) =>
-  //     checked ? [...prev, value] : prev.filter((pet) => pet !== value)
-  //   )
-  // }
-  console.log('look here for validation errors', validationErrors)
 
   return (
     <div className="signup-modal">
@@ -341,7 +335,6 @@ function SignupFormModal() {
                   {validationErrors2.kids && <p className="login-error-message">{validationErrors2.kids}</p>}
 
               </div>
-
             </div>
 
             <div className="kids-container">
@@ -478,6 +471,7 @@ function SignupFormModal() {
             </div>
 
           </div>
+
             <button type="button" onClick={() => setShowAdditionalModal1(false)}>Back</button>
             <button
               type="button"

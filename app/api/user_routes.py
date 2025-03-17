@@ -43,6 +43,7 @@ def edit_user(id):
         return jsonify({"error": "Forbidden"}), 403
 
     data = request.get_json()
+    print(data)
 
     #validations and error handling
     errors = {}
@@ -54,8 +55,8 @@ def edit_user(id):
         errors['username'] = "Username is required and must be less than 40 characters"
     if not data.get('email') or len(data['email']) >= 255:
         errors['email'] = "Email is required and must be less than 255 characters"
-    if not data.get('password') or len(data['password']) >= 255:
-        errors['password'] = "Password is required and must be less than 255 characters"
+    # if not data.get('password') or len(data['password']) >= 255:
+    #     errors['password'] = "Password is required and must be less than 255 characters"
 
     # if not isinstance(data.get('household'), dict):
     #     errors['household'] = "Household inform must be JSON"
@@ -100,6 +101,7 @@ def edit_user(id):
     # if data.get('lifestyle') not in ['noPreference', 'veryActive', 'active', 'laidback', 'lapPet']:
     #     errors['lifestyle'] = "Invalid lifestyle selection"
 
+    print('###############################', errors)
     if errors:
         return jsonify({'message': "Bad Request", "errors": errors}), 400
 
@@ -115,7 +117,7 @@ def edit_user(id):
     user.lastName = data['lastName']
     user.username = data['username']
     user.email = data['email']
-    user.password = data['password']
+    # user.password = data['password']
     user.avatar = data.get('avatar', user.avatar)
     user.kids = data['kids']
     user.hasBackyard = data['hasBackyard']

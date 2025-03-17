@@ -79,18 +79,19 @@ export const thunkLogout = () => async (dispatch) => {
   dispatch(removeUser());
   dispatch(updateDogPreferences(null))
 };
-export const editUserThunk = (user) => async (dispatch) => {
-  const response = await csrfFetch(`/api/users/${user.id}`, {
+export const editUserThunk = (userData) => async (dispatch) => {
+  const {userId, ...updatedData} = userData
+  const response = await csrfFetch(`/api/users/${userId}`, {
     method: "PUT",
-    body: JSON.stringify(user)
+    body: JSON.stringify(updatedData)
   })
 
   if (response.ok) {
     const data = await response.json()
     dispatch(editUser(data))
 
-    if (user.dogPreferences) {
-      dispatch(thunkUpdateDogPreferences(data.id, user.dogPreferences))
+    if (updatedData.dogPreferences) {
+      dispatch(thunkUpdateDogPreferences(updatedData.dogPreferences))
     }
     return null
   } else if (response.status < 500) {
@@ -102,7 +103,7 @@ export const editUserThunk = (user) => async (dispatch) => {
 }
 
 export const thunkUpdateDogPreferences = (dogPreferences) => async (dispatch) => {
-  const response = await fetch('/api/dog-preferences', {
+  const response = await fetch('/api/dog-preferences/', {
     method: 'PUT',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(dogPreferences)
@@ -119,12 +120,13 @@ export const thunkUpdateDogPreferences = (dogPreferences) => async (dispatch) =>
   }
 }
 
-export const thunkSaveDogPreferences = (userId, dogPreferences) => async (dispatch) => {
+export const thunkSaveDogPreferences = (dogPreferencesDataa) => async (dispatch) => {
+  const {userId, ...preferenceData } = dogPreferencesDataa
   try {
     const response = await fetch(`/api/dog-preferences/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, ...dogPreferences }),
+      body: JSON.stringify({ userId, preferenceData }),
       credentials: "include"
     });
 

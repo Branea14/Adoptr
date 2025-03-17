@@ -9,138 +9,153 @@ import "./UpdateUser.css"
 
 
 const UpdateUserForm = ({user}) => {
-    const dispatch = useDispatch()
-    const {closeModal} = useModal()
+  const dispatch = useDispatch()
+  const {closeModal} = useModal()
 
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("");
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [avatar, setAvatar] = useState("")
-    const [avatarPreview, setAvatarPreview] = useState(user.avatar || "")
-    const [kids, setKids] = useState(null)
-    const [hasBackyard, setHasBackyard] = useState(null)
-    const [otherPets, setOtherPets] = useState(null)
-    const [petExperience, setPetExperience] = useState(null)
-    const [location, setLocation] = useState({latitude: null, longitude: null});
-    const [radius, setRadius] = useState(5)
-    const [errors, setErrors] = useState({});
-    const [validationErrors, setValidationErrors] = useState({})
-    const [loadingLocation, setLoadingLocation] = useState(false)
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [avatar, setAvatar] = useState("")
+  const [avatarPreview, setAvatarPreview] = useState(user.avatar || "")
+  const [kids, setKids] = useState(null)
+  const [hasBackyard, setHasBackyard] = useState(null)
+  const [otherPets, setOtherPets] = useState(null)
+  const [petExperience, setPetExperience] = useState(null)
+  const [location, setLocation] = useState({latitude: null, longitude: null});
+  const [radius, setRadius] = useState(5)
+  const [errors, setErrors] = useState({});
+  const [validationErrors, setValidationErrors] = useState({})
+  const [validationErrors2, setValidationErrors2] = useState({})
+  const [loadingLocation, setLoadingLocation] = useState(false)
 
-    const [showAdditionalModal1, setShowAdditionalModal1] = useState(false)
-    const [showAdditionalModal2, setShowAdditionalModal2] = useState(false)
-    const [houseTrained, setHouseTrained] = useState(null)
-    const [specialNeeds, setSpecialNeeds] = useState(null)
-    const [idealAge, setIdealAge] = useState(null)
-    const [idealSex, setIdealSex] = useState(null)
-    const [idealSize, setIdealSize] = useState(null)
-    const [lifestyle, setLifestyle] = useState(null)
+  const [showAdditionalModal1, setShowAdditionalModal1] = useState(false)
+  const [showAdditionalModal2, setShowAdditionalModal2] = useState(false)
+  const [houseTrained, setHouseTrained] = useState(null)
+  const [specialNeeds, setSpecialNeeds] = useState(null)
+  const [idealAge, setIdealAge] = useState(null)
+  const [idealSex, setIdealSex] = useState(null)
+  const [idealSize, setIdealSize] = useState(null)
+  const [lifestyle, setLifestyle] = useState(null)
 
-    const dogPreferences = {
-        houseTrained,
-        specialNeeds,
-        idealAge,
-        idealSex,
-        idealSize,
-        lifestyle,
-    };
+  const dogPreferences = {
+      houseTrained,
+      specialNeeds,
+      idealAge,
+      idealSex,
+      idealSize,
+      lifestyle,
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
 
-    useEffect(() => {
-        if (user) {
-            console.log('user data from editing profile', user)
+  useEffect(() => {
+      if (user) {
+          console.log('user data from editing profile', user)
 
-            setFirstName(user.firstName || "")
-            setLastName(user.lastName || "")
-            setUsername(user.username || "")
-            setEmail(user.email || "")
-            setPassword(user.password || "")
-            setAvatar(user.avatar || "")
-            setKids(user.kids || null)
-            setHasBackyard(user.hasBackyard || null)
-            setOtherPets(user.otherPets || null)
-            setPetExperience(user.petExperience || null)
-            setLocation(user.location || {latitude: null, longitude: null})
-            setRadius(user.radius || 5)
+          setFirstName(user.firstName || "")
+          setLastName(user.lastName || "")
+          setUsername(user.username || "")
+          setEmail(user.email || "")
+          setPassword(user.password || "")
+          setAvatar(user.avatar || "")
+          setKids(user.kids || null)
+          setHasBackyard(user.hasBackyard || null)
+          setOtherPets(user.otherPets || null)
+          setPetExperience(user.petExperience || null)
+          setLocation(user.location || {latitude: null, longitude: null})
+          setRadius(user.radius || 5)
 
-            setHouseTrained(user.dogPreferences?.houseTrained || null)
-            setSpecialNeeds(user.dogPreferences?.specialNeeds || null)
-            setIdealAge(user.dogPreferences?.idealAge || null)
-            setIdealSex(user.dogPreferences?.idealSex || null)
-            setIdealSize(user.dogPreferences?.idealSize || null)
-            setLifestyle(user.dogPreferences?.lifestyle || null)
-        }
-    }, [user])
+          setHouseTrained(user.dogPreferences?.houseTrained || null)
+          setSpecialNeeds(user.dogPreferences?.specialNeeds || null)
+          setIdealAge(user.dogPreferences?.idealAge || null)
+          setIdealSex(user.dogPreferences?.idealSex || null)
+          setIdealSize(user.dogPreferences?.idealSize || null)
+          setLifestyle(user.dogPreferences?.lifestyle || null)
+      }
+  }, [user])
 
-    const updateAvatar = (e) => {
-        const newAvatarUrl = e.target.value.trim()
-        setAvatar(newAvatarUrl)
-        setAvatarPreview(newAvatarUrl)
+  const updateFirstName = (e) => setFirstName(e.target.value)
+  const updateLastName = (e) => setLastName(e.target.value)
+  const updateUsername = (e) => setUsername(e.target.value)
+  const updateEmail = (e) => setEmail(e.target.value)
+  const updatePassword = (e) => setPassword(e.target.value)
+  const updateKids = (e) => setKids(e.target.value === 'true' ? true : false)
+  const updateHasBackyard = (e) => setHasBackyard(e.target.value === 'true' ? true : false)
+  const updateOtherPets = (e) => setOtherPets(e.target.value)
+  const updatePetExperience = (e) => setPetExperience(e.target.value)
+  const updateHouseTrained = (e) => setHouseTrained(e.target.value === 'true' ? true : false)
+  const updateSpecialNeeds = (e) => setSpecialNeeds(e.target.value === 'true' ? true : false)
+  const updateIdealAge = (e) => setIdealAge(e.target.value)
+  const updateIdealSex = (e) => setIdealSex(e.target.value)
+  const updateIdealSize = (e) => setIdealSize(e.target.value)
+  const updateLifestyle = (e) => setLifestyle(e.target.value)
+  const updateAvatar = (e) => {
+      const newAvatarUrl = e.target.value.trim()
+      setAvatar(newAvatarUrl)
+      setAvatarPreview(newAvatarUrl)
+  }
+
+  const updateLocation = () => {
+    if (!navigator.geolocation) {
+      setErrors((prev) => ({ ...prev, location: "Geolocation is not supported by your browser"}))
+      return
     }
 
-    const updateLocation = () => {
-        if (!navigator.geolocation) {
-          setErrors((prev) => ({ ...prev, location: "Geolocation is not supported by your browser"}))
-          return
-        }
+    setLoadingLocation(true)
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        console.log('location fetched:', position.coords.latitude, position.coords.longitude)
+          setLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})
+          setErrors((prev) => {
+            const newErrors = { ...prev }
+            delete newErrors.location
+            return newErrors
+          })
+          setLoadingLocation(false)
+      },
+      (error) => {
+          console.log('error fetching location', error.message)
+          setErrors((prev) => ({ ...prev, location: error.message}))
+          setLoadingLocation(false)
+      }
+    )
+  }
 
-        setLoadingLocation(true)
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                setLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})
-                setErrors((prev) => ({ ...prev, location: null}))
-                setLoadingLocation(false)
-            },
-            (error) => {
-                setErrors((prev) => ({ ...prev, location: error.message}))
-                setLoadingLocation(false)
-            }
-        )
-    }
+  const updateRadius = (event, newVal) => setRadius(newVal)
 
-    const updateRadius = (event, newVal) => setRadius(newVal)
+  // client side validations
+  useEffect(() => {
+    const newErrors = {}
 
-    const validateEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-      };
+    if (!firstName.trim()) newErrors.firstName = "First name is required"
+    if (!lastName.trim()) newErrors.lastName = "Last name is required"
+    if (!username.trim()) newErrors.username = "Username is required"
+    if (email && !validateEmail(email)) newErrors.email = "Please provide a valid email address";
+    if (password && password.length < 6) newErrors.password = "Password must be at least 6 characters long";
+    if (!avatar.trim()) newErrors.avatar = "Profile picture is required"
+    if (!location) newErrors.location = "Location is required"
 
-    const updateFirstName = (e) => setFirstName(e.target.value)
-    const updateLastName = (e) => setLastName(e.target.value)
-    const updateUsername = (e) => setUsername(e.target.value)
-    const updateEmail = (e) => setEmail(e.target.value)
-    const updatePassword = (e) => setPassword(e.target.value)
-    const updateKids = (e) => setKids(e.target.value === 'true' ? true : false)
-    const updateHasBackyard = (e) => setHasBackyard(e.target.value === 'true' ? true : false)
-    const updateOtherPets = (e) => setOtherPets(e.target.value)
-    const updatePetExperience = (e) => setPetExperience(e.target.value)
-    const updateHouseTrained = (e) => setHouseTrained(e.target.value === 'true' ? true : false)
-    const updateSpecialNeeds = (e) => setSpecialNeeds(e.target.value === 'true' ? true : false)
-    const updateIdealAge = (e) => setIdealAge(e.target.value)
-    const updateIdealSex = (e) => setIdealSex(e.target.value)
-    const updateIdealSize = (e) => setIdealSize(e.target.value)
-    const updateLifestyle = (e) => setLifestyle(e.target.value)
+    setValidationErrors(newErrors)
+  }, [firstName, lastName, username, email, password, avatar])
 
+  useEffect(() => {
+    const newErrors = {}
 
+    if (!location) newErrors.location = "Location is required"
+    if (kids === null) newErrors.kids = "Please answer question."
+    if (hasBackyard === null) newErrors.hasBackyard = "Please answer question."
+    if (otherPets === null) newErrors.otherPets = "Please answer question."
+    if (petExperience === null) newErrors.petExperience = "Please answer question"
 
+    setValidationErrors2(newErrors)
 
-    useEffect(() => {
-        const newErrors = {}
-
-        if (!firstName.trim()) newErrors.firstName = "First name is required"
-        if (!lastName.trim()) newErrors.lastName = "Last name is required"
-        if (!username.trim()) newErrors.username = "Username is required"
-        if (email && !validateEmail(email)) newErrors.email = "Please provide a valid email address";
-        if (password && password.length < 6) newErrors.password = "Password must be at least 6 characters long";
-        if (!avatar.trim()) newErrors.avatar = "Profile picture is required"
-        if (kids === null) newErrors.kids = "Please answer question."
-        if (hasBackyard === null) newErrors.hasBackyard = "Please answer question."
-        if (otherPets === null) newErrors.otherPets = "Please answer question."
-        if (petExperience === null) newErrors.petExperience = "Please answer question"
-
-    }, [firstName, lastName, username, email, password, avatar, kids, hasBackyard, otherPets, petExperience])
+  }, [kids, hasBackyard, otherPets, petExperience, location])
 
 
     const handleSubmit = async (e) => {
@@ -158,6 +173,7 @@ const UpdateUserForm = ({user}) => {
         if (otherPets === null) newErrors.otherPets = "Please answer question."
         if (petExperience === null) newErrors.petExperience = "Please answer question"
 
+        console.log('looooooooooooook here for errors specifically location', newErrors)
         if (Object.keys(newErrors).length > 0) {
             return setErrors((prev) => ({ ...prev, ...newErrors}))
         }
@@ -167,6 +183,7 @@ const UpdateUserForm = ({user}) => {
 
           const serverResponse = await dispatch(
             editUserThunk({
+                userId: user.id,
                 firstName,
                 lastName,
                 username,
@@ -184,6 +201,7 @@ const UpdateUserForm = ({user}) => {
             })
           )
 
+          console.log('serverResponse', serverResponse)
           if (serverResponse) {
             if(serverResponse.errors) setErrors(serverResponse.errors)
             else if (typeof serverResponse === 'object') setErrors(serverResponse)
@@ -192,9 +210,12 @@ const UpdateUserForm = ({user}) => {
             if (!serverResponse.errors) {
                 dispatch(thunkAuthenticate())
                 closeModal()
+                // navigate()
             }
           }
     }
+    console.log('validationerrors', validationErrors, errors)
+    console.log('validationErrors2', validationErrors2)
 
     return (
         <div className="signup-modal">
@@ -212,18 +233,46 @@ const UpdateUserForm = ({user}) => {
                   </div>
                 )}
 
-                <label>
-                    Avatar
-                    <input type="text" placeholder="Avatar" value={avatar || ""} onChange={updateAvatar} width="50"/>
-                </label>
+                {/* <div className='profile-container'> */}
+                  <label className='profile-label'>
+                      Profile Picture
+                      <input type="text" value={avatar || ""} onChange={updateAvatar}/>
+                      {validationErrors.avatar && <p className="login-error-message">{validationErrors.avatar}</p>}
+                  </label>
 
-                {/* Show Image Preview */}
-                {avatar && !errors.avatar && (
-                  <img src={avatarPreview} alt="Avatar Preview" className="avatar-preview"/>
-                )}
+                  {/* Show Image Preview */}
+                  {avatar && !errors.avatar && (
+                    <img src={avatarPreview} alt="Avatar Preview" className="avatar-preview"/>
+                  )}
+                {/* </div> */}
                 {errors.avatar && <p className="error-message">{errors.avatar}</p>}
 
+              <div className='first-last-name-container'>
+                <label className='first-last-name-label'>
+                    First Name
+                    <input
+                      type="text"
+                      value={firstName}
+                      onChange={updateFirstName}
+                      required
+                    />
 
+                    {errors.firstName && <p className="signup-error-message">{errors.firstName}</p>}
+                    {validationErrors.firstName && <p className="login-error-message">{validationErrors.firstName}</p>}
+                </label>
+
+                <label>
+                    Last Name
+                    <input
+                      type="text"
+                      value={lastName}
+                      onChange={updateLastName}
+                      required
+                    />
+                    {errors.lastName && <p className="signup-error-message">{errors.lastName}</p>}
+                    {validationErrors.lastName && <p className="login-error-message">{validationErrors.lastName}</p>}
+                </label>
+              </div>
 
                 <label>
                   Username
@@ -231,35 +280,11 @@ const UpdateUserForm = ({user}) => {
                     type="text"
                     value={username}
                     onChange={updateUsername}
-                    placeholder="Username"
                     className={errors.username ? 'error' : ''}
                     required
                   />
                   {errors.username && <p className="signup-error-message">{errors.username}</p>}
-                </label>
-
-                <label>
-                  First Name
-                  <input
-                    type="text"
-                    value={firstName}
-                    onChange={updateFirstName}
-                    placeholder="First Name"
-                    required
-                  />
-                  {errors.firstName && <p className="signup-error-message">{errors.firstName}</p>}
-                </label>
-
-                <label>
-                  Last Name
-                  <input
-                    type="text"
-                    value={lastName}
-                    onChange={updateLastName}
-                    placeholder="Last Name"
-                    required
-                  />
-                  {errors.lastName && <p className="signup-error-message">{errors.lastName}</p>}
+                  {validationErrors.username && <p className="login-error-message">{validationErrors.username}</p>}
                 </label>
 
                 <label>
@@ -268,7 +293,6 @@ const UpdateUserForm = ({user}) => {
                     type="text"
                     value={email}
                     onChange={updateEmail}
-                    placeholder="Email"
                     className={errors.email ? 'error' : ''}
                     required
                   />
@@ -276,7 +300,7 @@ const UpdateUserForm = ({user}) => {
                   {validationErrors.email && <p className="signup-error-message">{validationErrors.email}</p>}
                 </label>
 
-                <label>
+                {/* <label>
                   Password
                   <input
                     type="password"
@@ -287,36 +311,46 @@ const UpdateUserForm = ({user}) => {
                   />
                   {errors.password && <p className="signup-error-message">{errors.password}</p>}
                   {validationErrors.password && <p className="signup-error-message">{validationErrors.password}</p>}
-                </label>
-                <button type="button" onClick={() => setShowAdditionalModal1(true)}>Next</button>
+                </label> */}
+                <button
+                  type="button"
+                  onClick={() => setShowAdditionalModal1(true)}
+                  disabled={Object.keys(validationErrors).length > 0 || Object.keys(errors).length > 0}
+                  className={`next-button ${Object.keys(validationErrors).length > 0 || Object.keys(errors).length > 0 ? 'disabled' : ''}`}>
+                    Next
+                </button>
               </>
             )}
 
             {showAdditionalModal1 && !showAdditionalModal2 && (
               <>
-                <label>
-                    <button type="button" onClick={updateLocation} disabled={loadingLocation}>
-                        {loadingLocation ? "Fetching Location..." : "Use Current Location"}
-                    </button>
-                </label>
-                {errors.location && <p className="error-message">{errors.location}</p>}
+                <div className='location-container'>
+                  <label className='location-label'>Radius (miles)</label>
 
+                  <label className='location-label'>
+                      <button type="button" className='use-location-button' onClick={updateLocation} disabled={loadingLocation}>
+                          {loadingLocation ? "Fetching Location..." : "Use Current Location"}
+                      </button>
+                  </label>
+                  {errors.location && <p className="error-message">{errors.location}</p>}
+                </div>
 
-                <label>Radius</label>
                 <div>
                     <Slider
                     aria-label="radius"
                     value={radius}
                     onChange={updateRadius}
-                    // min={1}
-                    // max={50}
-                    // step={1}
+                    valueLabelDisplay='on'
+                    min={1}
+                    max={50}
+                    step={1}
                     />
                 </div>
 
-                <label>Do you have kids?</label>
-                <div>
-                  <label>
+              <div className='kids-container'>
+                <label className='kids-question-label'>Do you have kids?</label>
+                <div className='kids-answer-container'>
+                  <label className='kids-label'>
                     <input
                       type="radio"
                       name='kids'
@@ -327,7 +361,7 @@ const UpdateUserForm = ({user}) => {
                     /> Yes
                   </label>
 
-                  <label>
+                  <label className='kids-label'>
                     <input
                       type="radio"
                       name='kids'
@@ -338,13 +372,15 @@ const UpdateUserForm = ({user}) => {
                     /> No
                   </label>
                     {errors.kids && <p className="signup-error-message">{errors.kids}</p>}
-                    {validationErrors.kids && <p className="signup-error-message">{validationErrors.kids}</p>}
+                    {validationErrors2.kids && <p className="signup-error-message">{validationErrors2.kids}</p>}
 
                 </div>
+              </div>
 
-                <label>Do you have a backyard?</label>
-                <div>
-                  <label>
+              <div className='kids-container'>
+                <label className='kids-question-label'>Do you have a backyard?</label>
+                <div className='kids-answer-container'>
+                  <label className='kids-label'>
                     <input
                       type="radio"
                       name='hasBackyard'
@@ -366,12 +402,14 @@ const UpdateUserForm = ({user}) => {
                     /> No
                   </label>
                     {errors.hasBackyard && <p className="signup-error-message">{errors.hasBackyard}</p>}
-                    {validationErrors.hasBackyard && <p className="signup-error-message">{validationErrors.hasBackyard}</p>}
+                    {validationErrors2.hasBackyard && <p className="signup-error-message">{validationErrors2.hasBackyard}</p>}
                 </div>
+              </div>
 
-                <label>Do you have any other pets?</label>
-                  <div>
-                  <label>
+              <div className='signup-otherPets-container'>
+                <label className='signup-otherPets-question-label'>Do you have any other pets?</label>
+                  <div className='signup-otherPets-answer-container'>
+                  <label className='signup-otherPets-label'>
                     <input
                       type="radio"
                       name='otherPets'
@@ -382,7 +420,7 @@ const UpdateUserForm = ({user}) => {
                     />None
                   </label>
 
-                  <label>
+                  <label className='signup-otherPets-label'>
                     <input
                       type="radio"
                       name='otherPets'
@@ -393,7 +431,7 @@ const UpdateUserForm = ({user}) => {
                     />Dogs Only
                   </label>
 
-                  <label>
+                  <label className='signup-otherPets-label'>
                     <input
                       type="radio"
                       name='otherPets'
@@ -404,7 +442,7 @@ const UpdateUserForm = ({user}) => {
                     />Cats Only
                   </label>
 
-                  <label>
+                  <label className='signup-otherPets-label'>
                     <input
                       type="radio"
                       name='otherPets'
@@ -415,7 +453,7 @@ const UpdateUserForm = ({user}) => {
                     />Both
                   </label>
 
-                  <label>
+                  <label className='signup-otherPets-label'>
                     <input
                       type="radio"
                       name='otherPets'
@@ -426,14 +464,14 @@ const UpdateUserForm = ({user}) => {
                     />Other
                   </label>
                     {errors.otherPets && <p className="signup-error-message">{errors.otherPets}</p>}
-                    {validationErrors.otherPets && <p className="signup-error-message">{validationErrors.otherPets}</p>}
+                    {validationErrors2.otherPets && <p className="signup-error-message">{validationErrors2.otherPets}</p>}
                   </div>
+              </div>
 
-
-
-                <label>What&apos;s your pet experience?</label>
-                <div>
-                  <label>
+              <div className='signup-otherPets-container'>
+                <label className='signup-otherPets-question-label'>What&apos;s your pet experience?</label>
+                <div className="signup-otherPets-answer-container">
+                  <label className='signup-otherPets-label'>
                     <input
                       type="radio"
                       name='petExperience'
@@ -444,7 +482,7 @@ const UpdateUserForm = ({user}) => {
                     /> First Time
                   </label>
 
-                  <label>
+                  <label className='signup-otherPets-label'>
                     <input
                       type="radio"
                       name='petExperience'
@@ -455,7 +493,7 @@ const UpdateUserForm = ({user}) => {
                     /> Previous
                   </label>
 
-                  <label>
+                  <label className='signup-otherPets-label'>
                     <input
                       type="radio"
                       name='petExperience'
@@ -466,10 +504,17 @@ const UpdateUserForm = ({user}) => {
                     /> Current
                   </label>
                     {errors.petExperience && <p className="signup-error-message">{errors.petExperience}</p>}
-                    {validationErrors.petExperience && <p className="signup-error-message">{validationErrors.petExperience}</p>}
+                    {validationErrors2.petExperience && <p className="signup-error-message">{validationErrors2.petExperience}</p>}
                 </div>
+              </div>
+
                 <button type="button" onClick={() => setShowAdditionalModal1(false)}>Back</button>
-                <button type="button" onClick={() => setShowAdditionalModal2(true)}>Next</button>
+                <button
+                  type="button"
+                  onClick={() => setShowAdditionalModal2(true)}
+                  disabled={Object.keys(validationErrors2).length > 0 || Object.keys(errors).length > 0}
+                  className={`next-button ${Object.keys(validationErrors2).length > 0 || Object.keys(errors).length > 0 ? 'disabled' : ''}`}
+                  >Next</button>
 
 
               </>
@@ -478,267 +523,276 @@ const UpdateUserForm = ({user}) => {
 
             {showAdditionalModal2 && (
               <>
-                <h2>Dog Preferences (Optional)</h2>
+                <h1 style={{fontSize:"25px", padding:"0px"}}>Dog Preferences <span style={{fontSize:"15px"}}>(Optional)</span></h1>
 
-                <label>House Trained?</label>
-                <div>
-                  <label>
-                    <input
-                      type="radio"
-                      name='houseTrained'
-                      value='true'
-                      checked={houseTrained === true}
-                      onChange={updateHouseTrained}
-                      required
-                    /> Yes
-                  </label>
+                <div className='preferences-container'>
+                  <label className='preferences-question-label'>House Trained?</label>
+                  <div className='preferences-answer-container'>
+                    <label className='preferences-label'>
+                      <input
+                        type="radio"
+                        name='houseTrained'
+                        value='true'
+                        checked={houseTrained === true}
+                        onChange={updateHouseTrained}
+                      /> Yes
+                    </label>
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='houseTrained'
-                      value='false'
-                      checked={houseTrained === false}
-                      onChange={updateHouseTrained}
-                      required
-                    /> No
-                  </label>
+                    <label className='preferences-label'>
+                      <input
+                        type="radio"
+                        name='houseTrained'
+                        value='false'
+                        checked={houseTrained === false}
+                        onChange={updateHouseTrained}
+
+                      /> No
+                    </label>
+                  </div>
                 </div>
 
-                <label>Special Needs?</label>
-                <div>
-                  <label>
-                    <input
-                      type="radio"
-                      name='specialNeeds'
-                      value='true'
-                      checked={specialNeeds === true}
-                      onChange={updateSpecialNeeds}
-                      required
-                    /> Yes
-                  </label>
+                <div className='preferences-container'>
+                  <label className='preferences-question-label'>Special Needs?</label>
+                  <div className='preferences-answer-container'>
+                    <label className='preferences-label'>
+                      <input
+                        type="radio"
+                        name='specialNeeds'
+                        value='true'
+                        checked={specialNeeds === true}
+                        onChange={updateSpecialNeeds}
+                      /> Yes
+                    </label>
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='specialNeeds'
-                      value='false'
-                      checked={specialNeeds === false}
-                      onChange={updateSpecialNeeds}
-                      required
-                    /> No
-                  </label>
+                    <label className='preferences-label'>
+                      <input
+                        type="radio"
+                        name='specialNeeds'
+                        value='false'
+                        checked={specialNeeds === false}
+                        onChange={updateSpecialNeeds}
+                      /> No
+                    </label>
+                  </div>
                 </div>
 
-                <label>What&apos;s your ideal age?</label>
-                <div>
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealAge'
-                      value='noPreference'
-                      checked={idealAge === "noPreference"}
-                      onChange={updateIdealAge}
-                      required
-                    /> No Preference
-                  </label>
+                <div className='preferences-container'>
+                  <label className='preferences-question-label'>Ideal sex?</label>
+                  <div className='preferences-answer-container'>
+                    {/* <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='idealSex'
+                        value='noPreference'
+                        checked={idealSex === "noPreference"}
+                        onChange={updateIdealSex}
+                        required
+                      /> No Preference
+                    </label> */}
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealAge'
-                      value='puppy'
-                      checked={idealAge === "puppy"}
-                      onChange={updateIdealAge}
-                      required
-                    /> Puppy
-                  </label>
+                    <label className='preferences-label'>
+                      <input
+                        type="radio"
+                        name='idealSex'
+                        value='male'
+                        checked={idealSex === "male"}
+                        onChange={updateIdealSex}
+                      /> Male
+                    </label>
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealAge'
-                      value='young'
-                      checked={idealAge === "young"}
-                      onChange={updateIdealAge}
-                      required
-                    /> Young
-                  </label>
+                    <label className='preferences-label'>
+                      <input
+                        type="radio"
+                        name='idealSex'
+                        value='female'
+                        checked={idealSex === "female"}
+                        onChange={updateIdealSex}
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealAge'
-                      value='adult'
-                      checked={idealAge === "adult"}
-                      onChange={updateIdealAge}
-                      required
-                    /> Adult
-                  </label>
-
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealAge'
-                      value='senior'
-                      checked={idealAge === "senior"}
-                      onChange={updateIdealAge}
-                      required
-                    /> Senior
-                  </label>
+                      /> Female
+                    </label>
+                  </div>
 
                 </div>
 
-                <label>What&apos;s your ideal sex?</label>
-                <div>
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealSex'
-                      value='noPreference'
-                      checked={idealSex === "noPreference"}
-                      onChange={updateIdealSex}
-                      required
-                    /> No Preference
-                  </label>
+                <div className='preferences-otherPets-container'>
+                  <label className='preferences-otherPets-question-label'>Ideal age?</label>
+                  <div className='preferences-otherPets-answer-container'>
+                    {/* <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='idealAge'
+                        value='noPreference'
+                        checked={idealAge === "noPreference"}
+                        onChange={updateIdealAge}
+                        required
+                      /> No Preference
+                    </label> */}
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealSex'
-                      value='male'
-                      checked={idealSex === "male"}
-                      onChange={updateIdealSex}
-                      required
-                    /> Male
-                  </label>
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='idealAge'
+                        value='puppy'
+                        checked={idealAge === "puppy"}
+                        onChange={updateIdealAge}
+                      /> Puppy
+                    </label>
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealSex'
-                      value='female'
-                      checked={idealSex === "female"}
-                      onChange={updateIdealSex}
-                      required
-                    /> Female
-                  </label>
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='idealAge'
+                        value='young'
+                        checked={idealAge === "young"}
+                        onChange={updateIdealAge}
+
+                      /> Young
+                    </label>
+
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='idealAge'
+                        value='adult'
+                        checked={idealAge === "adult"}
+                        onChange={updateIdealAge}
+
+                      /> Adult
+                    </label>
+
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='idealAge'
+                        value='senior'
+                        checked={idealAge === "senior"}
+                        onChange={updateIdealAge}
+                      /> Senior
+                    </label>
+
+                  </div>
                 </div>
 
-                <label>What&apos;s your ideal size?</label>
-                <div>
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealSize'
-                      value='noPreference'
-                      checked={idealSize === "noPreference"}
-                      onChange={updateIdealSize}
-                      required
-                    /> No Preference
-                  </label>
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealSize'
-                      value='small'
-                      checked={idealSize === "small"}
-                      onChange={updateIdealSize}
-                      required
-                    /> Small
-                  </label>
+                <div className='preferences-otherPets-container'>
+                  <label className='preferences-otherPets-question-label'>Ideal size?</label>
+                  <div className='preferences-otherPets-answer-container'>
+                    {/* <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='idealSize'
+                        value='noPreference'
+                        checked={idealSize === "noPreference"}
+                        onChange={updateIdealSize}
+                        required
+                      /> No Preference
+                    </label> */}
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealSize'
-                      value='medium'
-                      checked={idealSize === "medium"}
-                      onChange={updateIdealSize}
-                      required
-                    /> Medium
-                  </label>
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='idealSize'
+                        value='small'
+                        checked={idealSize === "small"}
+                        onChange={updateIdealSize}
+                      /> Small
+                    </label>
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealSize'
-                      value='large'
-                      checked={idealSize === "large"}
-                      onChange={updateIdealSize}
-                      required
-                    /> Large
-                  </label>
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='idealSize'
+                        value='medium'
+                        checked={idealSize === "medium"}
+                        onChange={updateIdealSize}
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='idealSize'
-                      value='xl'
-                      checked={idealSize === "xl"}
-                      onChange={updateIdealSize}
-                      required
-                    /> XLarge
-                  </label>
+                      /> Medium
+                    </label>
+
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='idealSize'
+                        value='large'
+                        checked={idealSize === "large"}
+                        onChange={updateIdealSize}
+
+                      /> Large
+                    </label>
+
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='idealSize'
+                        value='xl'
+                        checked={idealSize === "xl"}
+                        onChange={updateIdealSize}
+
+                      /> XLarge
+                    </label>
+                  </div>
+
                 </div>
 
-                <label>What&apos;s your ideal lifestyle?</label>
-                <div>
-                  <label>
-                    <input
-                      type="radio"
-                      name='lifestyle'
-                      value='noPreference'
-                      checked={lifestyle === "noPreference"}
-                      onChange={updateLifestyle}
-                      required
-                    /> No Preference
-                  </label>
+                <div className='preferences-otherPets-container'>
+                  <label className='preferences-otherPets-question-label'>Ideal lifestyle?</label>
+                  <div className='preferences-otherPets-answer-container'>
+                    {/* <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='lifestyle'
+                        value='noPreference'
+                        checked={lifestyle === "noPreference"}
+                        onChange={updateLifestyle}
+                        required
+                      /> No Preference
+                    </label> */}
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='lifestyle'
-                      value='veryActive'
-                      checked={lifestyle === "veryActive"}
-                      onChange={updateLifestyle}
-                      required
-                    /> Very Active
-                  </label>
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='lifestyle'
+                        value='veryActive'
+                        checked={lifestyle === "veryActive"}
+                        onChange={updateLifestyle}
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='lifestyle'
-                      value='active'
-                      checked={lifestyle === "active"}
-                      onChange={updateLifestyle}
-                      required
-                    /> Active
-                  </label>
+                      /> Very Active
+                    </label>
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='lifestyle'
-                      value='laidback'
-                      checked={lifestyle === "laidback"}
-                      onChange={updateLifestyle}
-                      required
-                    /> Laid-back
-                  </label>
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='lifestyle'
+                        value='active'
+                        checked={lifestyle === "active"}
+                        onChange={updateLifestyle}
 
-                  <label>
-                    <input
-                      type="radio"
-                      name='lifestyle'
-                      value='lapPet'
-                      checked={lifestyle === "lapPet"}
-                      onChange={updateLifestyle}
-                      required
-                    /> Lap Pet
-                  </label>
+                      /> Active
+                    </label>
+
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='lifestyle'
+                        value='laidback'
+                        checked={lifestyle === "laidback"}
+                        onChange={updateLifestyle}
+
+                      /> Laid-back
+                    </label>
+
+                    <label className='preferences-otherPets-label'>
+                      <input
+                        type="radio"
+                        name='lifestyle'
+                        value='lapPet'
+                        checked={lifestyle === "lapPet"}
+                        onChange={updateLifestyle}
+
+                      /> Lap Pet
+                    </label>
+                  </div>
+
                 </div>
 
                 <button type="button" onClick={() => {

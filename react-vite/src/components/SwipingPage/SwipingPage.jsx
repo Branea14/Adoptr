@@ -181,7 +181,7 @@ const SwipingPage = () => {
                     {images && images.length > 1 ? (
                         <div className="swipe-image-container">
                         <FaChevronLeft className='arrow-icon-left-swipe' onClick={handlePrevImage}/>
-                        <img draggable='false' src={currentImage} alt={pet.name} className="swipe-pet-images" />
+                        <img  src={currentImage} alt={pet.name} className="swipe-pet-images" />
                         <FaChevronRight className='arrow-icon-right-swipe' onClick={handleNextImage}/>
                         </div>
                     ) :
