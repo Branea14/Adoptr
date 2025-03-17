@@ -84,7 +84,7 @@ const UpdateUserForm = ({user}) => {
   const updateLastName = (e) => setLastName(e.target.value)
   const updateUsername = (e) => setUsername(e.target.value)
   const updateEmail = (e) => setEmail(e.target.value)
-  const updatePassword = (e) => setPassword(e.target.value)
+  // const updatePassword = (e) => setPassword(e.target.value)
   const updateKids = (e) => setKids(e.target.value === 'true' ? true : false)
   const updateHasBackyard = (e) => setHasBackyard(e.target.value === 'true' ? true : false)
   const updateOtherPets = (e) => setOtherPets(e.target.value)
@@ -101,7 +101,7 @@ const UpdateUserForm = ({user}) => {
       setAvatarPreview(newAvatarUrl)
   }
 
-  const updateLocation = () => {
+  useEffect(() => {
     if (!navigator.geolocation) {
       setErrors((prev) => ({ ...prev, location: "Geolocation is not supported by your browser"}))
       return
@@ -125,7 +125,8 @@ const UpdateUserForm = ({user}) => {
           setLoadingLocation(false)
       }
     )
-  }
+  }, [])
+
 
   const updateRadius = (event, newVal) => setRadius(newVal)
 
@@ -142,7 +143,7 @@ const UpdateUserForm = ({user}) => {
     if (!location) newErrors.location = "Location is required"
 
     setValidationErrors(newErrors)
-  }, [firstName, lastName, username, email, password, avatar])
+  }, [firstName, lastName, username, email, password, avatar, location])
 
   useEffect(() => {
     const newErrors = {}
@@ -324,16 +325,16 @@ const UpdateUserForm = ({user}) => {
 
             {showAdditionalModal1 && !showAdditionalModal2 && (
               <>
-                <div className='location-container'>
+                {/* <div className='kids-container'> */}
                   <label className='location-label'>Radius (miles)</label>
 
-                  <label className='location-label'>
+                  {/* <label className='location-label'>
                       <button type="button" className='use-location-button' onClick={updateLocation} disabled={loadingLocation}>
                           {loadingLocation ? "Fetching Location..." : "Use Current Location"}
                       </button>
-                  </label>
+                  </label> */}
                   {errors.location && <p className="error-message">{errors.location}</p>}
-                </div>
+                {/* </div> */}
 
                 <div>
                     <Slider

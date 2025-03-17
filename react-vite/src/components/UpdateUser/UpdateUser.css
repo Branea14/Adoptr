@@ -10,7 +10,8 @@
     display: flex;
     flex-direction: column; /* Keeps label and input stacked */
     /* gap: 4px; */
-    margin-bottom: 0px !important;
+    /* margin-bottom: 0px !important; */
+    margin-top: 20px;
 }
 
 .location-container {

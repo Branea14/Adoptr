@@ -487,12 +487,11 @@ function SignupFormModal() {
 
         {showAdditionalModal2 && (
           <>
-            <h2>Dog Preferences (Optional)</h2>
-
-          <div className="kids-container">
-            <label className="kids-question-label">House Trained?</label>
-            <div className="kids-answer-container">
-              <label className="kids-label">
+            <h1 style={{fontSize:"25px", padding:"0px"}}>Dog Preferences <span style={{fontSize:"15px"}}>(Optional)</span></h1>
+          <div className="preferences-container">
+            <label className="preferences-question-label">House Trained?</label>
+            <div className="preferences-answer-container">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='houseTrained'
@@ -502,7 +501,7 @@ function SignupFormModal() {
                 /> Yes
               </label>
 
-              <label className="kids-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='houseTrained'
@@ -515,10 +514,10 @@ function SignupFormModal() {
 
           </div>
 
-          <div className="kids-container">
-            <label className="kids-question-label">Special Needs?</label>
-            <div className="kids-answer-container">
-              <label className="kids-label">
+          <div className="preferences-container">
+            <label className="preferences-question-label">Special Needs?</label>
+            <div className="preferences-answer-container">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='specialNeeds'
@@ -541,10 +540,10 @@ function SignupFormModal() {
 
           </div>
 
-          <div className="signup-otherPets-container">
-            <label className="signup-otherPets-question-label">What&apos;s your ideal age?</label>
-            <div className="signup-otherPets-answer-container">
-              <label className="signup-otherPets-label">
+          <div className="preferences-container">
+            <label className="preferences-question-label">Ideal age?</label>
+            <div className="preferences-answer-container">
+              {/* <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealAge'
@@ -552,9 +551,9 @@ function SignupFormModal() {
                   checked={idealAge === "noPreference"}
                   onChange={(e) => setIdealAge(e.target.value)}
                 /> No Preference
-              </label>
+              </label> */}
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealAge'
@@ -564,7 +563,7 @@ function SignupFormModal() {
                 /> Puppy
               </label>
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealAge'
@@ -574,7 +573,7 @@ function SignupFormModal() {
                 /> Young
               </label>
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealAge'
@@ -584,7 +583,7 @@ function SignupFormModal() {
                 /> Adult
               </label>
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealAge'
@@ -598,10 +597,10 @@ function SignupFormModal() {
 
           </div>
 
-          <div className="signup-otherPets-container">
-            <label className="signup-otherPets-question-label">What&apos;s your ideal sex?</label>
-            <div className="signup-otherPets-answer-container">
-              <label className="signup-otherPets-label">
+          <div className="preferences-container">
+            <label className="preferences-question-label">Ideal sex?</label>
+            <div className="preferences-answer-container">
+              {/* <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealSex'
@@ -609,9 +608,9 @@ function SignupFormModal() {
                   checked={idealSex === "noPreference"}
                   onChange={(e) => setIdealSex(e.target.value)}
                 /> No Preference
-              </label>
+              </label> */}
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealSex'
@@ -621,7 +620,7 @@ function SignupFormModal() {
                 /> Male
               </label>
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealSex'
@@ -634,10 +633,10 @@ function SignupFormModal() {
 
           </div>
 
-          <div className="signup-otherPets-container">
-            <label className="signup-otherPets-question-label">What&apos;s your ideal size?</label>
-            <div className="signup-otherPets-answer-container">
-              <label className="signup-otherPets-label">
+          <div className="preferences-container">
+            <label className="preferences-question-label">Ideal size?</label>
+            <div className="preferences-answer-container">
+              {/* <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealSize'
@@ -645,9 +644,9 @@ function SignupFormModal() {
                   checked={idealSize === "noPreference"}
                   onChange={(e) => setIdealSize(e.target.value)}
                 /> No Preference
-              </label>
+              </label> */}
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealSize'
@@ -657,7 +656,7 @@ function SignupFormModal() {
                 /> Small
               </label>
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealSize'
@@ -667,7 +666,7 @@ function SignupFormModal() {
                 /> Medium
               </label>
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealSize'
@@ -677,7 +676,7 @@ function SignupFormModal() {
                 /> Large
               </label>
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='idealSize'
@@ -690,10 +689,10 @@ function SignupFormModal() {
 
           </div>
 
-          <div className="signup-otherPets-container">
-            <label className="signup-otherPets-answer-label">What&apos;s your ideal lifestyle?</label>
-            <div className="signup-otherPets-answer-container">
-              <label className="signup-otherPets-label">
+          <div className="preferences-container">
+            <label className="preferences-question-label">Ideal lifestyle?</label>
+            <div className="preferences-answer-container">
+              {/* <label className="preferences-label">
                 <input
                   type="radio"
                   name='lifestyle'
@@ -701,9 +700,9 @@ function SignupFormModal() {
                   checked={lifestyle === "noPreference"}
                   onChange={(e) => setLifestyle(e.target.value)}
                 /> No Preference
-              </label>
+              </label> */}
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='lifestyle'
@@ -713,7 +712,7 @@ function SignupFormModal() {
                 /> Very Active
               </label>
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='lifestyle'
@@ -723,7 +722,7 @@ function SignupFormModal() {
                 /> Active
               </label>
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='lifestyle'
@@ -733,7 +732,7 @@ function SignupFormModal() {
                 /> Laid-back
               </label>
 
-              <label className="signup-otherPets-label">
+              <label className="preferences-label">
                 <input
                   type="radio"
                   name='lifestyle'

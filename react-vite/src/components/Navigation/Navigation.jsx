@@ -29,11 +29,11 @@ function Navigation() {
       dispatch(thunkAuthenticate()),
       dispatch(approvedMatches())
     ]).finally(() => setLoading(false))
-  }, [dispatch, approvedMatches])
+  }, [dispatch])
 
   useEffect(() => {
     dispatch(approvedMatches())
-  }, [dispatch])
+  }, [dispatch,])
 
   const handleProfileIconClick = () => {
     setShifted((prev) => !prev)

@@ -12,6 +12,7 @@ import ApprovedMatches from '../components/ApprovedMatches';
 import ManageMatches from '../components/ManageMatches';
 import UpdateUser from '../components/UpdateUser/UpdateUser';
 import UpdateUserForm from '../components/UpdateUser/UpdateUserForm';
+import ProfileModal from '../components/ProfileModal/ProfileModal';
 
 export const router = createBrowserRouter([
   {
@@ -21,10 +22,6 @@ export const router = createBrowserRouter([
         path: "/",
         element: <LandingPage />,
       },
-      // {
-      //   path: "login",
-      //   element: <LoginFormPage />,
-      // },
       {
         path: "/user/edit",
         element: <UpdateUser />,
@@ -58,6 +55,10 @@ export const router = createBrowserRouter([
       {
         path: "/pets/current",
         element: <ManagePets />
+      },
+      {
+        path: "/user/:userId",
+        element: <ProfileModal />
       },
       {
         path: '/pets/:petId/edit',

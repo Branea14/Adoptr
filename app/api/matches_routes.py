@@ -6,6 +6,24 @@ from sqlalchemy import desc
 
 matches_routes = Blueprint('matches', __name__)
 
+
+@matches_routes.route('/all')
+@login_required
+def all_matches():
+    matches = Match.query.options(
+        joinedload(Match.user1)
+    ).all()
+
+    return jsonify([
+        {
+            "id": match.id,
+            "petId": match.petId,
+            "receiveUser": match.userId2,
+            "senderUser": match.user1.to_dict() if match.user1 else None
+        }
+        for match in matches
+    ])
+
 ####################### GET ALL APPROVED MATCHES ###############################
 @matches_routes.route('/approved')
 @login_required

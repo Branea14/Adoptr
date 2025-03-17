@@ -4,6 +4,7 @@ const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 const EDIT_USER = 'session/editUser'
 const UPDATE_USER_DOG_PREFERENCES = 'session/updateDogPreferences'
+const GET_USER = 'session/getUser'
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -20,7 +21,20 @@ const updateDogPreferences = (dogPreferences) => ({
   type: UPDATE_USER_DOG_PREFERENCES,
   payload: dogPreferences
 })
+const getUser = (user) => ({
+  type: GET_USER,
+  payload: user
+})
 
+export const thunkGetUser = (userId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/users/${userId}`)
+  if (response.ok) {
+    const data = await response.json()
+    if (data.errors) return;
+    dispatch(getUser(data))
+    return data
+  }
+}
 export const thunkAuthenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/");
 	if (response.ok) {
@@ -146,10 +160,12 @@ export const thunkSaveDogPreferences = (dogPreferencesDataa) => async (dispatch)
 };
 
 
-const initialState = { user: null };
+const initialState = { user: null, selectedUser: null };
 
 function sessionReducer(state = initialState, action) {
   switch (action.type) {
+    case GET_USER:
+      return { ...state, selectedUser: action.payload }
     case SET_USER:
       return { ...state, user: action.payload };
     case REMOVE_USER:

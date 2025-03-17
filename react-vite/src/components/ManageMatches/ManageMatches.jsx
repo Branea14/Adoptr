@@ -6,13 +6,16 @@ import { approvedMatches, rejectedMatches, requestedMatches, updatedMatch } from
 // import { FaUserCircle } from 'react-icons/fa';
 import OpenModalButton from "../OpenModalButton"
 import UnmatchModal from "../UnmatchModal/UnmatchModal"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+
 
 
 const ManageMatches = () => {
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(true)
     const [refreshTrigger, setRefreshTrigger] = useState(0)
+    // const {setModalContent} = useModal()
+    const navigate = useNavigate()
 
     const currentUser = useSelector((state) => state.session.user)
     const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
@@ -87,9 +90,9 @@ const ManageMatches = () => {
                                 <div className="approved-match-tile" key={match.id}>
                                     <div className="manage-match-image-on-page">
                                         {currentUser.id === match.senderUserId1 ? (
-                                            <img className="approved-match-image-on-page" src={match.user2Avatar} alt="User Avatar"/>
+                                            <img onClick={() => navigate(`/user/${match.senderUserId2}`)} className="approved-match-image-on-page" src={match.user2Avatar} alt="User Avatar"/>
                                         ) : (
-                                            <img className="approved-match-image-on-page" src={match.user1Avatar} alt="User Avatar"/>
+                                            <img onClick={() => navigate(`/user/${match.senderUserId1}`)}className="approved-match-image-on-page" src={match.user1Avatar} alt="User Avatar"/>
                                         )}
                                         {/* <h3>{match.petName}</h3> */}
                                         <span className="tooltiptext">Interested in {match.petName}</span>
