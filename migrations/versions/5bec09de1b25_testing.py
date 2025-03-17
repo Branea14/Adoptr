@@ -1,8 +1,8 @@
-"""recreate migration again
+"""testing
 
-Revision ID: 54f46e6e59c0
-Revises:
-Create Date: 2025-02-27 22:55:41.907383
+Revision ID: 5bec09de1b25
+Revises: 
+Create Date: 2025-03-17 17:22:22.556227
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '54f46e6e59c0'
+revision = '5bec09de1b25'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,7 +25,7 @@ def upgrade():
     sa.Column('username', sa.String(length=40), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('hashed_password', sa.String(length=255), nullable=False),
-    sa.Column('avatar', sa.Text(), nullable=True),
+    sa.Column('avatar', sa.Text(), nullable=False),
     sa.Column('kids', sa.Boolean(), nullable=False),
     sa.Column('hasBackyard', sa.Boolean(), nullable=False),
     sa.Column('otherPets', sa.Enum('none', 'dogsOnly', 'catsOnly', 'both', 'other', name='user_other_pets'), nullable=False),
@@ -33,13 +33,16 @@ def upgrade():
     sa.Column('geohash', sa.String(length=12), nullable=False),
     sa.Column('latitude', sa.Numeric(precision=10, scale=7), nullable=False),
     sa.Column('longitude', sa.Numeric(precision=10, scale=7), nullable=False),
-    sa.Column('radius', sa.Numeric(precision=5, scale=3), nullable=False),
+    sa.Column('radius', sa.Float(), nullable=True),
     sa.Column('createdAt', sa.DateTime(), nullable=False),
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+    with op.batch_alter_table('users', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_users_geohash'), ['geohash'], unique=False)
+
     op.create_table('ideal_dog_preferences',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('userId', sa.Integer(), nullable=False),
@@ -137,5 +140,8 @@ def downgrade():
     op.drop_table('reviews')
     op.drop_table('pets')
     op.drop_table('ideal_dog_preferences')
+    with op.batch_alter_table('users', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_users_geohash'))
+
     op.drop_table('users')
     # ### end Alembic commands ###
