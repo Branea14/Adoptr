@@ -180,9 +180,9 @@ const SwipingPage = () => {
                 <div className="swipe-card">
                     {images && images.length > 1 ? (
                         <div className="swipe-image-container">
-                        <FaChevronLeft className='arrow-icon-left-swipe' onClick={handlePrevImage}/>
+                        <FaChevronLeft className='arrow-icon-left-swipe' onClick={(e) => {e.stopPropagation(); handlePrevImage()}}/>
                         <img  src={currentImage} alt={pet.name} className="swipe-pet-images" />
-                        <FaChevronRight className='arrow-icon-right-swipe' onClick={handleNextImage}/>
+                        <FaChevronRight className='arrow-icon-right-swipe' onClick={(e) => {e.stopPropagation(); handleNextImage()}}/>
                         </div>
                     ) :
                     (pet?.PetImages?.map((image, index) => (
