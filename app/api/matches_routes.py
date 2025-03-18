@@ -71,7 +71,7 @@ def all_requested_matches():
     ).filter(
         ((Match.userId1 == current_user.id) | (Match.userId2 == current_user.id)) &
         (Match.status == 'REQUESTED')
-    ).all()
+    ).order_by(desc(Match.createdAt)).all()
 
     if not matches:
         return jsonify({"requested_matches": []}), 200

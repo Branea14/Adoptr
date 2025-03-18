@@ -107,7 +107,7 @@ export const editUserThunk = (userData) => async (dispatch) => {
     if (updatedData.dogPreferences) {
       dispatch(thunkUpdateDogPreferences(updatedData.dogPreferences))
     }
-    return null
+    return data
   } else if (response.status < 500) {
     const errorMessages = await response.json()
     return errorMessages

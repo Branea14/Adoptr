@@ -12,6 +12,7 @@ const PetDetails = () => {
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
     const pet = useSelector((state) => state.pet.viewedPetDetails)
+    const currentUser = useSelector((state) => state.session.user)
 
     const images = pet?.PetImages || [];
     const currentImage = images.length > 0 ? images[currentImgIndex]?.url : ""
@@ -82,7 +83,9 @@ const PetDetails = () => {
                     </div>
                 ))} */}
                 <div className="swipe-details-container">
-                    <button className="adopt-button" onClick={() => alert('Chatting Feature Coming Soon...')}>Want to Adopt?</button>
+                    {currentUser.id !== pet.sellerId ? (
+                        <button className="adopt-button" onClick={() => alert('Chatting Feature Coming Soon...')}>Want to Adopt?</button>
+                    ) : null}
 
                     <p className="pet-adoption-status"><strong>Adoption Status:</strong> {pet?.adoptionStatus}</p>
                     <h1 className="details-pet-name">{pet.name} &middot; {pet.breed}</h1>

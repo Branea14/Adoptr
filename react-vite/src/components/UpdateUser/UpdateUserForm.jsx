@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 import { editUserThunk, thunkAuthenticate } from "../../redux/session";
 import { useModal } from "../../context/Modal";
 import Slider from '@mui/material/Slider'
 import "../SignupFormModal/SignupForm.css";
 import "./UpdateUser.css"
+import { useNavigate } from "react-router-dom";
 
 
 const UpdateUserForm = ({user}) => {
   const dispatch = useDispatch()
   const {closeModal} = useModal()
+  const navigate = useNavigate()
 
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("");
@@ -64,8 +66,8 @@ const UpdateUserForm = ({user}) => {
           setEmail(user.email || "")
           setPassword(user.password || "")
           setAvatar(user.avatar || "")
-          setKids(user.kids || null)
-          setHasBackyard(user.hasBackyard || null)
+          setKids(user.kids ?? false)
+          setHasBackyard(user.hasBackyard ?? false)
           setOtherPets(user.otherPets || null)
           setPetExperience(user.petExperience || null)
           setLocation(user.location || {latitude: null, longitude: null})
@@ -208,10 +210,12 @@ const UpdateUserForm = ({user}) => {
             else if (typeof serverResponse === 'object') setErrors(serverResponse)
             else setErrors({ general: serverResponse })
 
+
             if (!serverResponse.errors) {
-                dispatch(thunkAuthenticate())
-                closeModal()
-                // navigate()
+                dispatch(thunkAuthenticate()).then(() => {
+                  closeModal()
+                  navigate(`/user/${user.id}`)
+                })
             }
           }
     }
@@ -800,7 +804,7 @@ const UpdateUserForm = ({user}) => {
                   setShowAdditionalModal2(false)
                   setShowAdditionalModal1(true)
                 }}>Back</button>
-                <button type="submit">Save Changes</button>
+                <button onClick={handleSubmit} type="submit">Save Changes</button>
               </>
 
             )}
