@@ -90,9 +90,9 @@ function Navigation() {
               <div className="approved-match">
                 {loading ? null : filteredApprovedMatches.length > 0 ? (
                   filteredApprovedMatches.map((match) => (
-                    <Link to={`/pets/${match.petId}`} key={match.id} className='pet-details-link'>
-                      <div key={match.id}>
-                          <img className='approved-match-image' src={match.petImage} alt={`${match.petName}`}/>
+                    <Link to={`/pets/${match.petId}`} key={match?.id} className='pet-details-link'>
+                      <div key={match?.id}>
+                          <img className='approved-match-image' src={match?.petImage} alt={`${match?.petName}`}/>
                           {/* <h3>{match.petName}</h3> */}
                       </div>
                     </Link>
