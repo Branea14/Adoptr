@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { getDetails } from "../../redux/pets";
 import { useDrag } from "@use-gesture/react";
 import { createMatch, rejectedMatches, requestedMatches } from "../../redux/matches";
 import { approvedMatches } from "../../redux/matches";
 import "./SwipingPage.css"
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import { thunkUpdateUserLocation } from "../../redux/session";
 
 const SwipingPage = () => {
     const dispatch = useDispatch()
@@ -14,6 +15,15 @@ const SwipingPage = () => {
     const [position, setPosition] = useState(0)
     // const [hidePets, setHidePets] = useState({})
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
+    const [location, setLocation] = useState({latitude: null, longitude: null})
+    const [loadingLocation, setLoadingLocation] = useState(false)
+    const [errors, setErrors] = useState({})
+    const [locationBanner, setLocationBanner] = useState(null)
+
+    const currentUser = useSelector((state) => state.session.user)
+    const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
+    const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
+    const rejectedMatch = useSelector((state) => state.matches?.rejectedMatches)
 
     const LIFESTYLE_DISPLAY = {
         "veryActive": "Very Active",
@@ -37,29 +47,71 @@ const SwipingPage = () => {
         "xl": "X-Large"
     }
 
-    const currentUser = useSelector((state) => state.session.user)
-    const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
-    const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
-    const rejectedMatch = useSelector((state) => state.matches?.rejectedMatches)
+    useEffect(() => {
+        if (!currentUser) return
 
-    const filteredApprovedMatches = Object.values(approvedMatch || {})
-        .filter(match => match.sellerId !== currentUser.id)
-        .reduce((acc, match) => {
-            acc[match.petId] = match
-            return acc;
-        }, {})
-    const filteredRequestedMatches = Object.values(requestedMatch || {})
-        .filter(match => match.sellerId !== currentUser.id)
-        .reduce((acc, match) => {
-            acc[match.petId] = match
-            return acc;
-        }, {})
-    const filteredRejectedMatches = Object.values(rejectedMatch || {})
-        .filter(match => match.sellerId !== currentUser.id)
-        .reduce((acc, match) => {
-            acc[match.petId] = match
-            return acc
-        }, {})
+        if (!navigator.geolocation) {
+            setErrors((prev) => ({ ...prev, location: "Geolocation is not supported by your browser"}))
+            return
+        }
+
+        setLoadingLocation(true)
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } =  position.coords
+                console.log('location fetched', latitude, longitude)
+
+                const hasLocationChanged = currentUser.latitude !== latitude || currentUser.longitude !== longitude;
+                if (hasLocationChanged) {
+                    setLocation({ latitude, longitude })
+
+                    const userData = {
+                        userId: currentUser.id,
+                        latitude,
+                        longitude
+                    }
+
+                    await dispatch(thunkUpdateUserLocation(userData))
+                    setLocationBanner("Location updated")
+                    setTimeout(() => setLocationBanner(null), 3000)
+                }
+                setLoadingLocation(false)
+            },
+            (error) => {
+                setErrors((prev) => ({ ...prev, location: error.message}))
+                setLoadingLocation(false)
+                alert("We need access to your location to show pets nearby")
+            }
+        )
+    }, [dispatch, currentUser])
+
+
+    const filteredApprovedMatches = useMemo(() => {
+        return Object.values(approvedMatch || {})
+            .filter(match => match.sellerId !== currentUser.id)
+            .reduce((acc, match) => {
+                acc[match.petId] = match
+                return acc;
+            }, {})
+    }, [approvedMatch, currentUser.id])
+
+    const filteredRequestedMatches = useMemo(() => {
+        return Object.values(requestedMatch || {})
+            .filter(match => match.sellerId !== currentUser.id)
+            .reduce((acc, match) => {
+                acc[match.petId] = match
+                return acc;
+            }, {})
+    }, [requestedMatch, currentUser.id])
+
+    const filteredRejectedMatches = useMemo(() => {
+        return Object.values(rejectedMatch || {})
+            .filter(match => match.sellerId !== currentUser.id)
+            .reduce((acc, match) => {
+                acc[match.petId] = match
+                return acc
+            }, {})
+    }, [rejectedMatch, currentUser.id])
 
 
     const pet = useSelector((state) => {
@@ -175,46 +227,54 @@ const SwipingPage = () => {
     if (!pet) return <p>No more pets nearby!</p>
 
     return (
-        <div className="swiping-page-container" {...bind()} style={{transform: `translate(${position}px)`}}>
-            {pet && Object.keys(pet).length > 0 ? (
-                <div className="swipe-card">
-                    {images && images.length > 1 ? (
-                        <div className="swipe-image-container">
-                        <FaChevronLeft className='arrow-icon-left-swipe' onClick={(e) => {e.stopPropagation(); handlePrevImage()}}/>
-                        <img src={currentImage} alt={pet.name} className="swipe-pet-images" />
-                        <FaChevronRight className='arrow-icon-right-swipe' onClick={(e) => {e.stopPropagation(); handleNextImage()}}/>
+        <>
+            {locationBanner && (
+                <div className="location-banner">
+                    {locationBanner}
+                </div>
+            )}
+            <div className="swiping-page-container" {...bind()} style={{transform: `translate(${position}px)`}}>
+                {pet && Object.keys(pet).length > 0 ? (
+                    <div className="swipe-card">
+                        {images && images.length > 1 ? (
+                            <div className="swipe-image-container">
+                            <FaChevronLeft className='arrow-icon-left-swipe' onClick={(e) => {e.stopPropagation(); handlePrevImage()}}/>
+                            <img src={currentImage} alt={pet.name} className="swipe-pet-images" />
+                            <FaChevronRight className='arrow-icon-right-swipe' onClick={(e) => {e.stopPropagation(); handleNextImage()}}/>
+                            </div>
+                        ) :
+                        (pet?.PetImages?.map((image, index) => (
+                            <div key={index}>
+                                <img draggable='false' className='swipe-pet-image' src={image.url}/>
+                            </div>
+                        )))
+                        }
+
+                            <div className="swipe-details-container">
+                                <h1 className="swipe-pet-name">{pet.name} &middot; {pet.breed}</h1>
+                                {/* <p>{pet.id}</p> */}
+                                <p className="swipe-description">{pet.description}</p>
+                                <p className="swipe-age-sex-size"><strong>{pet.age} &middot; {pet.sex} &middot; {SIZE_DISPLAY[pet.size]}</strong></p>
+                                {/* <p>Color: {pet.color}</p> */}
+                                <p className="swipe-lifestyle"><strong>Lifestyle:</strong> {LIFESTYLE_DISPLAY[pet.lifestyle]} &middot; <strong>Love Language:</strong> {LOVE_LANGUAGE_DISPLAY[pet.loveLanguage]}</p>
+
+                                <hr className="swipe-divider" />
+
+                                    <div className="swipe-attributes">
+                                        <p><span>House Trained:</span> <strong className={pet.houseTrained ? "yes" : "no"}>{pet.houseTrained ? "Yes" : "No"}</strong></p>
+                                        <p><span>Good with Kids:</span> <strong className={pet.kids ? "yes" : "no"}>{pet.kids ? "Yes" : "No"}</strong></p>
+                                        <p><span>Good with Other Pets:</span> <strong className={pet.otherPet ? "yes" : "no"}>{pet.otherPet ? "Yes" : "No"}</strong></p>
+                                        <p><span>Owner Surrender:</span> <strong className={pet.ownerSurrender ? "yes" : "no"}>{pet.ownerSurrender ? "Yes" : "No"}</strong></p>
+                                        <p><span>Vaccinated:</span> <strong className={pet.vaccinated ? "yes" : "no"}>{pet.vaccinated ? "Yes" : "No"}</strong></p>
+                                        <p><span>Special Needs:</span> <strong className={pet.specialNeeds ? "yes" : "no"}>{pet.specialNeeds ? "Yes" : "No"}</strong></p>
+                                        </div>
+
+                            </div>
                         </div>
-                    ) :
-                    (pet?.PetImages?.map((image, index) => (
-                        <div key={index}>
-                            <img draggable='false' className='swipe-pet-image' src={image.url}/>
-                        </div>
-                    )))
-                    }
+                ) : <p>No more pets nearby</p>}
+            </div>
 
-                        <div className="swipe-details-container">
-                            <h1 className="swipe-pet-name">{pet.name} &middot; {pet.breed}</h1>
-                            {/* <p>{pet.id}</p> */}
-                            <p className="swipe-description">{pet.description}</p>
-                            <p className="swipe-age-sex-size"><strong>{pet.age} &middot; {pet.sex} &middot; {SIZE_DISPLAY[pet.size]}</strong></p>
-                            {/* <p>Color: {pet.color}</p> */}
-                            <p className="swipe-lifestyle"><strong>Lifestyle:</strong> {LIFESTYLE_DISPLAY[pet.lifestyle]} &middot; <strong>Love Language:</strong> {LOVE_LANGUAGE_DISPLAY[pet.loveLanguage]}</p>
-
-                            <hr className="swipe-divider" />
-
-                                <div className="swipe-attributes">
-                                    <p><span>House Trained:</span> <strong className={pet.houseTrained ? "yes" : "no"}>{pet.houseTrained ? "Yes" : "No"}</strong></p>
-                                    <p><span>Good with Kids:</span> <strong className={pet.kids ? "yes" : "no"}>{pet.kids ? "Yes" : "No"}</strong></p>
-                                    <p><span>Good with Other Pets:</span> <strong className={pet.otherPet ? "yes" : "no"}>{pet.otherPet ? "Yes" : "No"}</strong></p>
-                                    <p><span>Owner Surrender:</span> <strong className={pet.ownerSurrender ? "yes" : "no"}>{pet.ownerSurrender ? "Yes" : "No"}</strong></p>
-                                    <p><span>Vaccinated:</span> <strong className={pet.vaccinated ? "yes" : "no"}>{pet.vaccinated ? "Yes" : "No"}</strong></p>
-                                    <p><span>Special Needs:</span> <strong className={pet.specialNeeds ? "yes" : "no"}>{pet.specialNeeds ? "Yes" : "No"}</strong></p>
-                                    </div>
-
-                        </div>
-                    </div>
-            ) : <p>No more pets nearby</p>}
-        </div>
+        </>
     )
 }
 

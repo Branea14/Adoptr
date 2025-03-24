@@ -166,3 +166,35 @@ def edit_user(id):
         'createdAt': user.createdAt.isoformat(),  # Converts datetime to string
         'updatedAt': user.updatedAt.isoformat()
     })
+
+@user_routes.route('/<int:id>/location', methods=['PATCH'])
+@login_required
+def updateLocation(id):
+    current_user_id = current_user.id
+    user = User.query.get(id)
+
+    if not user:
+        return jsonify({"error": "User could not be found"}), 404
+
+    if user.id != current_user_id:
+        return jsonify({"error": "Forbidden"}), 403
+
+    data = request.get_json()
+    latitude = data.get('latitude')
+    longitude = data.get('longitude')
+
+    if latitude is None or longitude is None:
+        return jsonify({"error": "Location is required"}), 400
+
+    try:
+        user.latitude = float(latitude)
+        user.longitude = float(longitude)
+        user.geohash = geohash.encode(user.latitude, user.longitude, precision=5)
+        db.session.commit()
+        return jsonify({
+            "latitude": user.latitude,
+            "longitude": user.longitude,
+            "geohash": user.geohash
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

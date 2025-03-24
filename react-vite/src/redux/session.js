@@ -5,6 +5,7 @@ const REMOVE_USER = 'session/removeUser';
 const EDIT_USER = 'session/editUser'
 const UPDATE_USER_DOG_PREFERENCES = 'session/updateDogPreferences'
 const GET_USER = 'session/getUser'
+const UPDATE_LOCATION = 'session/updateLocation'
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -23,6 +24,10 @@ const updateDogPreferences = (dogPreferences) => ({
 })
 const getUser = (user) => ({
   type: GET_USER,
+  payload: user
+})
+const updateLocation = (user) => ({
+  type: UPDATE_LOCATION,
   payload: user
 })
 
@@ -159,6 +164,22 @@ export const thunkSaveDogPreferences = (dogPreferencesDataa) => async (dispatch)
   }
 };
 
+export const thunkUpdateUserLocation = (userData) => async (dispatch) => {
+  const { userId, ...updatedLocation } = userData
+  const response = await fetch(`/api/users/${userId}/location`, {
+    method: 'PATCH',
+    body: JSON.stringify(updatedLocation)
+  })
+
+  if (response.ok) {
+    const data = await response.json()
+    dispatch(updateLocation(data))
+  }  else {
+    const error = await response.json()
+    return error
+  }
+}
+
 
 const initialState = { user: null, selectedUser: null };
 
@@ -179,6 +200,13 @@ function sessionReducer(state = initialState, action) {
           ? {...state.user, dogPreferences: action.payload }
           : null,
 
+      }
+    case UPDATE_LOCATION:
+      return {
+        ...state,
+        user: state.user
+          ? {...state.user, ...action.payload}
+          : null
       }
     default:
       return state;

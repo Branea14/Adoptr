@@ -21,14 +21,12 @@ function SignupFormModal() {
   const [avatar, setAvatar] = useState("")
   const [kids, setKids] = useState(null)
   const [hasBackyard, setHasBackyard] = useState(null)
-  // const [otherPets, setOtherPets] = useState([])
   const [otherPets, setOtherPets] = useState(null)
   const [petExperience, setPetExperience] = useState(null)
-  // const [latitude, setLatitude] = useState()
-  // const [longitude, setLongitude] = useState()
   const [location, setLocation] = useState({latitude: null, longitude: null});
   const [radius, setRadius] = useState(5.0)
   const [errors, setErrors] = useState({});
+  const [loadingLocation, setLoadingLocation] = useState(true)
 
   const [validationErrors, setValidationErrors] = useState({})
   const [validationErrors2, setValidationErrors2] = useState({})
@@ -70,8 +68,6 @@ function SignupFormModal() {
     if (password && password.length < 6) newErrors.password = "Password must be at least 6 characters long";
     if (!avatar.trim()) newErrors.avatar = "Profile picture is required"
 
-
-
     setValidationErrors(newErrors);
   }, [avatar, password, confirmPassword, firstName, lastName, username, email]);
 
@@ -90,13 +86,23 @@ function SignupFormModal() {
   useEffect(() => {
     if (!navigator.geolocation) {
       setErrors((prev) => ({ ...prev, location: "Geolocation is not supported by your browser"}))
+      setLoadingLocation(false)
       return
     }
 
-    navigator.geolocation.getCurrentPosition((position) => {
-      if (!location.latitude || !location.longitude) setLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})
-    }, (error) => setErrors((prev) => ({ ...prev, location: error.message})))
-  }, [location.latitude, location.longitude])
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        if (!location.latitude || !location.longitude) {
+          setLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})
+        }
+        setLoadingLocation(false)
+    }, (error) => {
+      setErrors((prev) => ({ ...prev, location: error.message}))
+      setLoadingLocation(false)
+      alert("We need access to your location to show pets nearby")
+    }
+
+  )}, [location.latitude, location.longitude])
 
 
 
@@ -112,31 +118,31 @@ function SignupFormModal() {
     if (!password) newErrors.password = "Password is required"
     if (password.length < 6) newErrors.password = "Password must be at least 6 characters long";
     if (password !== confirmPassword) newErrors.confirmPassword = "Passwords must match"
+    if (loadingLocation) newErrors.location = "Fetching location. Please wait a moment"
 
     if (Object.keys(newErrors).length > 0) {
       return setErrors((prev) => ({ ...prev, ...newErrors}))
-
     }
 
     setErrors({});
     setValidationErrors({});
 
-    console.log({
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-      avatar,
-      kids,
-      hasBackyard,
-      otherPets,
-      petExperience,
-      latitude: location.latitude,
-      longitude: location.longitude,
-      radius,
-      // dogPreferences,  // <-- Debugging output
-    });
+    // console.log({
+    //   firstName,
+    //   lastName,
+    //   username,
+    //   email,
+    //   password,
+    //   avatar,
+    //   kids,
+    //   hasBackyard,
+    //   otherPets,
+    //   petExperience,
+    //   latitude: location.latitude,
+    //   longitude: location.longitude,
+    //   radius,
+    //   // dogPreferences,  // <-- Debugging output
+    // });
 
     const serverResponse = await dispatch(
       thunkSignup({
