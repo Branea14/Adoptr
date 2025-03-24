@@ -105,8 +105,6 @@ function SignupFormModal() {
   )}, [location.latitude, location.longitude])
 
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -127,23 +125,6 @@ function SignupFormModal() {
     setErrors({});
     setValidationErrors({});
 
-    // console.log({
-    //   firstName,
-    //   lastName,
-    //   username,
-    //   email,
-    //   password,
-    //   avatar,
-    //   kids,
-    //   hasBackyard,
-    //   otherPets,
-    //   petExperience,
-    //   latitude: location.latitude,
-    //   longitude: location.longitude,
-    //   radius,
-    //   // dogPreferences,  // <-- Debugging output
-    // });
-
     const serverResponse = await dispatch(
       thunkSignup({
         firstName,
@@ -163,11 +144,6 @@ function SignupFormModal() {
       })
     );
 
-    // if (serverResponse) {
-    //   setErrors(serverResponse);
-    // } else {
-    //   closeModal();
-    // }
 
     if (serverResponse) {
       // Handle nested errors object
