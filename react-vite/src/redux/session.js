@@ -166,18 +166,27 @@ export const thunkSaveDogPreferences = (dogPreferencesDataa) => async (dispatch)
 
 export const thunkUpdateUserLocation = (userData) => async (dispatch) => {
   const { userId, ...updatedLocation } = userData
-  const response = await fetch(`/api/users/${userId}/location`, {
-    method: 'PATCH',
-    body: JSON.stringify(updatedLocation)
-  })
+  try {
+    const response = await fetch(`/api/users/${userId}/location`, {
+      method: 'PATCH',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(updatedLocation)
+    })
 
-  if (response.ok) {
-    const data = await response.json()
-    dispatch(updateLocation(data))
-  }  else {
-    const error = await response.json()
-    return error
+    if (response.ok) {
+      const data = await response.json()
+      dispatch(updateLocation(data))
+    }  else {
+      const error = await response.json()
+      return error
+    }
+  } catch (error) {
+    console.error("error updating location", error)
+    return { server: "something went wrong. please try again"}
   }
+
 }
 
 

@@ -41,6 +41,7 @@ export const getDetails = () => async (dispatch) => {
     if (response.ok) {
         const data = await response.json()
         dispatch(getPetDetails(data))
+        localStorage.setItem('currentPet', JSON.stringify(data)) // caches currentPet
         return data
     }
 }

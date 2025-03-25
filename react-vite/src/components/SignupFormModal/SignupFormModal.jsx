@@ -102,7 +102,7 @@ function SignupFormModal() {
       alert("We need access to your location to show pets nearby")
     }
 
-  )}, [location.latitude, location.longitude])
+  )}, [])
 
 
   const handleSubmit = async (e) => {

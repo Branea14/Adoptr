@@ -171,6 +171,7 @@ def edit_user(id):
 @login_required
 def updateLocation(id):
     current_user_id = current_user.id
+    print('^^^^^^^^^^^^', current_user)
     user = User.query.get(id)
 
     if not user:
@@ -180,10 +181,11 @@ def updateLocation(id):
         return jsonify({"error": "Forbidden"}), 403
 
     data = request.get_json()
+    print('&&&&&&&&&', data)
     latitude = data.get('latitude')
     longitude = data.get('longitude')
 
-    if latitude is None or longitude is None:
+    if current_user.latitude is None or current_user.longitude is None:
         return jsonify({"error": "Location is required"}), 400
 
     try:
