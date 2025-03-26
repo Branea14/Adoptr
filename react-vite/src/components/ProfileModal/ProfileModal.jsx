@@ -1,26 +1,33 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import "./ProfileModal.css"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { thunkGetUser } from "../../redux/session"
+import { FaArrowLeft } from "react-icons/fa";
 
 const ProfileModal = () => {
     const {userId} = useParams()
     const dispatch = useDispatch()
+    const [loading, setLoading] = useState(true)
+    const navigate = useNavigate()
 
     const selectedUser = useSelector((state) => state.session.selectedUser)
 
     useEffect(() => {
-        dispatch(thunkGetUser(userId))
+        setLoading(true)
+        Promise.all([
+            dispatch(thunkGetUser(userId))
+        ]).finally(() => setLoading(false))
     }, [dispatch, userId])
 
-
     if (!selectedUser) return <p>Loading...</p>
+    if (loading) return <p>Loading...</p>
 
     console.log('LOOOk for erka', selectedUser)
 
     return (
         <div className="profile-page-container">
+            <FaArrowLeft className="back-arrow-pet-details" onClick={() => navigate('/matches/manage')}/>
             <div className="profile-info-container">
                 <div className="profile-image-section">
                     <img className='profile-image' src={selectedUser?.avatar} alt={`${selectedUser.firstName}'s profile picture`}/>

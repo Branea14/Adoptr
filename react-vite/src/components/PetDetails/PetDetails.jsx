@@ -58,6 +58,8 @@ const PetDetails = () => {
         ]).finally(() => setLoading(false))
     }, [dispatch, petId])
 
+    if (loading) return <p>Loading...</p>;
+
     return (
         <div className="swiping-page-container">
             {/* <FaArrowLeft className="back-arrow-pet-details" onClick={() => navigate('/matches/approved')}/> */}
