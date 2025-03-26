@@ -18,10 +18,10 @@ const LandingPage = () => {
     //velocity[0] speed
 
     const bind = useDrag(({ movement: [x], down, direction: [xDir], velocity }) => {
-        const requiredDistance = 25;
-        const minVelocity = 0.01;
+        const requiredDistance = 40;
+        const minVelocity = 0.15;
 
-        if (!down && x > requiredDistance && velocity[0] > minVelocity && xDir > 0) setSwiped(true)
+        if (!down && xDir > 0 && (x > requiredDistance || velocity[0] > minVelocity) ) setSwiped(true)
         setPosition(down ? x : swiped ? 500 : 0);
     });
 

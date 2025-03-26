@@ -108,6 +108,7 @@
     white-space: nowrap; /* Prevents text wrapping */
     user-select: none;
     pointer-events: auto;
+    touch-action: pan-x;
 }
 
 .slogan {
@@ -121,7 +122,7 @@
     justify-content: left;
     font-family: 'Bubblegum Sans';
     color: rgb(248, 238, 225);
-    transition: transform 0.3s ease-out;
+    transition: transform 0.4s ease-out;
     cursor: grab;
 }
 

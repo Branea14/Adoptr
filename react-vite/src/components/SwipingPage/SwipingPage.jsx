@@ -226,24 +226,32 @@ const SwipingPage = () => {
     const bind = useDrag(({ movement: [x], down, direction: [xDir], velocity }) => {
         console.log('swipe detected', { x, down, xDir, velocity })
         if (!pet) return;
-        const requiredDistance = 10;
-        const minVelocity = 0.01;
+        // const requiredDistance = 10;
+        const requiredDistance = 40;
+        // const minVelocity = 0.01;
+        const minVelocity = 0.15;
 
-        if (!down && velocity[0] > minVelocity && Math.abs(x) > requiredDistance) {
+        // if (!down && velocity[0] > minVelocity && Math.abs(x) > requiredDistance) {
+        if (!down && (velocity[0] > minVelocity || Math.abs(x) > requiredDistance)) {
             let matchStatus = xDir > 0 ? "REQUESTED" : "REJECTED"
+            const offscreen = xDir > 0 ? window.innerWidth : -window.innerWidth
+            setPosition(offscreen)
+
             dispatch(createMatch(pet, matchStatus))
                 .then(() => {
                     if (matchStatus === "REQUESTED") return dispatch(requestedMatches())
                     if (matchStatus === 'REJECTED') return dispatch(rejectedMatches())
                 })
                 .then(() => handleSwipe(pet.id))
-
-            setTimeout(() => {
-                setSwipeAction(true)
-                setPosition(0)
-            }, 200)
+                .finally(() => {
+                    setTimeout(() => {
+                        setSwipeAction(true)
+                        setPosition(0)
+                    }, 300)
+                })
+        } else {
+            setPosition(down ? x : 0);
         }
-        setPosition(down ? x : swipeAction ? 500 : 0);
     });
 
 
