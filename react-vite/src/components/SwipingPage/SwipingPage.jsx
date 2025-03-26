@@ -227,7 +227,7 @@ const SwipingPage = () => {
         console.log('swipe detected', { x, down, xDir, velocity })
         if (!pet) return;
         // const requiredDistance = 10;
-        const requiredDistance = 40;
+        const requiredDistance = 50;
         // const minVelocity = 0.01;
         const minVelocity = 0.15;
 
@@ -271,7 +271,7 @@ const SwipingPage = () => {
                         {images && images.length > 1 ? (
                             <div className="swipe-image-container">
                                 <FaChevronLeft className='arrow-icon-left-swipe' onClick={(e) => { e.stopPropagation(); handlePrevImage() }} />
-                                <img src={currentImage} alt={pet.name} className="swipe-pet-images" />
+                                <img src={currentImage} alt={pet.name} className="swipe-pet-images" draggable={false}/>
                                 <FaChevronRight className='arrow-icon-right-swipe' onClick={(e) => { e.stopPropagation(); handleNextImage() }} />
                             </div>
                         ) :
