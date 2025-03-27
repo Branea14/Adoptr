@@ -20,12 +20,20 @@ const LandingPage = () => {
     const bind = useDrag(({ movement: [x], down, direction: [xDir], velocity }) => {
         const requiredDistance = 40;
         const minVelocity = 0.15;
+        const edgeThreshold = window.innerWidth * .75
 
-        if (!down && xDir > 0 && (x > requiredDistance || velocity[0] > minVelocity) ) {
+        const shouldSwipe = xDir > 0 && (x > requiredDistance || velocity[0] > minVelocity)
+
+        // case 1: normal swipe release
+        if (!down && shouldSwipe) {
+            setSwiped(window.innerWidth)
+        // case 2: drag to edge but no release - treat as swipe
+        } else if (down && x >= edgeThreshold) {
             setSwiped(window.innerWidth)
         } else {
-            setPosition(down ? x : 0);
+            setPosition(down ? x : 0)
         }
+
     });
 
     useEffect(() => {

@@ -106,7 +106,7 @@ function Navigation() {
                     <Link to="/pets/current">Manage Pet Listings</Link>
                   </li>
 
-                  <li className="additoinal-menu-links">
+                  <li className="additional-menu-links">
                     <Link to='/user/reviews'>Manage Reviews</Link>
                   </li>
 
