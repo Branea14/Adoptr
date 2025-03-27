@@ -160,6 +160,7 @@ def pet_details():
         #     User.longitude.between(new_user_long - new_radius, new_user_long + new_radius),
         # ),
         Pet.sellerId != current_user.id,
+        ~(Pet.adoptionStatus == 'adopted'), #excludes adopted pets
         ~Pet.id.in_(swiped_pets_ids) #exclude swiped pets
     ).all()
 

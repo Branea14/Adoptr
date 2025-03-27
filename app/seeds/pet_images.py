@@ -159,6 +159,40 @@ def seed_pet_images():
         # 36
         (36, "https://images.pexels.com/photos/12572488/pexels-photo-12572488.jpeg?auto=compress&cs=tinysrgb&w=600", True),
 
+        # 37
+        (37, "https://i.imgur.com/1M07rmE.png", True),
+        (37, "https://i.imgur.com/f7O0rNb.png", False),
+        (37, "https://i.imgur.com/0JFDrlw.png", False),
+        (37, "https://i.imgur.com/qJRTBwx.png", False),
+
+        # 38
+        (38, "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/301029205_10226399048816603_8996123751028312189_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=1jzbUgklEOkQ7kNvgHUi8yO&_nc_oc=Adlcq8cYX3zJqjALxGSzO9Vsk3S2jrI4o_tY4W3Y3XlLe7l8vODXllI3geBLgJxw16vwjTeqp7PFjk-c63fnwvH2&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=xTpKDU80yHa63cfZKcwp1w&oh=00_AYGX9hbLOobCNZICliqPevGhdsyPvfb5mqnIHDpbBV4jEA&oe=67EA599D", True),
+        (38, "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/301008130_10226399048776602_4625479726212490851_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_ohc=xQC2iQOJ9dQQ7kNvgH678YN&_nc_oc=AdmZCR3HFWzaR7xUmpdK3r0ROFlW861KghcUHOGvXgTEgbIqo5Qk-NNq1bIZU3ayNSUfeB5cKkfXhcZmzavcuysW&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=ssgXFy5kl3vf0xNinbeuOQ&oh=00_AYHRIZ7wztx1fKR25r1mpPZSUkbj03zaXng_Q6Dm0nh9Tw&oe=67EA50BD", False),
+        (38, "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/476336648_10233217604396231_6507473655568770770_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_ohc=NI8MFMU6pFAQ7kNvgE761li&_nc_oc=AdmKiPva67d6wcgiHt8CbyjGtdF1xeHWwqbdgeGlBsuNYHrkDTfBbmJ78y6fQqsRcp9rfBISA_gi4aS8GrBT3M52&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=Ier3ofhsyH6oinnuPp5YVg&oh=00_AYGPcx1jTNBhwAFl93z-KkDh3Nycd6LieCURqyv9IkZaWw&oe=67EA3A61", False),
+
+        # 39
+        (39, "https://images.unsplash.com/photo-1611306133736-56a3b973b2cc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YmVhZ2xlfGVufDB8fDB8fHww", True),
+
+        # 40
+        (40, 'https://images.unsplash.com/photo-1608228028188-acdf9ebd3044?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', True),
+
+        # 41
+        (41, "https://images.unsplash.com/photo-1591160690555-5debfba289f0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z29sZGVuJTIwcmV0cmlldmVyfGVufDB8fDB8fHww", True),
+
+        # 42
+        (42, "https://images.unsplash.com/photo-1583033733163-300920f360c5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGJveGVyJTIwZG9nfGVufDB8fDB8fHww", True),
+
+        # 43
+        (43, 'https://images.unsplash.com/photo-1581276178689-4f460bf76323?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGNvY2tlciUyMHNwYW5pZWx8ZW58MHx8MHx8fDA%3D', True),
+
+        # 44
+        (44, 'https://images.unsplash.com/photo-1606818855637-f637cdb124b4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGF1c3RyYWxpYW4lMjBzaGVwaGVyZHxlbnwwfHwwfHx8MA%3D%3D', True),
+
+        # 45
+        (45, 'https://images.unsplash.com/photo-1534628526458-a8de087b1123?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hpaCUyMHR6dXxlbnwwfHwwfHx8MA%3D%3D', True),
+
+        # 46
+        (46, 'https://images.unsplash.com/photo-1696254643239-eeb065e3f35a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YmljaG9uJTIwZnJpc2V8ZW58MHx8MHx8fDA%3D', True)
     ]
 
     pet_objects = []

@@ -13,6 +13,7 @@ import ManageMatches from '../components/ManageMatches';
 import UpdateUser from '../components/UpdateUser/UpdateUser';
 import UpdateUserForm from '../components/UpdateUser/UpdateUserForm';
 import ProfileModal from '../components/ProfileModal/ProfileModal';
+import ManageReviews from '../components/ManageReviews/ManageReviews';
 
 export const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ export const router = createBrowserRouter([
       {
         path: "/pets/current",
         element: <ManagePets />
+      },
+      {
+        path: "/user/reviews",
+        element: <ManageReviews />
       },
       {
         path: "/user/:userId",

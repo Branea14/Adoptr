@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Review, User, db
+from app.models import Review, User, Pet, db
 from sqlalchemy.orm import joinedload
 
 reviews_routes = Blueprint('reviews', __name__)
@@ -10,7 +10,8 @@ reviews_routes = Blueprint('reviews', __name__)
 @login_required
 def get_current_user_reviews():
     reviews = Review.query.options(
-        joinedload(Review.sellers)
+        joinedload(Review.sellers),
+        joinedload(Review.pets).joinedload(Pet.images)
     ).filter(Review.reviewerId == current_user.id).all()
 
     if not reviews:
@@ -18,11 +19,16 @@ def get_current_user_reviews():
 
     review_data = []
     for review in reviews:
+        pet = review.pets
+        pet_image = next((image for image in pet.images if image.preview), None)
 
         review_data.append({
             "id": review.id,
             "sellerId": review.sellerId,
             "reviewerId": review.reviewerId,
+            "petId": review.petId,
+            "petName": pet.name,
+            "petImage": pet_image.url if pet_image else None,
             "review": review.review,
             "stars": review.stars,
             "createdAt": review.createdAt.isoformat(),

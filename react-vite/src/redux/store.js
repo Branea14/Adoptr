@@ -9,13 +9,14 @@ import sessionReducer from "./session";
 // import dogPreferencesReducer from "./dog_preferences";
 import petReducer from "./pets";
 import matchReducer from "./matches";
+import reviewReducer from "./reviews";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   // dogPreferences: dogPreferencesReducer,
   pet: petReducer,
-  matches: matchReducer
-
+  matches: matchReducer,
+  reviews: reviewReducer
 });
 
 let enhancer;

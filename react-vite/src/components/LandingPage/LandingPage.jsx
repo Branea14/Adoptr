@@ -21,8 +21,11 @@ const LandingPage = () => {
         const requiredDistance = 40;
         const minVelocity = 0.15;
 
-        if (!down && xDir > 0 && (x > requiredDistance || velocity[0] > minVelocity) ) setSwiped(true)
-        setPosition(down ? x : swiped ? 500 : 0);
+        if (!down && xDir > 0 && (x > requiredDistance || velocity[0] > minVelocity) ) {
+            setSwiped(window.innerWidth)
+        } else {
+            setPosition(down ? x : 0);
+        }
     });
 
     useEffect(() => {

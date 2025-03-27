@@ -1,0 +1,17 @@
+.manage-reviews-container {
+    /* position: relative;
+    margin-left: 300px;
+    padding: 20px; */
+    /* margin-left: 200px; */
+    position: absolute;
+    top: 100px;
+    left: 300px;
+    width: calc(100% - 300px);
+    /* margin-top: 80px; */
+    /* padding: 20px; */
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    text-align: center;
+    padding: 20px;
+}

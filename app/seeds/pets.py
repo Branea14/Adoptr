@@ -49,7 +49,20 @@ def seed_pets():
         (5, "Hazel", "A happy and curious Schipperke who loves exploring.", "Schipperke", True, False, "young", "female", "small", "available", "play", "active", True, True, True, "none"),
         (5, "Benny", "A loyal and intelligent Akita with a calm demeanor.", "Akita", True, False, "adult", "male", "large", "available", "training", "veryActive", False, True, False, "none"),
         (5, "Lily", "A sweet and well-behaved Cavapoo who loves snuggling on the couch.", "Cavapoo", True, True, "young", "female", "small", "available", "physicalTouch", "lapPet", True, True, True, "catsOnly"),
-        (5, "Shadow", "A smart and trainable Black Mouth Cur with a protective instinct.", "Black Mouth Cur", True, False, "adult", "male", "medium", "available", "training", "veryActive", False, True, True, "none")
+        (5, "Shadow", "A smart and trainable Black Mouth Cur with a protective instinct.", "Black Mouth Cur", True, False, "adult", "male", "medium", "available", "training", "veryActive", False, True, True, "none"),
+
+        # adopted pets
+        (1, "Aries", "Loves to eat cheeseburgers and cuddle", "Labrador Retriever", True, True, "senior", "male", "large", "adopted", "physicalTouch", "laidback", True, True, False, "none"),
+        (1, "Truffles", "Three-legged pup who loves to play fetch and swim", "Labrador Retriever", True, False, "adult", "female", "large", "adopted", "play", "active", True, True, True, "none"),
+        (2, "Luna", "Curious explorer with a nose for treats.", "Beagle", True, False, "young", "female", "large", "adopted", "play", "veryActive", True, True, False, "dogsOnly"),
+        (2, "Rico", "Small dog with a big personality.", "Chihuahua", True, False, "young", "male", "small", "adopted", "physicalTouch", "active", False, False, False, "none"),
+        (3, "Hazel", "Affectionate and always ready to cuddle.", "Golden Retriever", True, False, "puppy", "male", "large", "adopted", "treats", "veryActive", True, False, False, "catsOnly"),
+        (3, "Zeke", "Energetic and goofy with a big heart.", "Boxer", True, True, "puppy", "male", "large", "adopted", "treats", "veryActive", False, False, False, "none"),
+        (4, "Poppy", "Loves belly rubs and long naps.", "Cocker Spaniel", True, True, "adult", "female", "medium", "adopted", "physicalTouch", "lapPet", True, False, False, "none"),
+        (4, "Theo", "Smart and active with lots of tricks up his paw.", "Australian Shepherd", True, False, "adult", "male", "medium", "adopted", "treats", "active", True, True, False, "none"),
+        (5, "Cleo", "Calm lapdog who loves attention.", "Shih Tzu", True, False, "adult", "male", "small", "adopted", "physicalTouch", "lapPet", True, True, False, "none"),
+        (5, "Lucy", "Lots of energy! Loves to run!", "Bichon Frisé", True, False, "puppy", "female", "small", "adopted", "treats", "veryActive", True, False, False, "none"),
+
     ]
 
     pet_objects = []
