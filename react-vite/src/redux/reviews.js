@@ -36,7 +36,8 @@ export const loadReviewsThunk = (userId) => async (dispatch) => {
 
     if (response.ok) {
         const data = await response.json()
-        dispatch(loadReviews(data))
+
+        dispatch(loadReviews(data.Reviews))
         return data
     }
 }
@@ -60,7 +61,8 @@ export const addReview = (newReview) => async (dispatch) => {
 
 
 const initialState = {
-    currentUserReviews: {}
+    currentUserReviews: {},
+    reviews: {}
 }
 
 const reviewReducer = (state = initialState, action) => {
@@ -69,6 +71,11 @@ const reviewReducer = (state = initialState, action) => {
             return {
                 ...state,
                 currentUserReviews: action.payload
+            }
+        case LOAD_REVIEWS:
+            return {
+                ...state,
+                reviews: action.payload
             }
         default:
             return state

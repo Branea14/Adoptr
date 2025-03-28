@@ -21,7 +21,7 @@ function Navigation() {
   const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
 
   console.log('approvedMatch', approvedMatch)
-  const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match.sellerId !== currentUser.id);
+  const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match?.sellerId !== currentUser?.id);
 
   useEffect(() => {
     setLoading(true)

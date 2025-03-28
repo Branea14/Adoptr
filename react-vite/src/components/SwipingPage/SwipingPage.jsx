@@ -7,6 +7,8 @@ import { approvedMatches } from "../../redux/matches";
 import "./SwipingPage.css"
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { thunkUpdateUserLocation } from "../../redux/session";
+import OpenModalButton from "../OpenModalButton";
+import SellerReviewsModal from "../SellerReviewsModal/SellerReviewsModal";
 
 const SwipingPage = () => {
     const dispatch = useDispatch()
@@ -293,12 +295,14 @@ const SwipingPage = () => {
                             <hr className="swipe-divider" />
 
                             <div className="swipe-attributes">
+                                <OpenModalButton buttonText='See Seller Reviews' modalComponent={<SellerReviewsModal sellerId={pet.sellerId}/>}/>
                                 <p><span>House Trained:</span> <strong className={pet.houseTrained ? "yes" : "no"}>{pet.houseTrained ? "Yes" : "No"}</strong></p>
                                 <p><span>Good with Kids:</span> <strong className={pet.kids ? "yes" : "no"}>{pet.kids ? "Yes" : "No"}</strong></p>
                                 <p><span>Good with Other Pets:</span> <strong className={pet.otherPet ? "yes" : "no"}>{pet.otherPet ? "Yes" : "No"}</strong></p>
                                 <p><span>Owner Surrender:</span> <strong className={pet.ownerSurrender ? "yes" : "no"}>{pet.ownerSurrender ? "Yes" : "No"}</strong></p>
                                 <p><span>Vaccinated:</span> <strong className={pet.vaccinated ? "yes" : "no"}>{pet.vaccinated ? "Yes" : "No"}</strong></p>
                                 <p><span>Special Needs:</span> <strong className={pet.specialNeeds ? "yes" : "no"}>{pet.specialNeeds ? "Yes" : "No"}</strong></p>
+                                {/* <OpenModalButton buttonText='See Seller Reviews' modalComponent={<SellerReviewsModal />}/> */}
                             </div>
 
                         </div>

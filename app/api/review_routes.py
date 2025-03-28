@@ -54,15 +54,20 @@ def get_current_user_reviews():
 def get_pet_owner_reviews(id):
     pet_owner = User.query.get_or_404(id, description="Pet Owner does not exist")
 
-    reviews = Review.query.options(
-        joinedload(Review.reviewers)
-    ).filter(Review.sellerId == pet_owner.id).all()
+    page = request.args.get('page', 1, type=int)
+    size = request.args.get('size', 5, type=int)
 
-    if not reviews:
+    reviews_query = Review.query.options(
+        joinedload(Review.reviewers)
+    ).filter(Review.sellerId == pet_owner.id)
+
+    paginated_reviews = reviews_query.paginate(page=page, per_page=size, error_out=False)
+
+    if not paginated_reviews.items:
         return jsonify({"message": "No reviews found"}), 404
 
     review_data = []
-    for review in reviews:
+    for review in paginated_reviews:
 
         review_data.append({
             "id": review.id,
@@ -79,7 +84,7 @@ def get_pet_owner_reviews(id):
             }
         })
 
-    return jsonify({"Reviews": review_data})
+    return jsonify({"Reviews": review_data, "page": page, "size": size, "totalPages": paginated_reviews.pages, "totalReviews": paginated_reviews.total})
 
 
 
