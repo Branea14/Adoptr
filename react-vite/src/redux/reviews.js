@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 const LOAD_USER_REVIEWS = 'reviews/LOAD_USER_REVIEWS'
 const LOAD_REVIEWS = 'reviews/LOAD_REVIEWS'
 const ADD_REVIEW = 'reviews/ADD_REVIEW'
+const DELETE_REVIEW = 'reviews/DELETE_REVIEW'
 
 //action creators
 const getUserReviews = (userReviews) => ({
@@ -18,6 +19,10 @@ const addOneReview = (review) => ({
     type: ADD_REVIEW,
     payload: review
 })
+const deleteReview = (reviewId) => ({
+    type: DELETE_REVIEW,
+    payload: reviewId
+})
 
 //thunk
 export const getUserReviewsThunk = () => async (dispatch) => {
@@ -26,7 +31,12 @@ export const getUserReviewsThunk = () => async (dispatch) => {
 
     if (response.ok) {
         const data = await response.json()
-        dispatch(getUserReviews(data.Reviews))
+
+        const normalizedReviews = data.Reviews?.reduce((acc, review) => {
+            acc[review.id] = review;
+            return acc;
+        }, {})
+        dispatch(getUserReviews(normalizedReviews))
         return data
     }
 }
@@ -37,7 +47,11 @@ export const loadReviewsThunk = (userId) => async (dispatch) => {
     if (response.ok) {
         const data = await response.json()
 
-        dispatch(loadReviews(data.Reviews))
+        const normalizedReviews = data.Reviews?.reduce((acc, review) => {
+            acc[review.id] = review;
+            return acc;
+        }, {})
+        dispatch(loadReviews(normalizedReviews))
         return data
     }
 }
@@ -57,12 +71,25 @@ export const addReview = (newReview) => async (dispatch) => {
         return data
     }
 }
+export const deleteReviewThunk = (reviewId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method: 'DELETE'
+    })
 
+    if (response.ok) {
+        dispatch(deleteReview(reviewId))
+    } else {
+        const errorResponse = await response.json()
+        console.error('failed to create match', errorResponse)
+        return errorResponse
+    }
+}
 
 
 const initialState = {
     currentUserReviews: {},
-    reviews: {}
+    reviews: {},
+    userReview: null
 }
 
 const reviewReducer = (state = initialState, action) => {
@@ -77,6 +104,20 @@ const reviewReducer = (state = initialState, action) => {
                 ...state,
                 reviews: action.payload
             }
+        case DELETE_REVIEW: {
+            const {reviewId} = action
+
+            const updatedReviews = { ...state.reviews }
+            const updatedCurrentUserReviews = { ...state.currentUserReviews }
+
+            delete updatedReviews[reviewId]
+            delete updatedCurrentUserReviews[reviewId]
+
+            return {
+                ...state,
+                reviews: updatedReviews,
+                currentUserReviews: updatedCurrentUserReviews
+            }}
         default:
             return state
     }
