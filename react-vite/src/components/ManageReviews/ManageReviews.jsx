@@ -4,10 +4,13 @@ import { useEffect, useState } from 'react';
 import { getUserReviewsThunk } from '../../redux/reviews';
 import OpenModalButton from "../OpenModalButton"
 import DeleteReviewModal from '../DeleteReviewModal';
+import UpdateReviewModal from '../UpdateReviewModal/UpdateReviewModal';
+import { useModal } from '../../context/Modal';
 
 
 const ManageReviews = () => {
     const dispatch = useDispatch()
+    const { setModalContent } = useModal()
     const [refreshTrigger, setRefreshTrigger] = useState(0)
     const reviews = useSelector((state) => state.reviews.currentUserReviews)
     const reviewsArray = Object.values(reviews)
@@ -39,15 +42,16 @@ const ManageReviews = () => {
                             </div>
 
                             <div className='profile-info'>
-                                <h2>{review.petName}</h2>
-                                <p>Sold by {review.SellerInfo.firstName} {review.SellerInfo.lastName}</p>
+                                <h2>{review?.petName}</h2>
+                                <p>Sold by {review?.SellerInfo?.firstName} {review?.SellerInfo?.lastName}</p>
                                 <p>Reviewed on {createdAt}</p>
-                                <p>"{review.review}"</p>
-                                <p>Rating: {review.stars}</p>
+                                <p>"{review?.review}"</p>
+                                <p>Rating: {review?.stars}</p>
                             </div>
 
                             <div className='pet-actions'>
                                 {/* <button className='update-pet-button' onClick={() => navigate(`/pets/${pet.id}/edit`)}>Update</button> */}
+                                <button className='update-button' onClick={() => setModalContent(<UpdateReviewModal sellerId={review.sellerId} reviewId={review.id} currentReview={review.review} currentStars={review.stars} triggerRefresh={triggerRefresh}/>)}>Update</button>
                                 <OpenModalButton className="delete-modal-button" buttonText="Delete" modalComponent={<DeleteReviewModal id={review.id} triggerRefresh={triggerRefresh}/>}/>
                             </div>
 

@@ -5,6 +5,7 @@ const LOAD_USER_REVIEWS = 'reviews/LOAD_USER_REVIEWS'
 const LOAD_REVIEWS = 'reviews/LOAD_REVIEWS'
 const ADD_REVIEW = 'reviews/ADD_REVIEW'
 const DELETE_REVIEW = 'reviews/DELETE_REVIEW'
+const UPDATE_REVIEW = 'reviews/UPDATE_REVIEW'
 
 //action creators
 const getUserReviews = (userReviews) => ({
@@ -22,6 +23,10 @@ const addOneReview = (review) => ({
 const deleteReview = (reviewId) => ({
     type: DELETE_REVIEW,
     payload: reviewId
+})
+const updateReview = (review) => ({
+    type: UPDATE_REVIEW,
+    payload: review
 })
 
 //thunk
@@ -84,6 +89,21 @@ export const deleteReviewThunk = (reviewId) => async (dispatch) => {
         return errorResponse
     }
 }
+export const updateReviewThunk = (reviewData) => async (dispatch) => {
+    const response = await csrfFetch(`/api/reviews/${reviewData.id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+            "review": reviewData.review,
+            "stars": reviewData.stars
+        })
+    })
+
+    if (response.ok) {
+        const data = await response.json()
+        dispatch(updateReview(data))
+        return data
+    }
+}
 
 
 const initialState = {
@@ -112,12 +132,27 @@ const reviewReducer = (state = initialState, action) => {
 
             delete updatedReviews[reviewId]
             delete updatedCurrentUserReviews[reviewId]
-
             return {
                 ...state,
                 reviews: updatedReviews,
                 currentUserReviews: updatedCurrentUserReviews
             }}
+        case UPDATE_REVIEW: {
+            const updatedReview = action.payload.review || action.payload
+            if (!updatedReview?.id) return state;
+
+            return {
+                ...state,
+                reviews: {
+                    ...state.reviews,
+                    [updatedReview.id]: updatedReview
+                },
+                currentUserReviews: {
+                    ...state.currentUserReviews,
+                    [updatedReview.id]: updatedReview
+                }
+            }
+        }
         default:
             return state
     }
