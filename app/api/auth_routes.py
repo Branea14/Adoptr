@@ -4,7 +4,7 @@ from app.forms import LoginForm
 from app.forms import SignUpForm
 from sqlalchemy.orm import load_only
 from flask_login import current_user, login_user, logout_user, login_required
-import geohash
+import pygeohash as geohash
 
 auth_routes = Blueprint('auth', __name__)
 
@@ -30,7 +30,7 @@ def login():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
-        user = User.query.options(load_only("firstName")).filter(User.email == form.data['email']).first()
+        user = User.query.options(load_only(User.firstName)).filter(User.email == form.data['email']).first()
         print('look here for user informaton', user)
         # shortened_user = {
         #     "id": user.id,

@@ -50,6 +50,7 @@ class User(db.Model, UserMixin):
     sender_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.senderId], back_populates='sender', cascade="all, delete-orphan")
     receiver_chats = db.relationship('ChatHistory', foreign_keys=[ChatHistory.receiverId], back_populates='receiver', cascade="all, delete-orphan")
     preferences = db.relationship('IdealDogPreferences', foreign_keys=[IdealDogPreferences.userId], back_populates='user', uselist=False, cascade='all, delete-orphan')
+    adoptions = db.relationship("Adoption", back_populates='user')
 
     # moved to different table
     # houseTrained = db.Column(db.Boolean, nullable=False)

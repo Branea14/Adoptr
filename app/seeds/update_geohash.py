@@ -1,5 +1,5 @@
 from app.models import User, db
-import geohash
+import pygeohash as geohash
 
 print('hellllooooooo')
 

@@ -185,3 +185,17 @@ def delete_review(id):
     db.session.commit()
 
     return jsonify({"message": "Successfully deleted"}), 200
+
+
+# ***********************GET REVIEWABLE PETS***********************
+@reviews_routes.route('/pets')
+@login_required
+def get_reviewable_pets():
+    reviewerId = current_user.id
+    reviewable_pet = Pet.query.join(Review, (Review.petId == Pet.id) & (Review.reviewerId == reviewerId)).filter(
+        Pet.adoptionStatus == 'adopted',
+    ).all()
+
+    print('TESSSSSSSSSSSSSSSSSSSTING!!!!!!!!!!!', reviewable_pet)
+
+    return jsonify([pet.to_dict() for pet in reviewable_pet])

@@ -6,6 +6,7 @@ from .reviews import seed_reviews, undo_reviews
 from .matches import seed_matches, undo_matches
 from .chats import seed_chats, undo_chats
 from .ideal_dog_preferences import seed_ideal_dog_preferences, undo_ideal_dog_preferences
+from .adoptions import seed_adoptions, undo_adoptions
 
 from app.models.db import db, environment, SCHEMA
 
@@ -27,6 +28,7 @@ def seed():
         undo_pets()
         undo_pet_images()
         undo_reviews()
+        undo_adoptions()
         undo_matches()
         undo_chats()
     seed_users()
@@ -34,6 +36,7 @@ def seed():
     seed_pets()
     seed_pet_images()
     seed_reviews()
+    seed_adoptions()
     seed_matches()
     seed_chats()
     # Add other seed functions here
@@ -47,6 +50,7 @@ def undo():
     undo_pets()
     undo_pet_images()
     undo_reviews()
+    undo_adoptions()
     undo_matches()
     undo_chats()
     # Add other undo functions here

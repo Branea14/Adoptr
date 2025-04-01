@@ -1,7 +1,7 @@
 from app.models import db, User, environment, SCHEMA
 from sqlalchemy.sql import text
 from datetime import datetime, timezone
-import geohash
+import pygeohash as geohash
 
 
 
