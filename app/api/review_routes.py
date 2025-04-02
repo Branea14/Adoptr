@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Review, User, Pet, db
+from app.models import Review, User, Pet, Adoption, db
 from sqlalchemy.orm import joinedload
 
 reviews_routes = Blueprint('reviews', __name__)
@@ -98,6 +98,7 @@ def create_review(id):
     data = request.get_json()
     review_text = data.get('review')
     stars = data.get('stars')
+    pet_id = data.get('petId')
 
     errors = {}
     if not review_text:
@@ -111,6 +112,7 @@ def create_review(id):
     new_review = Review(
         sellerId=pet_owner.id,
         reviewerId=reviewerId,
+        petId=pet_id,
         review=review_text,
         stars=stars
     )
@@ -124,6 +126,7 @@ def create_review(id):
             "id": new_review.id,
            "sellerId": new_review.sellerId,
             "reviewerId": new_review.reviewerId,
+            "petId": new_review.petId,
             "review": new_review.review,
             "stars": new_review.stars,
             "createdAt": new_review.createdAt.isoformat(),
@@ -191,11 +194,33 @@ def delete_review(id):
 @reviews_routes.route('/pets')
 @login_required
 def get_reviewable_pets():
-    reviewerId = current_user.id
-    reviewable_pet = Pet.query.join(Review, (Review.petId == Pet.id) & (Review.reviewerId == reviewerId)).filter(
+    reviewable_pet = Pet.query.join(Adoption).options(
+        joinedload(Pet.adoptions),
+        joinedload(Pet.sellers)
+    ).filter(
+        Adoption.adopterId == current_user.id,
         Pet.adoptionStatus == 'adopted',
+        ~Pet.reviews.any(Review.reviewerId == current_user.id)
     ).all()
 
-    print('TESSSSSSSSSSSSSSSSSSSTING!!!!!!!!!!!', reviewable_pet)
+    result = []
+    for pet in reviewable_pet:
+        pet_data = pet.to_dict()
 
-    return jsonify([pet.to_dict() for pet in reviewable_pet])
+
+        if pet.adoptions:
+            pet_data['adoption'] = {
+                # 'id': pet.adoptions.id,
+                "adopterId": pet.adoptions.adopterId,
+                "adoptedAt": pet.adoptions.adoptedAt.isoformat() if pet.adoptions.adoptedAt else None
+            }
+
+        pet_data['SellerInfo'] = {
+            "id": pet.sellers.id if pet.sellers else None,
+            "firstName": pet.sellers.firstName if pet.sellers else None,
+            "lastName": pet.sellers.lastName if pet.sellers else None
+        }
+
+        result.append(pet_data)
+
+    return jsonify(result)

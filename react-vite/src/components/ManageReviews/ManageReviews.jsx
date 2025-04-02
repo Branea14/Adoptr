@@ -1,20 +1,24 @@
 import { useDispatch, useSelector } from 'react-redux';
 import './ManageReviews.css'
 import { useEffect, useState } from 'react';
-import { getUserReviewsThunk } from '../../redux/reviews';
+import { getUserReviewsThunk, leaveReviewThunk } from '../../redux/reviews';
 import OpenModalButton from "../OpenModalButton"
 import DeleteReviewModal from '../DeleteReviewModal';
 import UpdateReviewModal from '../UpdateReviewModal/UpdateReviewModal';
 import { useModal } from '../../context/Modal';
+import ReviewablePetModal from '../ReviewablePetModal/ReviewablePetModal';
 
 
 const ManageReviews = () => {
     const dispatch = useDispatch()
     const { setModalContent } = useModal()
     const [refreshTrigger, setRefreshTrigger] = useState(0)
+    const [loading, setLoading] = useState(true)
     const reviews = useSelector((state) => state.reviews.currentUserReviews)
     const reviewsArray = Object.values(reviews)
+    const reviewablePets = useSelector((state) => state.reviews.reviewablePets)
     console.log('review', reviews)
+    console.log(reviewablePets)
 
 
     const triggerRefresh = () => {
@@ -22,11 +26,23 @@ const ManageReviews = () => {
     }
 
     useEffect(() => {
-        dispatch(getUserReviewsThunk())
+        setLoading(true)
+        Promise.all([
+            dispatch(getUserReviewsThunk()),
+            dispatch(leaveReviewThunk())
+        ]).finally(() => setLoading(false))
     }, [dispatch, refreshTrigger])
+
+    const handleReviewablePets = async (e) => {
+        e.preventDefault()
+        setModalContent(<ReviewablePetModal triggerRefresh={triggerRefresh}/>)
+    }
 
     return (
         <div className='manage-reviews-container'>
+            {reviewablePets && reviewablePets?.length > 0 && (
+                <button className='update-button' onClick={handleReviewablePets}>Leave a Review!</button>
+            )}
             {reviewsArray && reviewsArray.length > 0 ? (
                 reviewsArray?.map((review, index) => {
                     const createdAt = new Date(review.createdAt).toLocaleDateString("en-US", {

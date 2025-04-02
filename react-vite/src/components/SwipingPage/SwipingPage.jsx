@@ -12,20 +12,21 @@ import SellerReviewsModal from "../SellerReviewsModal/SellerReviewsModal";
 
 const SwipingPage = () => {
     const dispatch = useDispatch()
+
+    const [currentPet, setCurrentPet] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [swipeAction, setSwipeAction] = useState(false)
+    const [validatingPet, setValidatingPet] = useState(true)
+    const [matchesAreLoaded, setMatchesAreLoaded] = useState(false)
+    const [matchesFilteredReady, setMatchesFilteredReady] = useState(false)
+    // const [petIsReady, setPetIsReady] = useState(false)
+
     const [position, setPosition] = useState(0)
-    // const [hidePets, setHidePets] = useState({})
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
+    const [locationBanner, setLocationBanner] = useState(null)
+    const [swipeAction, setSwipeAction] = useState(false)
     const [location, setLocation] = useState({ latitude: null, longitude: null })
     const [loadingLocation, setLoadingLocation] = useState(false)
     const [errors, setErrors] = useState({})
-    const [locationBanner, setLocationBanner] = useState(null)
-
-    const currentUser = useSelector((state) => state.session.user)
-    const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
-    const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
-    const rejectedMatch = useSelector((state) => state.matches?.rejectedMatches)
 
     const LIFESTYLE_DISPLAY = {
         "veryActive": "Very Active",
@@ -48,6 +49,81 @@ const SwipingPage = () => {
         "large": "Large",
         "xl": "X-Large"
     }
+
+    const currentUser = useSelector((state) => state.session.user)
+    const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
+    const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
+    const rejectedMatch = useSelector((state) => state.matches?.rejectedMatches)
+    // const petDetails = useSelector((state) => state.pet.petDetails)
+
+
+    const filterMatches = (matches) => Object.values(matches || {}).filter((match) => match.sellerId !== currentUser.id)
+
+    const filteredApprovedMatches = useMemo(() => {
+        return filterMatches(approvedMatch || {}).reduce((acc, match) => {
+                acc[match.petId] = match
+                return acc;
+            }, {})
+    }, [approvedMatch, currentUser.id])
+
+    const filteredRequestedMatches = useMemo(() => {
+        return filterMatches(requestedMatch || {}).reduce((acc, match) => {
+                acc[match.petId] = match
+                return acc;
+            }, {})
+    }, [requestedMatch, currentUser.id])
+
+    const filteredRejectedMatches = useMemo(() => {
+        return filterMatches(rejectedMatch || {}).reduce((acc, match) => {
+                acc[match.petId] = match
+                return acc
+            }, {})
+    }, [rejectedMatch, currentUser.id])
+
+
+    // const isApproved = useMemo(() => {
+    //     return petDetails && filteredApprovedMatches[petDetails.id]
+    // }, [filteredApprovedMatches, petDetails?.id])
+    // const isRejected = useMemo(() => {
+    //     return petDetails && filteredRejectedMatches[petDetails.id]
+    // }, [filteredRejectedMatches, petDetails?.id])
+    // const isRequested = useMemo(() => {
+    //     return petDetails && filteredRequestedMatches[petDetails.id]
+    // }, [filteredRequestedMatches, petDetails?.id])
+
+
+    const validateAndSetPet = async (petCandidate) => {
+        const allMatchIds = new Set([
+            ...Object.values(requestedMatch || {}).map(m => m.petId),
+            ...Object.values(approvedMatch || {}).map(m => m.petId),
+            ...Object.values(rejectedMatch || {}).map(m => m.petId)
+        ])
+
+        const isValid = petCandidate?.sellerId !== currentUser.id && !allMatchIds.has(petCandidate.id)
+
+        if (isValid) {
+            localStorage.setItem('currentPet', JSON.stringify(petCandidate))
+            setCurrentPet(petCandidate)
+            return true
+        }
+        return false
+    }
+
+    const pet = useMemo(() => {
+        if (!currentPet) return null;
+        if (filteredApprovedMatches[currentPet.id] || filteredRequestedMatches[currentPet.id] || filteredRejectedMatches[currentPet.id]) return null;
+        if (currentPet.sellerId === currentUser.id) return null;
+        // if (isApproved || isRejected || isRequested) return null;
+        return currentPet;
+    }, [currentPet, currentUser.id, filteredApprovedMatches, filteredRequestedMatches, filteredRejectedMatches])
+
+    // if (petDetails) {
+    //     console.log("Currently Displayed Pet:", petDetails);
+    //     // console.log("Is Approved:", isApproved, "Is Requested:", isRequested, "Is Rejected:", isRejected);
+    // }
+
+    // console.log("Currently Displayed Pet:", currentPet)
+
 
     useEffect(() => {
         if (!currentUser || !navigator.geolocation) return
@@ -87,63 +163,8 @@ const SwipingPage = () => {
         )
     }, [])
 
-
-    const filteredApprovedMatches = useMemo(() => {
-        return Object.values(approvedMatch || {})
-            .filter(match => match.sellerId !== currentUser.id)
-            .reduce((acc, match) => {
-                acc[match.petId] = match
-                return acc;
-            }, {})
-    }, [approvedMatch, currentUser.id])
-
-    const filteredRequestedMatches = useMemo(() => {
-        return Object.values(requestedMatch || {})
-            .filter(match => match.sellerId !== currentUser.id)
-            .reduce((acc, match) => {
-                acc[match.petId] = match
-                return acc;
-            }, {})
-    }, [requestedMatch, currentUser.id])
-
-    const filteredRejectedMatches = useMemo(() => {
-        return Object.values(rejectedMatch || {})
-            .filter(match => match.sellerId !== currentUser.id)
-            .reduce((acc, match) => {
-                acc[match.petId] = match
-                return acc
-            }, {})
-    }, [rejectedMatch, currentUser.id])
-
-
-    const petDetails = useSelector((state) => state.pet.petDetails)
-
-    const isApproved = useMemo(() => {
-        return Object.values(filteredApprovedMatches || {}).some(match => match.petId === petDetails.id);
-    }, [filteredApprovedMatches, petDetails?.id])
-    const isRejected = useMemo(() => {
-        return Object.values(filteredRejectedMatches || {}).some(match => match.petId === petDetails.id);
-    }, [filteredRejectedMatches, petDetails?.id])
-    const isRequested = useMemo(() => {
-        return Object.values(filteredRequestedMatches || {}).some(match => match.petId === petDetails.id);
-    }, [filteredRequestedMatches, petDetails?.id])
-
-    const pet = useMemo(() => {
-        if (!petDetails) return null;
-        // if (!petDetails || hidePets[petDetails.id]) return null;
-        console.log("Currently Displayed Pet:", petDetails);
-
-        console.log("Is Approved:", isApproved, "Is Requested:", isRequested, "Is Rejected:", isRejected);
-        if (isApproved || isRejected || isRequested) return null;
-        return petDetails;
-    }, [petDetails, isApproved, isRejected, isRequested])
-
-    // console.log('loooook here', pet)
-    // console.log('approved matches', approvedMatch)
     console.log('filteredApproved', filteredApprovedMatches)
-    // console.log('requested matches', requestedMatch)
     console.log('filteredRequested', filteredRequestedMatches)
-    // console.log('rejected matches', rejectedMatch)
     console.log('filteredRejected', filteredRejectedMatches)
 
     const images = pet?.PetImages || [];
@@ -161,67 +182,125 @@ const SwipingPage = () => {
         }
     };
 
-    useEffect(() => {
-        setLoading(true);
 
-        const cachedPet = localStorage.getItem('currentPet')
+    useEffect(() => {
+        if (!currentUser) return;
+
+        // const cachedPet = localStorage.getItem('currentPet')
 
         const fetchEverything = async () => {
+            console.log("🔄 Starting fetchEverything");
+
+            setLoading(true);
+            setValidatingPet(true)
+            // setMatchesAreLoaded(false);
+            // setMatchesFilteredReady(false)
+            setCurrentPet(null)
+            localStorage.removeItem('currentPet')
+
             await Promise.all([
-                // dispatch(getDetails()),
                 dispatch(requestedMatches()),
                 dispatch(approvedMatches()),
                 dispatch(rejectedMatches()),
             ])
 
-            if (cachedPet) {
-                const parsed = JSON.parse(cachedPet)
-                dispatch({ type: 'pet/GET_PET_DETAILS', payload: parsed })
-                console.log('loaded pet from cache', parsed)
-            } else {
-                const newPet = await dispatch(getDetails());
-                if (newPet) {
-                    localStorage.getItem('currentPet', JSON.stringify(newPet))
-                }
+            setMatchesAreLoaded(true)
+            setMatchesFilteredReady(true)
+
+            console.log('geting pet....')
+            const newPet = await dispatch(getDetails())
+            console.log('pet fetched', newPet)
+            const accepted = await validateAndSetPet(newPet)
+            // setTimeout(async () => {
+
+            if (!accepted) {
+                console.log("❌ First pet invalid — trying again...");
+                const another = await dispatch(getDetails());
+                await validateAndSetPet(another);
             }
 
+            setValidatingPet(false)
             setLoading(false)
+
+            // }, 0)
         }
         fetchEverything()
-    }, [dispatch]);
+    }, [dispatch, currentUser?.id]);
 
     const handleSwipe = async () => {
+        if (!currentPet) return
+
+        const petToSwipe = currentPet
         setLoading(true)
+        // setCurrentPet(null)
         localStorage.removeItem("currentPet") //after swipe is completed and match is handled
 
-        setTimeout(async () => {
+        // setTimeout(async () => {
+        //     await Promise.all([
+        //         dispatch(requestedMatches()),
+        //         dispatch(approvedMatches()),
+        //         dispatch(rejectedMatches())
+        //     ])
+
+        //     console.log("fetching a new pet after swipe......")
+
+        //     dispatch(getDetails()).then((newPet) => {
+        //         if (!newPet) {
+        //             console.log("No more pets available")
+        //             setLoading(false)
+        //             return
+        //         }
+
+        //         localStorage.setItem('currentPet', JSON.stringify(newPet))
+        //         setPosition(0);
+        //         setCurrentImgIndex(0)
+        //         setPetIsReady(true)
+        //         setLoading(false)
+        //     }).catch((error) => {
+        //         console.error("Error fetching new pet", error)
+        //         if (error.response?.status === 400) {
+        //             console.log("no more pets to swipe")
+        //         }
+        //         setLoading(false)
+        //     })
+        // }, 300)
+
+        try {
             await Promise.all([
                 dispatch(requestedMatches()),
                 dispatch(approvedMatches()),
                 dispatch(rejectedMatches())
-            ])
+            ]);
 
-            console.log("fetching a new pet after swipe......")
+            console.log("fetching a new pet after swipe...");
 
-            dispatch(getDetails()).then((newPet) => {
-                if (!newPet) {
-                    console.log("No more pets available")
-                    setLoading(false)
-                    return
-                }
+            const newPet = await dispatch(getDetails());
 
-                localStorage.setItem('currentPet', JSON.stringify(newPet))
-                setPosition(0);
-                setCurrentImgIndex(0)
-                setLoading(false)
-            }).catch((error) => {
-                console.error("Error fetching new pet", error)
-                if (error.response?.status === 400) {
-                    console.log("no more pets to swipe")
-                }
-                setLoading(false)
-            })
-        }, 300)
+            const allMatchIds = new Set([
+                ...Object.values(requestedMatch || {}).map(m => m.petId),
+                ...Object.values(approvedMatch || {}).map(m => m.petId),
+                ...Object.values(rejectedMatch || {}).map(m => m.petId)
+            ]);
+
+            const isValid = newPet?.sellerId !== currentUser.id && !allMatchIds.has(newPet?.id);
+
+            if (isValid) {
+                localStorage.setItem('currentPet', JSON.stringify(newPet));
+                setCurrentPet(newPet);
+            } else {
+                setCurrentPet(null); // Explicitly fallback to null if no valid pet
+            }
+
+            setCurrentImgIndex(0);
+            setPosition(0);
+        } catch (error) {
+            console.error("Error fetching new pet", error);
+            if (error.response?.status === 400) {
+                console.log("No more pets to swipe");
+            }
+        } finally {
+            setLoading(false);
+        }
     }
 
 
@@ -257,7 +336,7 @@ const SwipingPage = () => {
     });
 
 
-    if (!pet && loading) return <p>Loading pet details...</p>
+    if (validatingPet || loading || !matchesAreLoaded || !matchesFilteredReady || currentPet === null) return <p>Loading pet details...</p>
     if (!pet) return <p>No more pets nearby!</p>
 
     return (

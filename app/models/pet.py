@@ -47,7 +47,7 @@ class Pet(db.Model):
     matches = db.relationship('Match', back_populates='pets', cascade="all, delete-orphan")
     chats = db.relationship("ChatHistory", back_populates='pets', cascade="all, delete-orphan")
     reviews = db.relationship("Review", back_populates='pets', cascade="all, delete-orphan")
-    adoptions = db.relationship("Adoption", back_populates='pet')
+    adoptions = db.relationship("Adoption", back_populates='pet', uselist=False)
 
     @property
     def days_on_adoptr(self):

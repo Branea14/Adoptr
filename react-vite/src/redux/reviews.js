@@ -6,6 +6,8 @@ const LOAD_REVIEWS = 'reviews/LOAD_REVIEWS'
 const ADD_REVIEW = 'reviews/ADD_REVIEW'
 const DELETE_REVIEW = 'reviews/DELETE_REVIEW'
 const UPDATE_REVIEW = 'reviews/UPDATE_REVIEW'
+const LEAVE_REVIEW = 'reviews/LEAVE_REVIEW'
+const REMOVE_REVIEWABLE_PETS = 'reviews/removeReviewablePets'
 
 //action creators
 const getUserReviews = (userReviews) => ({
@@ -27,6 +29,14 @@ const deleteReview = (reviewId) => ({
 const updateReview = (review) => ({
     type: UPDATE_REVIEW,
     payload: review
+})
+const leaveReview = (reviews) => ({
+    type: LEAVE_REVIEW,
+    payload: reviews
+})
+export const removeReviewablePets = (petId) => ({
+    type: REMOVE_REVIEWABLE_PETS,
+    payload: petId
 })
 
 //thunk
@@ -62,11 +72,11 @@ export const loadReviewsThunk = (userId) => async (dispatch) => {
 }
 export const addReview = (newReview) => async (dispatch) => {
     console.log('newReview from thunk', newReview)
-    const {sellerId, review, stars} = newReview
+    const {sellerId, review, stars, petId} = newReview
 
     const response = await csrfFetch(`/api/reviews/users/${sellerId}`, {
         method: 'POST',
-        body: JSON.stringify({review, stars})
+        body: JSON.stringify({review, stars, petId})
     })
 
     if (response.ok) {
@@ -104,11 +114,21 @@ export const updateReviewThunk = (reviewData) => async (dispatch) => {
         return data
     }
 }
+export const leaveReviewThunk = () => async (dispatch) => {
+    const response = await csrfFetch('/api/reviews/pets')
+
+    if (response.ok) {
+        const data = await response.json()
+        dispatch(leaveReview(data))
+        return data
+    }
+}
 
 
 const initialState = {
     currentUserReviews: {},
     reviews: {},
+    reviewablePets: {},
     userReview: null
 }
 
@@ -123,6 +143,11 @@ const reviewReducer = (state = initialState, action) => {
             return {
                 ...state,
                 reviews: action.payload
+            }
+        case LEAVE_REVIEW:
+            return {
+                ...state,
+                reviewablePets: action.payload
             }
         case DELETE_REVIEW: {
             const {reviewId} = action
@@ -153,6 +178,18 @@ const reviewReducer = (state = initialState, action) => {
                 }
             }
         }
+        case REMOVE_REVIEWABLE_PETS:
+            const updatedPets = state.reviewablePets.reviewlessPets?.filter(
+                (pet) => pet.id !== action.payload
+            ) || [];
+
+            return {
+                ...state,
+                reviewablePets: {
+                    ...state.reviewablePets,
+                    reviewlessPets: updatedPets
+                }
+            }
         default:
             return state
     }
