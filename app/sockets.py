@@ -1,3 +1,5 @@
+# Flask-SocketIO server is the backend handling real-time websocket communication
+from flask import Flask
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from flask_login import current_user
 from app.models import db, ChatHistory
@@ -6,24 +8,36 @@ from flask import request
 # enable websockets
 socketio = SocketIO(cors_allowed_origins="*")
 
+
 # tracks online users
 connected_users = {}
 
 # # websocket connection
-@socketio.on('connect')
+@socketio.on('connect') #listens for custom events sent from frontend
 def handle_connect():
     if current_user.is_authenticated:
         connected_users[current_user.id] = request.sid
+        join_room(str(current_user.id))
         print(f"User {current_user.id} is connected")
+        # emit sends 'event name (connected)' and data to the frontend
+        emit("connected", {
+            "userId": current_user.id,
+        })
 
 
 # websocket disconnection
 @socketio.on('disconnect')
 def handle_disconnect():
-    if current_user.id in connected_users:
-        del connected_users[current_user.id]
-        print(f"User {current_user.id} disconnected")
+    socket_id = request.sid
 
+    if connected_users.get(current_user.id) == socket_id:
+    # if current_user.id in connected_users:
+        print(f"Socket {socket_id} disconnecting")
+        print(f"Stored SID for user {current_user.id}: {connected_users.get(current_user.id)}")
+        del connected_users[current_user.id]
+        print(f"User {current_user.id} disconnected and removed from connected_users")
+
+    leave_room(str(current_user.id))
 
 # handling messages
 @socketio.on('send_messages')

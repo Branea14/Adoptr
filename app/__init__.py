@@ -1,3 +1,6 @@
+# import eventlet
+# eventlet.monkey_patch()
+
 import os
 from flask import Flask, render_template, request, session, redirect
 from flask_cors import CORS
@@ -19,6 +22,11 @@ from .sockets import socketio
 
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
+# initializes socketio with flask app
+socketio.init_app(app, cors_allowed_origins="*")
+
+print("✅ Flask app + SocketIO initialized")
+
 
 # @app.route('/run-migrations')
 # def run_migrations():
@@ -58,8 +66,6 @@ migrate = Migrate(app, db)
 # Application Security
 CORS(app, supports_credentials=True)
 
-# initializes socketio with flask app
-socketio.init_app(app, cors_allowed_origins="*")
 
 # Since we are deploying with Docker and Flask,
 # we won't be using a buildpack when we deploy to Heroku.
@@ -117,5 +123,7 @@ def not_found(e):
     return app.send_static_file('index.html')
 
 
-if __name__ == '__main__':
-    socketio.run(app, debug=True)
+# if __name__ == '__main__':
+#     socketio.run(app, host='localhost', port=8000, debug=True)
+
+__all__ = ['app', 'socketio']
