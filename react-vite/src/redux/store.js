@@ -10,13 +10,15 @@ import sessionReducer from "./session";
 import petReducer from "./pets";
 import matchReducer from "./matches";
 import reviewReducer from "./reviews";
+import chatHistoryReducer from "./chatbox";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   // dogPreferences: dogPreferencesReducer,
   pet: petReducer,
   matches: matchReducer,
-  reviews: reviewReducer
+  reviews: reviewReducer,
+  chatbox: chatHistoryReducer
 });
 
 let enhancer;

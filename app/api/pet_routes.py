@@ -78,7 +78,7 @@ def current_pets():
 @pet_routes.route('/<int:id>')
 @login_required
 def get_pet(id):
-    pet = Pet.query.get(id)
+    pet = Pet.query.options(joinedload(Pet.sellers)).get(id)
 
     if not pet:
         return jsonify({"message": "Pet could not be found"}), 404
@@ -94,6 +94,7 @@ def get_pet(id):
         "id": pet.id,
         "name": pet.name,
         "sellerId": pet.sellerId,
+        "sellerName": pet.sellers.firstName,
         "description": pet.description,
         "breed": pet.breed,
         "vaccinated": pet.vaccinated,

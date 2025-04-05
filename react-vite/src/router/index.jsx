@@ -14,6 +14,7 @@ import UpdateUser from '../components/UpdateUser/UpdateUser';
 import UpdateUserForm from '../components/UpdateUser/UpdateUserForm';
 import ProfileModal from '../components/ProfileModal/ProfileModal';
 import ManageReviews from '../components/ManageReviews/ManageReviews';
+import ChatBox from '../components/ChatBox/ChatBox';
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
       {
         path: "/user/:userId",
         element: <ProfileModal />
+      },
+      {
+        path: "/chat/:receiverId/:petId",
+        element: <ChatBox />
       },
       {
         path: '/pets/:petId/edit',

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getViewedPetDetailsThunk } from "../../redux/pets"
-import {  useParams } from "react-router-dom"
+import {  useNavigate, useParams } from "react-router-dom"
 import "./PetDetails.css"
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
 const PetDetails = () => {
     const dispatch = useDispatch()
     const { petId } = useParams()
+    const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
@@ -86,7 +87,7 @@ const PetDetails = () => {
                 ))} */}
                 <div className="swipe-details-container">
                     {currentUser.id !== pet.sellerId ? (
-                        <button className="adopt-button" onClick={() => alert('Chatting Feature Coming Soon...')}>Want to Adopt?</button>
+                        <button className="adopt-button" onClick={() => navigate(`/chat/${pet.sellerId}/${pet.id}`)}>Want to Adopt?</button>
                     ) : null}
 
                     <p className="pet-adoption-status"><strong>Adoption Status:</strong> {pet?.adoptionStatus}</p>

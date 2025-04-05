@@ -12,7 +12,7 @@ socketio = SocketIO(cors_allowed_origins="*")
 # tracks online users
 connected_users = {}
 
-# # websocket connection
+# # establishes a websocket connection
 @socketio.on('connect') #listens for custom events sent from frontend
 def handle_connect():
     if current_user.is_authenticated:

@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request, session
 from flask_login import login_required, current_user
 from app.models import db, ChatHistory
-from sqlalchemy import func
+from sqlalchemy import func, and_
+from sqlalchemy.orm import joinedload
 
 chat_history_routes = Blueprint('chat', __name__)
 
@@ -48,7 +49,7 @@ def selected_conversation_history(receiverId):
     # grabs petId from query params
     pet_id = request.args.get('petId', type=int)
 
-    chat = ChatHistory.query.filter(
+    chat = ChatHistory.query.options(joinedload(ChatHistory.sender), joinedload(ChatHistory.receiver)).filter(
         ((ChatHistory.senderId == current_user.id) & (ChatHistory.receiverId == receiverId)) |
         ((ChatHistory.receiverId == current_user.id) & (ChatHistory.senderId == receiverId))
     )
@@ -74,7 +75,9 @@ def selected_conversation_history(receiverId):
     chat_data = [{
         "id": chat.id,
         "senderId": chat.senderId,
+        "senderName": chat.sender.firstName,
         "receiverId": chat.receiverId,
+        "receiverName": chat.receiver.firstName,
         "petId": chat.petId,
         "content": chat.content,
         "status": chat.status,
@@ -107,3 +110,38 @@ def delete_conversation(receiverId):
     db.session.commit()
 
     return jsonify({"message": "Successfully deleted"}), 200
+
+    ####################### MARKING AS READ ###############################
+@chat_history_routes.route('/<int:senderId>', methods=['PATCH'])
+@login_required
+def mark_as_read(senderId):
+    pet_id = request.args.get('petId', type=int)
+
+    if pet_id is None:
+        return {"error": "Missing petId query parameter"}, 400
+
+    message = ChatHistory.query.filter(
+        and_(
+            ChatHistory.senderId == senderId,
+            ChatHistory.receiverId == current_user.id,
+            ChatHistory.petId == pet_id,
+            ChatHistory.status == 'DELIVERED'
+        )
+    ).order_by(ChatHistory.createdAt.desc()).first()
+
+    if not message:
+        return {"message": "No unread messages found"}, 404
+
+    message.status = 'READ'
+    db.session.commit()
+
+    return jsonify({
+        "id": message.id,
+        "senderId": message.senderId,
+        "receiverId": message.receiverId,
+        "petId": message.petId,
+        "content": message.content,
+        "status": message.status,
+        "createdAt": message.createdAt.isoformat() if message.createdAt else None,
+        "updatedAt": message.updatedAt.isoformat() if message.updatedAt else None
+    })
