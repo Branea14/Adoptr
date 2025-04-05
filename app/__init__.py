@@ -23,7 +23,7 @@ from .sockets import socketio
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 # initializes socketio with flask app
-socketio.init_app(app, cors_allowed_origins="*")
+socketio.init_app(app, cors_allowed_origins="*", manage_session=False)
 
 print("✅ Flask app + SocketIO initialized")
 

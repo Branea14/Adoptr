@@ -145,3 +145,34 @@ def mark_as_read(senderId):
         "createdAt": message.createdAt.isoformat() if message.createdAt else None,
         "updatedAt": message.updatedAt.isoformat() if message.updatedAt else None
     })
+
+
+#     ####################### ADD TO CHAT ###############################
+# @chat_history_routes.route('/<int:receiverId>', methods=['POST'])
+# @login_required
+# def add_to_chat(receiverId):
+#     pet_id = request.args.get('petId', type=int)
+#     senderId = current_user.id
+
+#     data = request.get_json()
+#     message_content = data.get('content')
+
+#     new_message = ChatHistory(
+#         senderId=senderId,
+#         receiverId=receiverId,
+#         petId=pet_id,
+#         content=message_content,
+#         status='SENT'
+#     )
+
+#     db.session.add(new_message)
+#     db.session.commit()
+
+#     return jsonify({
+#         "id": new_message.id,
+#         "senderId": new_message.senderId,
+#         "receiverId": new_message.receiverId,
+#         "petId": new_message.petId,
+#         "content": new_message.content,
+#         "status": new_message.status
+#     }), 201

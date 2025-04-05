@@ -5,6 +5,7 @@ const GET_ALL_CHAT = 'chat/GET_ALL_CHAT'
 const GET_CHAT_HISTORY = 'chat/GET_CHAT_HISTORY'
 const DELETE_CHAT = 'chat/DELETE_CHAT'
 const MARK_AS_READ = 'chat/MARK_AS_READ'
+const ADD_TO_CHAT = 'chat/ADD_TO_CHAT'
 
 // action creators
 const getAllChat = (chats) => ({
@@ -23,6 +24,10 @@ const markAsRead = (message) => ({
     type: MARK_AS_READ,
     payload: message
 })
+export const addToChat = (message) => ({
+    type: ADD_TO_CHAT,
+    payload: message
+})
 
 // thunk
 export const getAllChatThunk = () => async (dispatch) => {
@@ -30,8 +35,13 @@ export const getAllChatThunk = () => async (dispatch) => {
 
     if (response.ok) {
         const data = await response.json()
-        dispatch(getAllChat(data))
-        return data
+
+        const normalizedChats = data.Chat_History.reduce((acc, conversation) => {
+            acc[conversation.id] = conversation;
+            return acc;
+        }, {})
+        console.log('look at data here', data)
+        dispatch(getAllChat(normalizedChats))
     }
 }
 export const getChatHistoryThunk = (chatHistory) => async (dispatch) => {
@@ -69,6 +79,21 @@ export const markAsReadThunk = (messageData) => async (dispatch) => {
         return data
     }
 }
+// export const addToChatThunk = (messageData) => async (dispatch) => {
+//     const { receiverId, content } = messageData
+
+//     const response = await csrfFetch(`/api/chat/${receiverId}`, {
+//         method: 'POST',
+//         body: JSON.stringify({ content })
+//     })
+
+//     if (response.ok) {
+//         const data = await response.json()
+//         dispatch(addToChat(data))
+//         dispatch(getAllChatThunk())
+//         return data
+//     }
+// }
 
 
 const initialState = {
@@ -84,6 +109,19 @@ const chatHistoryReducer = (state = initialState, action) => {
         case GET_CHAT_HISTORY: {
             return { ...state, chatHistory: {...action.payload} }
         }
+        case ADD_TO_CHAT: {
+            return {
+                ...state,
+                chatHistory: {
+                    ...state.chatHistory,
+                    Chat_History: [
+                        ...(state.chatHistory.Chat_History || []),
+                        action.payload
+                    ]
+                }
+            }
+        }
+
         default:
             return state;
     }

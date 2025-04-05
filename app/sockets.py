@@ -17,6 +17,8 @@ connected_users = {}
 def handle_connect():
     if current_user.is_authenticated:
         connected_users[current_user.id] = request.sid
+
+        print('who is connected right now', connected_users)
         join_room(str(current_user.id))
         print(f"User {current_user.id} is connected")
         # emit sends 'event name (connected)' and data to the frontend
@@ -39,29 +41,53 @@ def handle_disconnect():
 
     leave_room(str(current_user.id))
 
+
+
+# joining room
+@socketio.on('join_chat_room')
+def handle_join_chat_room(data):
+    pet_id = data['petId']
+    receiver_id = data['receiverId']
+    sender_id = current_user.id
+
+    user_ids = sorted(map(str,[sender_id, receiver_id]))
+    user_part = "_".join(map(str, user_ids))
+    room_name = f"chat_{pet_id}_{user_part}"
+
+    join_room(room_name)
+    print(f"user {sender_id} joined {room_name}")
+
+
+
 # handling messages
 @socketio.on('send_messages')
 def handle_send_message(data):
+    print('🚀 recevied message in handle', data)
+
     sender_id = current_user.id
     receiver_id = data['receiverId']
     pet_id = data['petId']
     content = data['content']
+    status = "DELIVERED" if receiver_id in connected_users else "SENT"
 
-    message = ChatHistory(senderId=sender_id, receiverId=receiver_id, petId=pet_id, content=content, status='SENT')
+    message = ChatHistory(senderId=sender_id, receiverId=receiver_id, petId=pet_id, content=content, status=status)
+    print("💬 message saved", message.content)
     db.session.add(message)
     db.session.commit()
 
-    if receiver_id in connected_users:
-        message.status = 'DELIVERED'
-        db.session.commit()
-        emit('receive message', {
-            "id": message.id,
-            "senderId": sender_id,
-            "receiverId": receiver_id,
-            "petId": pet_id,
-            "content": content,
-            "status": 'DELIVERED'
-        }, room=connected_users[receiver_id])
+    user_ids = sorted(map(str,[sender_id, receiver_id]))
+    user_part = "_".join(map(str, user_ids))
+    room_name = f"chat_{pet_id}_{user_part}"
+    print("📡 emitting to room", room_name)
+
+    emit('receive_message', {
+        "id": message.id,
+        "senderId": sender_id,
+        "receiverId": receiver_id,
+        "petId": pet_id,
+        "content": content,
+        "status": message.status
+    }, room=room_name)
 
 
 @socketio.on("mark_messages_read")

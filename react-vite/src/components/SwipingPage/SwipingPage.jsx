@@ -57,26 +57,26 @@ const SwipingPage = () => {
     const rejectedMatch = useSelector((state) => state.matches?.rejectedMatches)
     // const petDetails = useSelector((state) => state.pet.petDetails)
 
-    useEffect(() => {
-        if (currentUser) {
-            socket.connect()
+    // useEffect(() => {
+    //     if (currentUser) {
+    //         socket.connect()
 
-            socket.on("connect", () => {
-                console.log("connected to server") //fires when connection is established
-            })
+    //         socket.on("connect", () => {
+    //             console.log("connected to server") //fires when connection is established
+    //         })
 
-            socket.on("connected", (data) => {
-                console.log("connected", data) //fires when backend emits custom event, which immediate after it receives handshake
-            })
+    //         socket.on("connected", (data) => {
+    //             console.log("connected", data) //fires when backend emits custom event, which immediate after it receives handshake
+    //         })
 
-            return () => {
-                socket.disconnect()
-                socket.off('connect')
-                socket.off('connected')
-                console.log('now disconnected')
-            }
-        }
-    }, [currentUser])
+    //         return () => {
+    //             socket.disconnect()
+    //             socket.off('connect')
+    //             socket.off('connected')
+    //             console.log('now disconnected')
+    //         }
+    //     }
+    // }, [currentUser])
 
     const filterMatches = (matches) => Object.values(matches || {}).filter((match) => match.sellerId !== currentUser.id)
 
