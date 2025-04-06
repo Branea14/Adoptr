@@ -85,6 +85,6 @@ def undo_ideal_dog_preferences():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.ideal_dog_preferences RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM preferences"))
+        db.session.execute(text("DELETE FROM ideal_dog_preferences"))
 
     db.session.commit()

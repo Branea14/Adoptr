@@ -29,7 +29,6 @@ const ChatBox = () => {
         Promise.all([
             dispatch(getChatHistoryThunk(chatHistoryData)),
             dispatch(getViewedPetDetailsThunk(petId)),
-            dispatch(getAllChatThunk())
         ]).finally(() => setLoading(false))
     }, [dispatch, petId, receiverId])
 
@@ -47,6 +46,8 @@ const ChatBox = () => {
             content: message
         })
 
+
+        dispatch(getAllChatThunk())
         setMessage('')
     }
 
@@ -72,7 +73,7 @@ const ChatBox = () => {
     return (
         <div className="manage-chat-container">
             <div className="chat-header">
-                <FaArrowLeft className="back-arrow-pet-details1" onClick={() => navigate(`/pets/${petId}`)}/>
+                {/* <FaArrowLeft className="back-arrow-pet-details1" onClick={() => navigate(`/pets/${petId}`)}/> */}
 
                 <div className="chat-header-left">
                     {displayedPet.PetImages?.filter(image => image.preview ===true)

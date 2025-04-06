@@ -15,7 +15,7 @@ def seed_pets():
         (1, "Sadie", "A dignified and elegant Greyhound who loves to sprint.", "Greyhound", True, False, "senior", "female", "large", "available", "training", "veryActive", True, True, False, "both"),
 
         # Pets listed by Seller ID 2 (Bob) 8-14
-        (2, "Max", "A gentle giant who loves belly rubs.", "Great Dane", True, False, "adult", "male", "xl", "adopted", "treats", "laidback", True, True, True, "both"),
+        (2, "Maxi", "A gentle giant who loves belly rubs.", "Great Dane", True, False, "adult", "male", "xl", "adopted", "treats", "laidback", True, True, True, "both"),
         (2, "Ginger", "A sweet and loving Golden Retriever.", "Golden Retriever", True, False, "young", "female", "large", "available", "play", "veryActive", True, False, True, "dogsOnly"),
         (2, "Duke", "A strong and protective Rottweiler.", "Rottweiler", True, False, "adult", "male", "large", "available", "training", "veryActive", False, False, False, "none"),
         (2, "Maggie", "A small but brave Yorkshire Terrier.", "Yorkshire Terrier", True, False, "young", "female", "small", "available", "independent", "lapPet", True, True, False, "none"),

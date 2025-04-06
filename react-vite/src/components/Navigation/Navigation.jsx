@@ -87,7 +87,7 @@ function Navigation() {
                 <ul>
 
                   <li className="additional-menu-links">
-                    <Link to="/matches/manage">Matches & Chats</Link>
+                    <Link to="/matches/manage/new">Matches & Chats</Link>
                   </li>
 
                   <li className="additional-menu-links">

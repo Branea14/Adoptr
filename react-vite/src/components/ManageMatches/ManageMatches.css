@@ -10,6 +10,7 @@
   padding: 20px;
 }
 
+
 /* Matches Section Container */
 .matches-section {
   display: flex;
@@ -19,7 +20,7 @@
 
 /* Ensures Individual Match Sections Align Left */
 .matches-container {
-width: 100%;
+  width: 100%;
   text-align: center;
 }
 
@@ -132,4 +133,100 @@ width: 100%;
   border-bottom: 3px solid var(--accent);
   color: var(--accent);
   font-weight: bold;
+}
+
+.sender-tag {
+  font-weight: 600;
+  color: #7c7c7c;
+  margin-right: 4px;
+}
+
+.chat-card {
+  /* display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #fdf8f3;
+  border-radius: 12px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6);
+  transition: background-color 0.2s ease;
+  cursor: pointer; */
+  /* background: #fdf7ec; */
+  /* padding: 20px; */
+  /* max-width: 900px;
+  margin: auto; */
+  /* justify-content: space-between; */
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  background-color: #fff;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  max-width: 100%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.chat-card:hover {
+  background-color: #f6eee2;
+}
+
+/* .chat-image {
+  flex-shrink: 0;
+  margin-right: 1rem;
+} */
+
+.chat-pet-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: .5rem;
+}
+
+/* .chat-details {
+  flex-grow: 1;
+} */
+
+.chat-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 0 0 0.2rem;
+}
+
+.chat-preview {
+  font-size: 0.95rem;
+  color: #5c5c5c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-you-prefix {
+  font-weight: 600;
+  color: #a27b5c;
+}
+
+.chat-list {
+  width: 32%;
+  max-width: 380px;
+  background-color: #fff9f3;
+  padding: 1rem;
+  overflow-y: auto;
+  border-right: 1px solid #eee0d0;
+}
+
+.matches-conversation-container {
+  display: flex;
+  height: calc(100vh - 120px); /* adjust for your header */
+  overflow: hidden;
+  background-color: #fefaf5;
+  border-radius: 12px;
+}
+
+.chat-details {
+  flex: 1 1 auto;
+  text-align: left;
+  min-width: 0;        /* ✅ Needed to allow ellipsis */
+  overflow: hidden;    /* ✅ Prevent text from overflowing container */
 }

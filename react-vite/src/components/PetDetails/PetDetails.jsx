@@ -87,7 +87,7 @@ const PetDetails = () => {
                 ))} */}
                 <div className="swipe-details-container">
                     {currentUser.id !== pet.sellerId ? (
-                        <button className="adopt-button" onClick={() => navigate(`/chat/${pet.sellerId}/${pet.id}`)}>Want to Adopt?</button>
+                        <button className="adopt-button" onClick={() => navigate(`/matches/manage/conversations/${pet.sellerId}/${pet.id}`)}>Want to Adopt?</button>
                     ) : null}
 
                     <p className="pet-adoption-status"><strong>Adoption Status:</strong> {pet?.adoptionStatus}</p>

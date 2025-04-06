@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, session
 from flask_login import login_required, current_user
-from app.models import db, ChatHistory
+from app.models import db, ChatHistory, Pet
 from sqlalchemy import func, and_
 from sqlalchemy.orm import joinedload
 
@@ -10,7 +10,9 @@ chat_history_routes = Blueprint('chat', __name__)
 @chat_history_routes.route('/conversations')
 @login_required
 def all_conversations():
-    messages = ChatHistory.query.filter(
+    messages = ChatHistory.query.options(
+        joinedload(ChatHistory.pets).joinedload(Pet.images)
+        ).filter(
         (ChatHistory.senderId == current_user.id) | (ChatHistory.receiverId == current_user.id)
     ).all()
 
@@ -18,25 +20,37 @@ def all_conversations():
 
     conversation = {}
     for msg in messages:
+
         user1, user2 = sorted([msg.senderId, msg.receiverId])
         # print(msg)
+        # print(user1)
         # print(user2)
-        keys = (user1, user2)
+
+        keys = (user1, user2, msg.petId)
+        print('keeys', keys)
 
         # latest message in conversation
         if keys not in conversation or msg.createdAt > conversation[keys].createdAt:
             conversation[keys] = msg
 
-    chat_data = [{
-        "id": chat.id,
-        "senderId": chat.senderId,
-        "receiverId": chat.receiverId,
-        "petId": chat.petId,
-        "content": chat.content,
-        "status": chat.status,
-        "createdAt": chat.createdAt.isoformat(),
-        "updatedAt": chat.updatedAt.isoformat()
-    } for chat in conversation.values()]
+    chat_data = []
+
+    for chat in conversation.values():
+        pet = chat.pets
+        pet_image = next((image for image in pet.images if image.preview), None)
+
+        chat_data.append({
+            "id": chat.id,
+            "senderId": chat.senderId,
+            "receiverId": chat.receiverId,
+            "petId": chat.petId,
+            "petName": pet.name if pet else None,
+            "petImage": pet_image.url if pet_image else None,
+            "content": chat.content,
+            "status": chat.status,
+            "createdAt": chat.createdAt.isoformat(),
+            "updatedAt": chat.updatedAt.isoformat()
+        })
 
     return jsonify({"Chat_History": chat_data})
 

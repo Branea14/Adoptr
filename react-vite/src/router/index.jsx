@@ -47,13 +47,22 @@ export const router = createBrowserRouter([
         element: <ManageMatches />,
         children: [
           {
+            path: 'new',
             element: <NewMatches />
           },
           {
+            path: 'pending',
             element: <PendingMatches />
           },
           {
-            element: <Conversations />
+            path: 'conversations',
+            element: <Conversations />,
+            children: [
+              {
+                path: ':receiverId/:petId',
+                element: <ChatBox />
+              }
+            ]
           }
         ]
       },
@@ -77,10 +86,10 @@ export const router = createBrowserRouter([
         path: "/user/:userId",
         element: <ProfileModal />
       },
-      {
-        path: "/chat/:receiverId/:petId",
-        element: <ChatBox />
-      },
+      // {
+      //   path: "/chat/:receiverId/:petId",
+      //   element: <ChatBox />
+      // },
       {
         path: '/pets/:petId/edit',
         element: <UpdatePetListing />,

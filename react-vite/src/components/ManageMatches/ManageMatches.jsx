@@ -6,11 +6,11 @@ import { approvedMatches, rejectedMatches, requestedMatches, updatedMatch } from
 import NewMatches from "./NewMatches"
 import PendingMatches from "./PendingMatches"
 import Conversations from "./Conversations"
-
-
+import { Outlet, useNavigate } from "react-router-dom"
 
 const ManageMatches = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [activeTab, setActiveTab] = useState('new')
     const [loading, setLoading] = useState(true)
 
@@ -26,7 +26,10 @@ const ManageMatches = () => {
         ]).finally(() => setLoading(false))
     }, [dispatch])
 
-
+    const handleTabClick = (tab) => {
+        setActiveTab(tab)
+        navigate(`/matches/manage/${tab}`)
+    }
 
     if (loading) return null
 
@@ -35,28 +38,29 @@ const ManageMatches = () => {
             <div className="tabs-container">
                 <button
                     className={`tab-button ${activeTab === 'new' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('new')}
+                    onClick={() => handleTabClick('new')}
                 >
                     New Matches
                 </button>
                 <button
                     className={`tab-button ${activeTab === 'pending' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('pending')}
+                    onClick={() => handleTabClick('pending')}
                 >
                     Pending Matches
                 </button>
                 <button
                     className={`tab-button ${activeTab === 'conversations' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('conversations')}
+                    onClick={() => handleTabClick('conversations')}
                 >
                     Conversations
                 </button>
             </div>
 
             <div className="tab-content">
-                {activeTab === 'new' && <NewMatches />}
+                {/* {activeTab === 'new' && <NewMatches />}
                 {activeTab === 'pending' && <PendingMatches /> }
-                {activeTab === 'conversations' && <Conversations />}
+                {activeTab === 'conversations' && <Conversations />} */}
+                <Outlet />
             </div>
         </div>
     );
