@@ -3,16 +3,15 @@ import "./ManageMatches.css"
 import { useEffect, useState } from "react"
 import { thunkAuthenticate } from "../../redux/session"
 import { approvedMatches, rejectedMatches, requestedMatches, updatedMatch } from "../../redux/matches"
-import NewMatches from "./NewMatches"
-import PendingMatches from "./PendingMatches"
-import Conversations from "./Conversations"
-import { Outlet, useNavigate } from "react-router-dom"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
 const ManageMatches = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [activeTab, setActiveTab] = useState('new')
+    const location = useLocation()
     const [loading, setLoading] = useState(true)
+
+    const activeTab = location.pathname.split('/')[3] || 'new'
 
     useEffect(() => {
         dispatch(approvedMatches())
@@ -27,7 +26,6 @@ const ManageMatches = () => {
     }, [dispatch])
 
     const handleTabClick = (tab) => {
-        setActiveTab(tab)
         navigate(`/matches/manage/${tab}`)
     }
 
@@ -57,9 +55,6 @@ const ManageMatches = () => {
             </div>
 
             <div className="tab-content">
-                {/* {activeTab === 'new' && <NewMatches />}
-                {activeTab === 'pending' && <PendingMatches /> }
-                {activeTab === 'conversations' && <Conversations />} */}
                 <Outlet />
             </div>
         </div>
