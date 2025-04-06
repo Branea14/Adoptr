@@ -41,7 +41,9 @@ const ManageReviews = () => {
     return (
         <div className='manage-reviews-container'>
             {reviewablePets && reviewablePets?.length > 0 && (
-                <button className='update-button' onClick={handleReviewablePets}>Leave a Review!</button>
+                <div className='create-pet-listing-link'>
+                    <button className='create-review-button' onClick={handleReviewablePets}>Leave a Review!</button>
+                </div>
             )}
             {reviewsArray && reviewsArray.length > 0 ? (
                 reviewsArray?.map((review, index) => {

@@ -41,7 +41,7 @@ const ManagePets = () => {
 
     return (
         <div className='manage-pets-container'>
-            <h1 className="approved-matches-title">Manage Pets</h1>
+            {/* <h1 className="approved-matches-title">Manage Pets</h1> */}
             <div className='create-pet-listing-link'>
                 <Link to='/pets/new'>
                     Create a New Pet Listing

@@ -9,7 +9,7 @@ import PetDetails from '../components/PetDetails'
 import ManagePets from '../components/ManagePets';
 import { UpdatePetListing, UpdatePetListingForm } from '../components/UpdatePetListing';
 import ApprovedMatches from '../components/ApprovedMatches';
-import ManageMatches from '../components/ManageMatches';
+import { ManageMatches, Conversations, NewMatches, PendingMatches } from '../components/ManageMatches';
 import UpdateUser from '../components/UpdateUser/UpdateUser';
 import UpdateUserForm from '../components/UpdateUser/UpdateUserForm';
 import ProfileModal from '../components/ProfileModal/ProfileModal';
@@ -44,7 +44,18 @@ export const router = createBrowserRouter([
       },
       {
         path: "/matches/manage",
-        element: <ManageMatches />
+        element: <ManageMatches />,
+        children: [
+          {
+            element: <NewMatches />
+          },
+          {
+            element: <PendingMatches />
+          },
+          {
+            element: <Conversations />
+          }
+        ]
       },
       {
         path: '/pets/new',

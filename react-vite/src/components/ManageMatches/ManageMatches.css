@@ -99,3 +99,37 @@ width: 100%;
   opacity: 1;
   /* bottom: 10px; / */
 }
+
+.tabs-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  /* border-bottom: 2px solid #ccc; */
+  /* padding-bottom: 0.5rem; */
+  /* align-items: center;
+  text-align: center; */
+  /* justify-content: center; */
+  justify-content: space-evenly;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  font-family: 'Open Sans';
+  color: var(--primary-dark);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+  color: var(--accent);
+}
+
+.tab-button.active {
+  border-bottom: 3px solid var(--accent);
+  color: var(--accent);
+  font-weight: bold;
+}

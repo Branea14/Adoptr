@@ -200,17 +200,24 @@ letter-spacing: 2px;
 
 .additional-menu-links {
   text-decoration: none;
+  /* list-style: none; */
   font-family: "Open Sans";
   /* font-weight: bold; */
   transition: color .3s ease;
   cursor: pointer;
   list-style-type: none;
   color: #A3C3e7;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  text-align: left;
+  transition: all 0.2s ease;
 }
 
 .additional-menu-links:hover {
   /* text-decoration: underline; */
   color: #f4e2d8;
+  background-color: rgba(255, 255, 255, 0.1);
+
 }
 
 .additional-menu-links a {
@@ -220,6 +227,7 @@ letter-spacing: 2px;
   cursor: pointer;
   list-style-type: none;
   color: #A3C3e7;
+  display: block;
 }
 
 .additional-menu-links a:hover {
@@ -227,14 +235,25 @@ letter-spacing: 2px;
 }
 
 .additional-menu {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  width: 90%;
-  transform: translateX(-50%);
-  text-align: center;
+  /* position: absolute; */
+  /* bottom: 20px; */
+  /* left: 50%;
+  width: 90%; */
+  /* transform: translateX(-50%); */
+  /* text-align: center; */
+  display: flex;
+  flex-direction: column;
+  /* align-items: right; */
+  padding: 1.5rem 1.2rem;
+  gap: 1rem;
 }
 
 .profile-button {
   cursor: pointer;
+}
+
+.additional-menu-links.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #f4e2d8;
+  font-weight: bold;
 }

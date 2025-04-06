@@ -81,27 +81,15 @@ function Navigation() {
             </div>
           </li>
         </ul>
-        <div className="approved-matches-container-nav">
-          <div className="approved-matches-header">
-            <Link to='/matches/approved'>
-              <h2>Approved Matches</h2>
-            </Link>
-          </div>
-              <div className="approved-match">
-                {loading ? null : filteredApprovedMatches.length > 0 ? (
-                  filteredApprovedMatches.map((match) => (
-                    <Link to={`/pets/${match.petId}`} key={match?.id} className='pet-details-link'>
-                      <div key={match?.id}>
-                          <img className='approved-match-image' src={match?.petImage} alt={`${match?.petName}`}/>
-                          {/* <h3>{match.petName}</h3> */}
-                      </div>
-                    </Link>
-                  ))
-                ) : (<p>No approved matches yet</p>)}
-              </div>
-            {shifted && (
+
+            {shifted ?
               <div className="additional-menu">
                 <ul>
+
+                  <li className="additional-menu-links">
+                    <Link to="/matches/manage">Matches & Chats</Link>
+                  </li>
+
                   <li className="additional-menu-links">
                     <Link to="/pets/current">Manage Pet Listings</Link>
                   </li>
@@ -110,21 +98,36 @@ function Navigation() {
                     <Link to='/user/reviews'>Manage Reviews</Link>
                   </li>
 
-                  <li className="additional-menu-links">
-                    <Link to="/matches/manage">My Matches</Link>
-                  </li>
-
                   <li className="additional-menu-links" onClick={handleEditProfileButton}>Edit Profile</li>
 
                   <li className="additional-menu-links" onClick={logout}>Logout</li>
 
                 </ul>
               </div>
-            )}
+            :
+            <div className="approved-matches-container-nav">
+              <div className="approved-matches-header">
+                <Link to='/matches/approved'>
+                  <h2>Approved Matches</h2>
+                </Link>
+              </div>
+                <div className="approved-match">
+                  {loading ? null : filteredApprovedMatches.length > 0 ? (
+                    filteredApprovedMatches.map((match) => (
+                      <Link to={`/pets/${match.petId}`} key={match?.id} className='pet-details-link'>
+                        <div key={match?.id}>
+                            <img className='approved-match-image' src={match?.petImage} alt={`${match?.petName}`}/>
+                            {/* <h3>{match.petName}</h3> */}
+                        </div>
+                      </Link>
+                    ))
+                  ) : (<p>No approved matches yet</p>)}
+                </div>
+            </div>
+            }
 
         </div>
 
-      </div>
 
     </div>
   );
