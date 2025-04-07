@@ -92,18 +92,50 @@ def handle_send_message(data):
 
 @socketio.on("mark_messages_read")
 def handle_mark_messages_read(data):
+    # extracts data from frontend
     sender_id = data['senderId']
     receiver_id = current_user.id
+    pet_id = data['petId']
 
-    messages = ChatHistory.query.filter_by(senderId=sender_id, receiverId=receiver_id, status='DELIVERED').all()
+    # querys/search for messages that are DELIVERED using the data from above
+    messages = ChatHistory.query.filter_by(senderId=sender_id, receiverId=receiver_id, petId=pet_id, status='DELIVERED').all()
 
+    # sets the status to READ
     for message in messages:
         message.status = 'READ'
 
+    # saves in db
     db.session.commit()
 
+    updated_ids = [msg.id for msg in messages]
+    user_ids = sorted(map(str,[sender_id, receiver_id]))
+    user_part = "_".join(map(str, user_ids))
+    room_name = f"chat_{pet_id}_{user_part}"
+
     if sender_id in connected_users:
-        broadcast.emit('messages_read', { #
+        emit('messages_read', {
             "senderId": sender_id,
-            "receiverId": receiver_id
-        }, room=connected_users[sender_id])
+            "receiverId": receiver_id,
+            "petId": pet_id,
+            "messageIds": updated_ids
+        }, room=room_name, include_self=False)
+
+
+@socketio.on("delete_message")
+def handle_delete_message(data):
+    message_id = data['id']
+
+    message = ChatHistory.query.get(message_id)
+
+    if not message or message.senderId != current_user.id:
+        return
+
+    pet_id = message.petId
+    user_ids = sorted([message.senderId, message.receiverId])
+    user_part = "_".join(map(str, user_ids))
+    room_name = f"chat_{pet_id}_{user_part}"
+
+    db.session.delete(message)
+    db.session.commit()
+
+    emit("message_deleted", { "id": message_id}, room=room_name)

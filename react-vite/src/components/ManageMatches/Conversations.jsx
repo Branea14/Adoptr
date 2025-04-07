@@ -10,7 +10,9 @@ const Conversations = () => {
     const currentUser = useSelector((state) => state.session.user)
     const allChats = useSelector((state) => state.chatbox.allConversations)
 
-    const allChatsArray = Object.values(allChats)
+    const allChatsArray = Object.values(allChats).sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    )
     console.log("look here", allChatsArray)
 
 

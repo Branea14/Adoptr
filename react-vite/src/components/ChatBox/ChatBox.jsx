@@ -1,27 +1,37 @@
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { addToChat, getAllChatThunk, getChatHistoryThunk } from "../../redux/chatbox"
+import { addToChat, deleteMessage, getAllChatThunk, getChatHistoryThunk, markAsRead } from "../../redux/chatbox"
 import { useNavigate, useParams } from "react-router-dom"
 import './ChatBox.css'
 import { getViewedPetDetailsThunk } from "../../redux/pets"
 import { FaArrowLeft } from "react-icons/fa";
 import socket from "../../socket"
+import { FaTrash } from "react-icons/fa"
 
 
 const ChatBox = () => {
     const {petId, receiverId} = useParams()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const messages = useSelector((state) => state.chatbox.chatHistory?.Chat_History)
     const displayedPet = useSelector((state) => state.pet.viewedPetDetails)
     const currentUser = useSelector((state) => state.session.user)
-    const dispatch = useDispatch()
 
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(true)
+    const [refreshTrigger, setRefreshTrigger] = useState(0)
 
     const messagesEndRef = useRef(null)
 
-    // console.log('looker', messages)
+    const triggerRefresh = () => {
+        console.log("🌀 Triggering refresh");
+
+        setRefreshTrigger(prev => prev + 1)
+    }
+
+    useEffect(() => {
+        console.log("🔄 Refresh trigger changed:", refreshTrigger)
+    }, [refreshTrigger])
 
     useEffect(() => {
         setLoading(true)
@@ -30,15 +40,13 @@ const ChatBox = () => {
             dispatch(getChatHistoryThunk(chatHistoryData)),
             dispatch(getViewedPetDetailsThunk(petId)),
         ]).finally(() => setLoading(false))
-    }, [dispatch, petId, receiverId])
+    }, [dispatch, petId, receiverId, refreshTrigger])
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({behavior: 'smooth'})
     }, [messages])
 
     const handleSend = () => {
-        console.log('sending message', message)
-
         socket.emit("send_messages", {
             senderId: currentUser.id,
             receiverId,
@@ -46,10 +54,33 @@ const ChatBox = () => {
             content: message
         })
 
-
         dispatch(getAllChatThunk())
         setMessage('')
     }
+
+    const handleDelete = (id) => {
+        socket.emit("delete_message", {
+            id: id
+        })
+
+        dispatch(getAllChatThunk())
+    }
+
+    useEffect(() => {
+        const unread = messages?.some(
+            (msg) =>
+                msg.senderId === receiverId &&
+                msg.receiverId === currentUser.id &&
+                msg.status === 'DELIVERED'
+        )
+
+        if (unread) {
+            socket.emit("mark_messages_read", {
+                senderId: receiverId,
+                petId
+            })
+        }
+    }, [receiverId, petId, messages, currentUser.id])
 
     useEffect(() => {
         socket.emit("join_chat_room", { petId, receiverId })
@@ -61,12 +92,35 @@ const ChatBox = () => {
 
     useEffect(() => {
         socket.on("receive_message", (newMessage) => {
-            console.log('📥 receveid new message via socket', newMessage)
+            // console.log('📥 receveid new message via socket', newMessage)
             dispatch(addToChat(newMessage))
         })
 
         return () => socket.off("receive_message")
-    }, [])
+    }, [refreshTrigger])
+
+    useEffect(() => {
+        socket.on("message_deleted", ({ id }) => {
+            console.log("🗑 Message deleted received:", id)
+
+            dispatch(deleteMessage(id))
+            triggerRefresh()
+        })
+
+        return () => socket.off("message_deleted")
+    }, [dispatch, refreshTrigger])
+
+    useEffect(() => {
+        const handleRead = ({ senderId, receiverId, petId}) => {
+            dispatch(markAsRead(senderId, receiverId, petId))
+        }
+
+        socket.on("messages_read", handleRead)
+
+        return () => {
+            socket.off("messages_read", handleRead)
+        }
+    }, [dispatch])
 
     if (loading) return null;
 
@@ -90,7 +144,7 @@ const ChatBox = () => {
                 </div>
             </div>
             <div className="chat-box">
-                {messages && messages?.length > 0 ? (
+                {messages && messages.length > 0 ? (
                     messages.map((msg, index) => {
                         const isCurrentUser = msg.senderId === currentUser.id
                         const lastMessage = index === messages.length - 1
@@ -101,7 +155,12 @@ const ChatBox = () => {
                                         {msg.content}
                                     </div>
                                 </div>
-                                {lastMessage && <div className="message-status">{msg.status}</div>}
+                                {lastMessage && isCurrentUser && <div className="message-status">{msg.status === "READ" ? "✓✓ Read" : "✓ Delivered"}</div>}
+                                {msg.senderId === currentUser.id && (
+                                    <div style={{ textAlign: 'right' }}>
+                                        <FaTrash className="trash" onClick={() => handleDelete(msg.id)}/>
+                                    </div>
+                                )}
                             </div>
                         )
                     })

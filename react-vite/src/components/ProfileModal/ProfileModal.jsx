@@ -27,7 +27,7 @@ const ProfileModal = () => {
 
     return (
         <div className="profile-page-container">
-            <FaArrowLeft className="back-arrow-pet-details" onClick={() => navigate('/matches/manage')}/>
+            <FaArrowLeft className="back-arrow-pet-details" onClick={() => navigate('/matches/manage/new')}/>
             <div className="profile-info-container">
                 <div className="profile-image-section">
                     <img className='profile-image' src={selectedUser?.avatar} alt={`${selectedUser.firstName}'s profile picture`}/>

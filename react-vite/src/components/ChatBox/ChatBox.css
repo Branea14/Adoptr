@@ -148,3 +148,10 @@ transform: scale(1.1);
 .message-wrapper {
     display: contents;
 }
+
+.trash {
+    font-size: 0.75rem;
+    color: #666;
+    cursor: pointer;
+    /* text-align: right; */
+}
