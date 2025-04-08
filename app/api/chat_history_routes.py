@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, session
 from flask_login import login_required, current_user
 from app.models import db, ChatHistory, Pet
-from sqlalchemy import func, and_
+from sqlalchemy import func, and_, desc
 from sqlalchemy.orm import joinedload
 
 chat_history_routes = Blueprint('chat', __name__)
@@ -10,11 +10,36 @@ chat_history_routes = Blueprint('chat', __name__)
 @chat_history_routes.route('/conversations')
 @login_required
 def all_conversations():
-    messages = ChatHistory.query.options(
-        joinedload(ChatHistory.pets).joinedload(Pet.images)
-        ).filter(
+    subquery = db.session.query(
+    ChatHistory.petId,
+    ChatHistory.senderId,
+    ChatHistory.receiverId,
+    db.func.max(ChatHistory.createdAt).label("latest")
+    ).filter(
         (ChatHistory.senderId == current_user.id) | (ChatHistory.receiverId == current_user.id)
-    ).all()
+    ).group_by(
+        ChatHistory.petId,
+        ChatHistory.senderId,
+        ChatHistory.receiverId
+    ).subquery()
+
+# Join back to get the full message info
+    messages = db.session.query(ChatHistory).join(
+        subquery,
+        and_(
+            ChatHistory.petId == subquery.c.petId,
+            ChatHistory.senderId == subquery.c.senderId,
+            ChatHistory.receiverId == subquery.c.receiverId,
+            ChatHistory.createdAt == subquery.c.latest
+        )
+    ).options(
+        joinedload(ChatHistory.pets).joinedload(Pet.images)
+    ).order_by(desc(ChatHistory.createdAt)).all()
+    # messages = ChatHistory.query.options(
+    #     joinedload(ChatHistory.pets).joinedload(Pet.images)
+    #     ).filter(
+    #     (ChatHistory.senderId == current_user.id) | (ChatHistory.receiverId == current_user.id)
+    # ).all()
 
     # print('###############################################')
 
@@ -126,19 +151,19 @@ def delete_conversation(receiverId):
     return jsonify({"message": "Successfully deleted"}), 200
 
     ####################### MARKING AS READ ###############################
-@chat_history_routes.route('/<int:senderId>', methods=['PATCH'])
+@chat_history_routes.route('/<int:senderId>/<int:petId>', methods=['PATCH'])
 @login_required
-def mark_as_read(senderId):
-    pet_id = request.args.get('petId', type=int)
+def mark_as_read(senderId, petId):
+    # pet_id = request.args.get('petId', type=int)
 
-    if pet_id is None:
-        return {"error": "Missing petId query parameter"}, 400
+    # if pet_id is None:
+    #     return {"error": "Missing petId query parameter"}, 400
 
     message = ChatHistory.query.filter(
         and_(
             ChatHistory.senderId == senderId,
             ChatHistory.receiverId == current_user.id,
-            ChatHistory.petId == pet_id,
+            ChatHistory.petId == petId,
             ChatHistory.status == 'DELIVERED'
         )
     ).order_by(ChatHistory.createdAt.desc()).first()
@@ -148,6 +173,9 @@ def mark_as_read(senderId):
 
     message.status = 'READ'
     db.session.commit()
+
+    print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^', message.status)
+    # print([msg.status for msg in message])
 
     return jsonify({
         "id": message.id,

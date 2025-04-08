@@ -34,13 +34,14 @@ const ChatBox = () => {
     }, [refreshTrigger])
 
     useEffect(() => {
+        if (!currentUser || !petId || !receiverId) return
         setLoading(true)
         const chatHistoryData = {petId, receiverId}
         Promise.all([
             dispatch(getChatHistoryThunk(chatHistoryData)),
             dispatch(getViewedPetDetailsThunk(petId)),
         ]).finally(() => setLoading(false))
-    }, [dispatch, petId, receiverId, refreshTrigger])
+    }, [dispatch, petId, receiverId, refreshTrigger, currentUser])
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({behavior: 'smooth'})
@@ -59,9 +60,12 @@ const ChatBox = () => {
     }
 
     const handleDelete = (id) => {
+        dispatch(deleteMessage(id))
         socket.emit("delete_message", {
             id: id
         })
+
+        // triggerRefresh()
 
         dispatch(getAllChatThunk())
     }
@@ -75,6 +79,7 @@ const ChatBox = () => {
         )
 
         if (unread) {
+            console.log('emitting mark_messages_read')
             socket.emit("mark_messages_read", {
                 senderId: receiverId,
                 petId
@@ -83,17 +88,19 @@ const ChatBox = () => {
     }, [receiverId, petId, messages, currentUser.id])
 
     useEffect(() => {
+        if (!currentUser) return null;
         socket.emit("join_chat_room", { petId, receiverId })
 
         return () => {
             socket.emit("leave_chat_room", { petId, receiverId })
         }
-    }, [petId, receiverId])
+    }, [currentUser, petId, receiverId])
 
     useEffect(() => {
         socket.on("receive_message", (newMessage) => {
             // console.log('📥 receveid new message via socket', newMessage)
             dispatch(addToChat(newMessage))
+            dispatch(getAllChatThunk())
         })
 
         return () => socket.off("receive_message")
@@ -122,7 +129,8 @@ const ChatBox = () => {
         }
     }, [dispatch])
 
-    if (loading) return null;
+    console.log('plllllllllllllleaaaaaaase, lok here', currentUser)
+    if (loading || !currentUser || !currentUser.id) return null;
 
     return (
         <div className="manage-chat-container">
@@ -160,6 +168,14 @@ const ChatBox = () => {
                                     <div style={{ textAlign: 'right' }}>
                                         <FaTrash className="trash" onClick={() => handleDelete(msg.id)}/>
                                     </div>
+                                )}
+                                {lastMessage && msg.senderId !== currentUser?.id && (
+                                    <button onClick={() => socket.emit("mark_messages_read", {
+                                        senderId: receiverId,
+                                        petId
+                                      })}>
+                                        Mark as Read (Test)
+                                      </button>
                                 )}
                             </div>
                         )

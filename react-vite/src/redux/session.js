@@ -1,4 +1,8 @@
 import { csrfFetch } from "./csrf";
+import { resetChat } from "./chatbox";
+import { resetMatches } from "./matches";
+import { resetPet } from "./pets";
+import socket from "../socket";
 
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
@@ -59,8 +63,14 @@ export const thunkLogin = (credentials) => async dispatch => {
   });
 
   if(response.ok) {
+    dispatch(resetChat())
+    dispatch(resetMatches())
+    dispatch(resetPet())
     const data = await response.json();
     dispatch(setUser(data));
+
+    socket.disconnect()
+    socket.connect()
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages
@@ -96,7 +106,12 @@ export const thunkSignup = (user) => async (dispatch) => {
 export const thunkLogout = () => async (dispatch) => {
   await fetch("/api/auth/logout");
   dispatch(removeUser());
+  dispatch(resetChat())
+  dispatch(resetMatches())
+  dispatch(resetPet())
   dispatch(updateDogPreferences(null))
+
+  socket.disconnect()
 };
 export const editUserThunk = (userData) => async (dispatch) => {
   const {userId, ...updatedData} = userData

@@ -7,6 +7,7 @@ const GET_CHAT_HISTORY = 'chat/GET_CHAT_HISTORY'
 const MARK_AS_READ = 'chat/MARK_AS_READ'
 const ADD_TO_CHAT = 'chat/ADD_TO_CHAT'
 const DELETE_MESSAGE = 'chat/DELETE_MESSAGE'
+const RESET_CHAT = 'chat/RESET_CHAT'
 
 // action creators
 const getAllChat = (chats) => ({
@@ -33,6 +34,9 @@ export const deleteMessage = (message) => ({
     type: DELETE_MESSAGE,
     payload: message
 })
+export const resetChat = () => ({
+    type: RESET_CHAT
+})
 
 // thunk
 export const getAllChatThunk = () => async (dispatch) => {
@@ -40,7 +44,7 @@ export const getAllChatThunk = () => async (dispatch) => {
 
     if (response.ok) {
         const data = await response.json()
-
+        console.log("DATA FROM getAllChatThunk", data)
         const normalizedChats = data.Chat_History.reduce((acc, conversation) => {
             acc[conversation.id] = conversation;
             return acc;
@@ -75,11 +79,12 @@ export const getChatHistoryThunk = (chatHistory) => async (dispatch) => {
 //     }
 // }
 export const markAsReadThunk = (messageData) => async (dispatch) => {
-    const { senderId } = messageData
-    const response = await csrfFetch(`/api/chat/${senderId}`, {method: "PATCH"})
+    const { senderId, petId } = messageData
+    const response = await csrfFetch(`/api/chat/${senderId}/${petId}`, {method: "PATCH"})
 
     if (response.ok) {
         const data = await response.json()
+        console.log('pussy open', data)
         dispatch(markAsRead(data))
         return data
     }
@@ -156,6 +161,11 @@ const chatHistoryReducer = (state = initialState, action) => {
                         (msg) => msg.id !== action.payload
                     )
                 }
+            }
+        case RESET_CHAT:
+            return {
+                allConversations: {},
+                chatHistory: {}
             }
         default:
             return state;

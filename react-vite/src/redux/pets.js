@@ -7,6 +7,7 @@ const GET_ALL_PETS = 'pets/GET_ALL_PETS'
 const CREATE_PET = 'pets/CREATE_PET'
 const UPDATE_PET = 'pets/UPDATE_PET'
 const DELETE_PET = 'pets/DELETE_PET'
+const RESET_PET = 'pets/RESET_PET'
 
 // action creators
 const getPetDetails = (pet) => ({
@@ -32,6 +33,9 @@ const updatePetAction = (updatedPet) => ({
 const deletePetAction = (petId) => ({
     type: DELETE_PET,
     payload: petId
+})
+export const resetPet = () => ({
+    type: RESET_PET
 })
 
 // thunk
@@ -150,6 +154,13 @@ const initialState = {
 
 const petReducer = (state = initialState, action) => {
     switch(action.type) {
+        case RESET_PET: {
+            return {
+                petDetails: {},
+                viewedPetDetails: {},
+                pets: {}
+            }
+        }
         case GET_ALL_PETS: {
             return { ...state, pets: {...action.payload} }
         }

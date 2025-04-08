@@ -7,6 +7,7 @@ const GET_REQUESTED_MATCH = 'matches/GET_REQUESTED_MATCH'
 const GET_REJECTED_MATCH = 'matches/GET_REJECTED_MATCH'
 const UPDATE_MATCH = 'matches/UPDATE_MATCH'
 const DELETE_MATCH = 'matches/DELETE_MATCH'
+const RESET_MATCH = 'matches/RESET_MATCH'
 
 // ACTION CREATOR
 const creatingMatches = (match) => ({
@@ -32,6 +33,9 @@ const deleteMatchAction = (matchId) => ({
 const rejectedMatchAction = (matches) => ({
     type: GET_REJECTED_MATCH,
     payload: matches
+})
+export const resetMatches = () => ({
+    type: RESET_MATCH
 })
 
 
@@ -132,6 +136,13 @@ const initialState = {
 
 const matchReducer = (state= initialState, action) => {
     switch(action.type) {
+        case RESET_MATCH: {
+            return {
+                approvedMatches: {},
+                requestedMatches: {},
+                rejectedMatches: {}
+            }
+        }
         case GET_APPROVED_MATCH: {
             return { ...state, approvedMatches: {...action.payload}}
         }

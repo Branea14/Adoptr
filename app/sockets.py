@@ -4,6 +4,7 @@ from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from flask_login import current_user
 from app.models import db, ChatHistory
 from flask import request
+from sqlalchemy import Enum
 
 # enable websockets
 socketio = SocketIO(cors_allowed_origins="*")
@@ -92,18 +93,20 @@ def handle_send_message(data):
 
 @socketio.on("mark_messages_read")
 def handle_mark_messages_read(data):
+    print('printing for erika', data)
     # extracts data from frontend
     sender_id = data['senderId']
     receiver_id = current_user.id
     pet_id = data['petId']
 
+    print('🔥 Received mark_messages_read:', sender_id, receiver_id, pet_id)
     # querys/search for messages that are DELIVERED using the data from above
-    messages = ChatHistory.query.filter_by(senderId=sender_id, receiverId=receiver_id, petId=pet_id, status='DELIVERED').all()
+    messages = ChatHistory.query.filter_by(senderId=sender_id, receiverId=receiver_id, petId=pet_id, status='SENT').all()
 
+    print('^^^^^^^^', messages)
     # sets the status to READ
     for message in messages:
         message.status = 'READ'
-
     # saves in db
     db.session.commit()
 
@@ -113,12 +116,13 @@ def handle_mark_messages_read(data):
     room_name = f"chat_{pet_id}_{user_part}"
 
     if sender_id in connected_users:
+        print("emitting messages for", updated_ids)
         emit('messages_read', {
             "senderId": sender_id,
             "receiverId": receiver_id,
             "petId": pet_id,
             "messageIds": updated_ids
-        }, room=room_name, include_self=False)
+        }, room=connected_users[sender_id])
 
 
 @socketio.on("delete_message")
