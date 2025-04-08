@@ -30,10 +30,6 @@ const ChatBox = () => {
     }
 
     useEffect(() => {
-        console.log("🔄 Refresh trigger changed:", refreshTrigger)
-    }, [refreshTrigger])
-
-    useEffect(() => {
         if (!currentUser || !petId || !receiverId) return
         setLoading(true)
         const chatHistoryData = {petId, receiverId}
@@ -71,12 +67,23 @@ const ChatBox = () => {
     }
 
     useEffect(() => {
+        if (!messages || messages.length === 0 ) return
+        console.log("📦 messages in useEffect:", messages);
+
         const unread = messages?.some(
             (msg) =>
-                msg.senderId === receiverId &&
+                msg.senderId === Number(receiverId) &&
                 msg.receiverId === currentUser.id &&
-                msg.status === 'DELIVERED'
+                msg.status === 'SENT'
         )
+
+        console.log("📤 Checking unread for", {
+            receiverId,
+            petId,
+            currentUserId: currentUser?.id
+          });
+
+        console.log('unread', unread)
 
         if (unread) {
             console.log('emitting mark_messages_read')
@@ -169,14 +176,14 @@ const ChatBox = () => {
                                         <FaTrash className="trash" onClick={() => handleDelete(msg.id)}/>
                                     </div>
                                 )}
-                                {lastMessage && msg.senderId !== currentUser?.id && (
+                                {/* {lastMessage && msg.senderId !== currentUser?.id && (
                                     <button onClick={() => socket.emit("mark_messages_read", {
                                         senderId: receiverId,
                                         petId
                                       })}>
                                         Mark as Read (Test)
                                       </button>
-                                )}
+                                )} */}
                             </div>
                         )
                     })

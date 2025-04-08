@@ -69,7 +69,9 @@ def current_pets():
             "petId": image.petId,
             "url": image.url,
             "preview": image.preview
-        } for image in pet.images]
+        } for image in pet.images],
+        "createdAt": pet.createdAt.isoformat() if pet.createdAt else None,
+        "updatedAt": pet.updatedAt.isoformat() if pet.updatedAt else None
     } for pet in pets]
 
     return jsonify({"Pets": pet_list})

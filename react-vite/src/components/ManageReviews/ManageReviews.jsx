@@ -15,7 +15,9 @@ const ManageReviews = () => {
     const [refreshTrigger, setRefreshTrigger] = useState(0)
     const [loading, setLoading] = useState(true)
     const reviews = useSelector((state) => state.reviews.currentUserReviews)
-    const reviewsArray = Object.values(reviews)
+    const reviewsArray = Object.values(reviews).sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    )
     const reviewablePets = useSelector((state) => state.reviews.reviewablePets)
     console.log('review', reviews)
     console.log(reviewablePets)
