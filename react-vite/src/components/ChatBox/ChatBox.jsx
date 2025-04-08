@@ -148,14 +148,18 @@ const ChatBox = () => {
                     {displayedPet.PetImages?.filter(image => image.preview ===true)
                         .map(image => (
                             <div key={image.id}>
-                                <img className='pet-avatar' src={image.url} alt={displayedPet.name}/>
+                                <img className='pet-avatar' src={image.url} alt={displayedPet.name} onClick={() => navigate(`/pets/${displayedPet.id}`)}/>
                             </div>
                         ))
                     }
-                    <div className="chat-header-text">
-                        <h2>{displayedPet.name}</h2>
-                        <span className="chat-subtext">Chat with {displayedPet.sellerName}</span>
-                    </div>
+                    {messages && messages.length > 0 && (
+                        <div className="chat-header-text">
+                            <h2>{displayedPet.name}</h2>
+                            <span className="chat-subtext">
+                                Chat with {messages[0].senderId === currentUser.id ? messages[0].receiverName : messages[0].senderName}
+                            </span>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="chat-box">
