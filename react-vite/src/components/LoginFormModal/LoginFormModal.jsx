@@ -34,10 +34,10 @@ function LoginFormModal() {
     e.preventDefault();
     setErrors({})
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors)
-      return
-    }
+    // if (Object.keys(validationErrors).length > 0) {
+    //   setErrors(validationErrors)
+    //   return
+    // }
 
     const serverResponse = await dispatch(
       thunkLogin({
@@ -93,8 +93,10 @@ function LoginFormModal() {
             className={errors.email || validationErrors.email ? 'error' : ''}
             required
           />
-               {errors.email && <p className="login-error-message">{errors.email}</p>}
-               {validationErrors.email && <p className="login-error-message">{validationErrors.email}</p>}
+
+          <p className="login-error-message">
+            {errors.email || validationErrors.email || ''}
+          </p>
         </label>
 
         {/* {errors.email && <p>{errors.email}</p>} */}
@@ -107,7 +109,10 @@ function LoginFormModal() {
             className={errors.password ? 'error' : ''}
             required
           />
-                    {errors.password && <p className="login-error-message">{errors.password}</p>}
+
+          <p className="login-error-message">
+            {errors.password || ''}
+          </p>
 
         </label>
         {/* {errors.password && <p>{errors.password}</p>} */}
