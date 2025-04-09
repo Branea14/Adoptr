@@ -2,7 +2,7 @@
   position: absolute;
   top: 100px;
   left: 300px;
-  width: calc(100vw - 300px);
+  width: calc(100vw - 320px);
   /* height: calc(100vh - 100px); */
   /* overflow: hidden; */
   display: flex;
@@ -208,4 +208,8 @@
   text-align: left;
   min-width: 0;
   overflow: hidden;
+}
+
+.chat-panel {
+  width: 100%;
 }
