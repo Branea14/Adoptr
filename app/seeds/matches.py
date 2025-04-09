@@ -5,28 +5,29 @@ from datetime import datetime, timezone
 
 def seed_matches():
     match_data = [
-        (1, 2, 8, "APPROVED"),
-        (1, 4, 22, "REJECTED"),
-        (1, 3, 15, "APPROVED"),
-        (1, 5, 29, "REQUESTED"),
+        (1, 2, 9, "APPROVED"), #adopted
+        (1, 4, 23, "REJECTED"), #adopted
+        (1, 3, 16, "APPROVED"), #adopted
+        (1, 5, 30, "REQUESTED"), #adopted
+        (1, 3, 18, 'APPROVED')
 
-        (2, 3, 16, "APPROVED"),
-        (2, 1, 1, "REQUESTED"),
-        (2, 5, 30, "REJECTED"),
-        (2, 4, 23, "APPROVED"),
+        (2, 3, 17, "APPROVED"),
+        (2, 1, 2, "REQUESTED"),
+        (2, 5, 31, "REJECTED"),
+        (2, 4, 24, "APPROVED"),
 
         (3, 4, 25, "APPROVED"),
-        (3, 2, 9, "REQUESTED"),
-        (3, 5, 31, "APPROVED"),
-        (3, 1, 2, "REQUESTED"),
+        (3, 2, 10, "REQUESTED"),
+        (3, 5, 32, "APPROVED"),
+        (3, 1, 4, "REQUESTED"),
         (3, 1, 3, "REJECTED"),
 
-        (4, 5, 32, "APPROVED"),
-        (4, 3, 17, "REQUESTED"),
-        (4, 2, 10, "REQUESTED"),
+        (4, 5, 33, "APPROVED"),
+        (4, 3, 18, "REQUESTED"),
+        (4, 2, 11, "REQUESTED"),
         (4, 3, 18, "REJECTED"),
 
-        (5, 1, 4, "APPROVED"),
+        (5, 1, 5, "APPROVED"),
         (5, 4, 26, "REQUESTED"),
 
     ]

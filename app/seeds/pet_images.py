@@ -166,9 +166,9 @@ def seed_pet_images():
         (37, "https://i.imgur.com/qJRTBwx.png", False),
 
         # 38
-        (38, "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/301029205_10226399048816603_8996123751028312189_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=1jzbUgklEOkQ7kNvgHUi8yO&_nc_oc=Adlcq8cYX3zJqjALxGSzO9Vsk3S2jrI4o_tY4W3Y3XlLe7l8vODXllI3geBLgJxw16vwjTeqp7PFjk-c63fnwvH2&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=xTpKDU80yHa63cfZKcwp1w&oh=00_AYGX9hbLOobCNZICliqPevGhdsyPvfb5mqnIHDpbBV4jEA&oe=67EA599D", True),
-        (38, "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/301008130_10226399048776602_4625479726212490851_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_ohc=xQC2iQOJ9dQQ7kNvgH678YN&_nc_oc=AdmZCR3HFWzaR7xUmpdK3r0ROFlW861KghcUHOGvXgTEgbIqo5Qk-NNq1bIZU3ayNSUfeB5cKkfXhcZmzavcuysW&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=ssgXFy5kl3vf0xNinbeuOQ&oh=00_AYHRIZ7wztx1fKR25r1mpPZSUkbj03zaXng_Q6Dm0nh9Tw&oe=67EA50BD", False),
-        (38, "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/476336648_10233217604396231_6507473655568770770_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_ohc=NI8MFMU6pFAQ7kNvgE761li&_nc_oc=AdmKiPva67d6wcgiHt8CbyjGtdF1xeHWwqbdgeGlBsuNYHrkDTfBbmJ78y6fQqsRcp9rfBISA_gi4aS8GrBT3M52&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=Ier3ofhsyH6oinnuPp5YVg&oh=00_AYGPcx1jTNBhwAFl93z-KkDh3Nycd6LieCURqyv9IkZaWw&oe=67EA3A61", False),
+        (38, "https://i.imgur.com/MyLBSPp.jpeg", True),
+        (38, "https://i.imgur.com/tGHZNYZ.jpeg", False),
+        (38, "https://i.imgur.com/yFKM19V.jpeg", False),
 
         # 39
         (39, "https://images.unsplash.com/photo-1611306133736-56a3b973b2cc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YmVhZ2xlfGVufDB8fDB8fHww", True),

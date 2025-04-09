@@ -19,7 +19,6 @@ def seed_adoptions():
         (1, 45),
         (3, 46),
 
-        # You can add more without reviews
         (1, 29),  # adopted but no review
         (1, 22),
         (3, 1),
