@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { thunkSignup } from "../../redux/session";
 import "./SignupForm.css";
-// import * as React from 'react'
 import Slider from '@mui/material/Slider'
 import { useNavigate } from "react-router-dom";
 
@@ -180,15 +179,18 @@ function SignupFormModal() {
               <label className="profile-label">
                   Profile Picture
                   <input type="text" value={avatar} onChange={(e) => setAvatar(e.target.value)} />
-              {validationErrors.avatar && <p className="login-error-message">{validationErrors.avatar}</p>}
+                  <p className="login-error-message">{validationErrors.avatar || errors.avatar || ''}</p>
               </label>
 
               {/* Show Image Preview */}
-              {avatar && !errors.avatar && (
-                <img src={avatar} alt="Avatar Preview" className="avatar-preview"/>
-              )}
+              <div className="avatar-container">
+                {avatar && !errors.avatar ? (
+                  <img src={avatar} alt="Avatar Preview" className="avatar-preview-signup"/>
+                ) : (
+                  <div className="avatar-placeholder">Avatar Preview</div>
+                )}
+              </div>
             </div>
-              {errors.avatar && <p className="error-message">{errors.avatar}</p>}
 
             <div className="first-last-name-container">
               <label className="first-last-name-label">
@@ -199,9 +201,8 @@ function SignupFormModal() {
                   onChange={(e) => setFirstName(e.target.value)}
                   required
                 />
+                <p className="login-error-message">{errors.firstName || validationErrors.firstName || ''}</p>
 
-                {errors.firstName && <p className="login-error-message">{errors.firstName}</p>}
-              {validationErrors.firstName && <p className="login-error-message">{validationErrors.firstName}</p>}
               </label>
 
               <label className="first-last-name-label">
@@ -213,8 +214,10 @@ function SignupFormModal() {
                   required
                 />
 
-                {errors.lastName && <p className="login-error-message">{errors.lastName}</p>}
-              {validationErrors.lastName && <p className="login-error-message">{validationErrors.lastName}</p>}
+                <p className="login-error-message">
+                  {errors.lastName || validationErrors.lastName || ''}
+                </p>
+
               </label>
             </div>
 
@@ -228,8 +231,10 @@ function SignupFormModal() {
                 required
               />
 
-              {errors.username && <p className="login-error-message">{errors.username}</p>}
-              {validationErrors.username && <p className="login-error-message">{validationErrors.username}</p>}
+                <p className="login-error-message">
+                  {errors.username || validationErrors.username || ''}
+                </p>
+
             </label>
 
 
@@ -242,8 +247,11 @@ function SignupFormModal() {
                 className={errors.email ? 'error' : ''}
                 required
               />
-              {errors.email && <p className="login-error-message">{errors.email}</p>}
-              {validationErrors.email && <p className="login-error-message">{validationErrors.email}</p>}
+
+                <p className="login-error-message">
+                  {errors.email || validationErrors.email || ''}
+                </p>
+
             </label>
 
             <div className='password-container'>
@@ -255,8 +263,9 @@ function SignupFormModal() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                {errors.password && <p className="login-error-message">{errors.password}</p>}
-                {validationErrors.password && <p className="login-error-message">{validationErrors.password}</p>}
+                <p className="login-error-message">
+                  {errors.password || validationErrors.password || ''}
+                </p>
               </label>
 
               <label className="password-label">
@@ -267,10 +276,10 @@ function SignupFormModal() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
-                {errors.confirmPassword && <p className="login-error-message">{errors.confirmPassword}</p>}
-                {validationErrors.confirmPassword && (
-                  <p className="login-error-message">{validationErrors.confirmPassword}</p>
-                )}
+                <p className="login-error-message">
+                  {errors.confirmPassword || validationErrors.confirmPassword || ''}
+                </p>
+
               </label>
 
             </div>
@@ -286,8 +295,8 @@ function SignupFormModal() {
 
         {showAdditionalModal1 && !showAdditionalModal2 && (
           <>
-            <label>Radius (miles)</label>
-            <div><Slider aria-label="radius" valueLabelDisplay='on' min={1} max={50} step={1} value={radius} onChange={(e, value) => setRadius(value)}/></div>
+            <label className="radius-label">Radius (miles)</label>
+            <div><Slider aria-label="radius" className='slider' valueLabelDisplay='on' min={1} max={50} step={1} value={radius} onChange={(e, value) => setRadius(value)}/></div>
 
             <div className="kids-container">
               <label className="kids-question-label">Do you have kids?</label>
@@ -313,8 +322,10 @@ function SignupFormModal() {
                     required
                   /> No
                 </label>
-                  {errors.kids && <p className="login-error-message">{errors.kids}</p>}
-                  {validationErrors2.kids && <p className="login-error-message">{validationErrors2.kids}</p>}
+
+                <p className="login-error-message2">
+                  {errors.kids || validationErrors.kids || ''}
+                </p>
 
               </div>
             </div>
@@ -343,8 +354,11 @@ function SignupFormModal() {
                     required
                   /> No
                 </label>
-                  {errors.hasBackyard && <p className="login-error-message">{errors.hasBackyard}</p>}
-                  {validationErrors2.hasBackyard && <p className="login-error-message">{validationErrors2.hasBackyard}</p>}
+
+                <p className="login-error-message2">
+                  {errors.hasBackyard || validationErrors.hasBackyard || ''}
+                </p>
+
               </div>
 
             </div>
@@ -406,8 +420,11 @@ function SignupFormModal() {
                     required
                   />Other
                 </label>
-                  {errors.otherPets && <p className="login-error-message">{errors.otherPets}</p>}
-                  {validationErrors2.otherPets && <p className="login-error-message">{validationErrors2.otherPets}</p>}
+
+                <p className="login-error-message2">
+                  {errors.otherPets || validationErrors.otherPets || ''}
+                </p>
+
                 </div>
 
             </div>
@@ -448,8 +465,11 @@ function SignupFormModal() {
                   required
                 /> Current
               </label>
-                {errors.petExperience && <p className="login-error-message">{errors.petExperience}</p>}
-                {validationErrors2.petExperience && <p className="login-error-message">{validationErrors2.petExperience}</p>}
+
+              <p className="login-error-message2">
+                  {errors.petExperience || validationErrors.petExperience || ''}
+                </p>
+
             </div>
 
           </div>
@@ -525,15 +545,6 @@ function SignupFormModal() {
           <div className="preferences-container">
             <label className="preferences-question-label">Ideal age?</label>
             <div className="preferences-answer-container">
-              {/* <label className="preferences-label">
-                <input
-                  type="radio"
-                  name='idealAge'
-                  value='noPreference'
-                  checked={idealAge === "noPreference"}
-                  onChange={(e) => setIdealAge(e.target.value)}
-                /> No Preference
-              </label> */}
 
               <label className="preferences-label">
                 <input
@@ -582,15 +593,6 @@ function SignupFormModal() {
           <div className="preferences-container">
             <label className="preferences-question-label">Ideal sex?</label>
             <div className="preferences-answer-container">
-              {/* <label className="preferences-label">
-                <input
-                  type="radio"
-                  name='idealSex'
-                  value='noPreference'
-                  checked={idealSex === "noPreference"}
-                  onChange={(e) => setIdealSex(e.target.value)}
-                /> No Preference
-              </label> */}
 
               <label className="preferences-label">
                 <input
@@ -618,15 +620,6 @@ function SignupFormModal() {
           <div className="preferences-container">
             <label className="preferences-question-label">Ideal size?</label>
             <div className="preferences-answer-container">
-              {/* <label className="preferences-label">
-                <input
-                  type="radio"
-                  name='idealSize'
-                  value='noPreference'
-                  checked={idealSize === "noPreference"}
-                  onChange={(e) => setIdealSize(e.target.value)}
-                /> No Preference
-              </label> */}
 
               <label className="preferences-label">
                 <input
@@ -674,15 +667,6 @@ function SignupFormModal() {
           <div className="preferences-container">
             <label className="preferences-question-label">Ideal lifestyle?</label>
             <div className="preferences-answer-container">
-              {/* <label className="preferences-label">
-                <input
-                  type="radio"
-                  name='lifestyle'
-                  value='noPreference'
-                  checked={lifestyle === "noPreference"}
-                  onChange={(e) => setLifestyle(e.target.value)}
-                /> No Preference
-              </label> */}
 
               <label className="preferences-label">
                 <input
