@@ -150,6 +150,7 @@ letter-spacing: 2px;
   align-items: center;
 }
 
+
 .profile-button {
   display: flex;
   flex-direction: row;
@@ -163,6 +164,11 @@ letter-spacing: 2px;
   /* font-family: "Quicksand"; */
   color: var(--primary-light)
 
+}
+.nav-items:hover {
+  transform: scale(1.05);
+  /* box-shadow: 0 0 6px rgba(0, 0, 0, 0.2); */
+  cursor: pointer;
 }
 
 .approved-matches-container-nav {

@@ -92,12 +92,13 @@
     flex-direction: column;
     justify-content: center;
     color: #2C1B14;
-    overflow: hidden;
+    /* overflow: hidden; */
+    /* overflow-y: scroll; */
     font-size: 16px;
     line-height: 1.5;
     font-family: "Open Sans";
     border-radius: 0 8px 8px 0;
-
+    max-height: 100%;
 }
 
 .swipe-pet-name {
@@ -129,7 +130,7 @@
     border: none;
     height: 1px;
     background: #D3A87C; /* Golden Brown */
-    margin: 12px 0;
+    margin: 10px 0;
 }
 
 
@@ -176,3 +177,38 @@
     font-weight: 500;
     z-index: 999;
 }
+
+.swipe-details-scroll {
+    overflow-y: scroll;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .swipe-details-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .swipe-details-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+  }
+
+  .see-reviews-button {
+    padding: 10px 16px;
+    background-color: #2C1B14;     /* your dark brown */
+    color: #E9D0B0;                /* your soft golden beige */
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    width: 100%;
+    align-self: center;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .see-reviews-button:hover {
+    background-color: #3A241B;
+    transform: scale(1.02);
+  }

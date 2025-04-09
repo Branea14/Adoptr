@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { approvedMatches } from "../../redux/matches";
 import { Link, useNavigate } from "react-router-dom"
-// import { FaUserCircle } from 'react-icons/fa';
 import { FaArrowLeft } from "react-icons/fa";
 import { thunkAuthenticate, thunkLogout } from "../../redux/session";
 import UpdateUserForm from "../UpdateUser/UpdateUserForm";
@@ -20,7 +19,6 @@ function Navigation() {
   const currentUser = useSelector((state) => state.session.user)
   const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
 
-  console.log('approvedMatch', approvedMatch)
   const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match?.sellerId !== currentUser?.id);
 
   useEffect(() => {
@@ -52,7 +50,6 @@ function Navigation() {
   const logout = (e) => {
     e.preventDefault();
     dispatch(thunkLogout());
-    // closeMenu();
     navigate('/')
   };
 
@@ -66,16 +63,11 @@ function Navigation() {
       </div>
       <div className={`navbar ${shifted ? "shifted" : ""}`}>
         <ul>
-          {/* <li>
-            <NavLink to="/">Home</NavLink>
-            </li> */}
           <li className='profile-button-container' onClick={handleProfileIconClick}>
             <div className={`profile-button ${shifted ? "move-profile" : ""}`}>
               <button className="toggle-button">
                 {shifted ? <FaArrowLeft /> : ""}
               </button>
-              {/* <ProfileButton /> */}
-              {/* <FaUserCircle /> */}
               <img src={currentUser?.avatar} alt="Profile-Picture" className="nav-profile-pic"/>
               <span className="profile-name">{currentUser?.firstName}</span>
             </div>
@@ -117,7 +109,6 @@ function Navigation() {
                       <Link to={`/pets/${match.petId}`} key={match?.id} className='pet-details-link'>
                         <div key={match?.id}>
                             <img className='approved-match-image' src={match?.petImage} alt={`${match?.petName}`}/>
-                            {/* <h3>{match.petName}</h3> */}
                         </div>
                       </Link>
                     ))
@@ -125,10 +116,7 @@ function Navigation() {
                 </div>
             </div>
             }
-
         </div>
-
-
     </div>
   );
 }

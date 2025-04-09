@@ -55,7 +55,6 @@ const SwipingPage = () => {
     const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
     const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
     const rejectedMatch = useSelector((state) => state.matches?.rejectedMatches)
-    // const petDetails = useSelector((state) => state.pet.petDetails)
 
     // useEffect(() => {
     //     if (currentUser) {
@@ -102,16 +101,6 @@ const SwipingPage = () => {
     }, [rejectedMatch, currentUser.id])
 
 
-    // const isApproved = useMemo(() => {
-    //     return petDetails && filteredApprovedMatches[petDetails.id]
-    // }, [filteredApprovedMatches, petDetails?.id])
-    // const isRejected = useMemo(() => {
-    //     return petDetails && filteredRejectedMatches[petDetails.id]
-    // }, [filteredRejectedMatches, petDetails?.id])
-    // const isRequested = useMemo(() => {
-    //     return petDetails && filteredRequestedMatches[petDetails.id]
-    // }, [filteredRequestedMatches, petDetails?.id])
-
 
     const validateAndSetPet = async (petCandidate) => {
         const allMatchIds = new Set([
@@ -134,16 +123,9 @@ const SwipingPage = () => {
         if (!currentPet) return null;
         if (filteredApprovedMatches[currentPet.id] || filteredRequestedMatches[currentPet.id] || filteredRejectedMatches[currentPet.id]) return null;
         if (currentPet.sellerId === currentUser.id) return null;
-        // if (isApproved || isRejected || isRequested) return null;
+
         return currentPet;
     }, [currentPet, currentUser.id, filteredApprovedMatches, filteredRequestedMatches, filteredRejectedMatches])
-
-    // if (petDetails) {
-    //     console.log("Currently Displayed Pet:", petDetails);
-    //     // console.log("Is Approved:", isApproved, "Is Requested:", isRequested, "Is Rejected:", isRejected);
-    // }
-
-    // console.log("Currently Displayed Pet:", currentPet)
 
 
     useEffect(() => {
@@ -184,9 +166,9 @@ const SwipingPage = () => {
         )
     }, [])
 
-    console.log('filteredApproved', filteredApprovedMatches)
-    console.log('filteredRequested', filteredRequestedMatches)
-    console.log('filteredRejected', filteredRejectedMatches)
+    // console.log('filteredApproved', filteredApprovedMatches)
+    // console.log('filteredRequested', filteredRequestedMatches)
+    // console.log('filteredRejected', filteredRejectedMatches)
 
     const images = pet?.PetImages || [];
     const currentImage = images.length > 0 ? images[currentImgIndex]?.url : "";
@@ -228,11 +210,10 @@ const SwipingPage = () => {
             setMatchesAreLoaded(true)
             setMatchesFilteredReady(true)
 
-            console.log('geting pet....')
+            // console.log('geting pet....')
             const newPet = await dispatch(getDetails())
-            console.log('pet fetched', newPet)
+            // console.log('pet fetched', newPet)
             const accepted = await validateAndSetPet(newPet)
-            // setTimeout(async () => {
 
             if (!accepted) {
                 console.log("❌ First pet invalid — trying again...");
@@ -243,7 +224,6 @@ const SwipingPage = () => {
             setValidatingPet(false)
             setLoading(false)
 
-            // }, 0)
         }
         fetchEverything()
     }, [dispatch, currentUser?.id]);
@@ -251,40 +231,9 @@ const SwipingPage = () => {
     const handleSwipe = async () => {
         if (!currentPet) return
 
-        const petToSwipe = currentPet
         setLoading(true)
         // setCurrentPet(null)
         localStorage.removeItem("currentPet") //after swipe is completed and match is handled
-
-        // setTimeout(async () => {
-        //     await Promise.all([
-        //         dispatch(requestedMatches()),
-        //         dispatch(approvedMatches()),
-        //         dispatch(rejectedMatches())
-        //     ])
-
-        //     console.log("fetching a new pet after swipe......")
-
-        //     dispatch(getDetails()).then((newPet) => {
-        //         if (!newPet) {
-        //             console.log("No more pets available")
-        //             setLoading(false)
-        //             return
-        //         }
-
-        //         localStorage.setItem('currentPet', JSON.stringify(newPet))
-        //         setPosition(0);
-        //         setCurrentImgIndex(0)
-        //         setPetIsReady(true)
-        //         setLoading(false)
-        //     }).catch((error) => {
-        //         console.error("Error fetching new pet", error)
-        //         if (error.response?.status === 400) {
-        //             console.log("no more pets to swipe")
-        //         }
-        //         setLoading(false)
-        //     })
-        // }, 300)
 
         try {
             await Promise.all([
@@ -293,7 +242,7 @@ const SwipingPage = () => {
                 dispatch(rejectedMatches())
             ]);
 
-            console.log("fetching a new pet after swipe...");
+            // console.log("fetching a new pet after swipe...");
 
             const newPet = await dispatch(getDetails());
 
@@ -326,14 +275,11 @@ const SwipingPage = () => {
 
 
     const bind = useDrag(({ movement: [x], down, direction: [xDir], velocity }) => {
-        console.log('swipe detected', { x, down, xDir, velocity })
+        // console.log('swipe detected', { x, down, xDir, velocity })
         if (!pet) return;
-        // const requiredDistance = 10;
         const requiredDistance = 50;
-        // const minVelocity = 0.01;
         const minVelocity = 0.15;
 
-        // if (!down && velocity[0] > minVelocity && Math.abs(x) > requiredDistance) {
         if (!down && (velocity[0] > minVelocity || Math.abs(x) > requiredDistance)) {
             let matchStatus = xDir > 0 ? "REQUESTED" : "REJECTED"
             const offscreen = xDir > 0 ? window.innerWidth : -window.innerWidth
@@ -385,24 +331,24 @@ const SwipingPage = () => {
                         }
 
                         <div className="swipe-details-container">
-                            <h1 className="swipe-pet-name">{pet.name} &middot; {pet.breed}</h1>
-                            {/* <p>{pet.id}</p> */}
-                            <p className="swipe-description">{pet.description}</p>
-                            <p className="swipe-age-sex-size"><strong>{pet.age} &middot; {pet.sex} &middot; {SIZE_DISPLAY[pet.size]}</strong></p>
-                            {/* <p>Color: {pet.color}</p> */}
-                            <p className="swipe-lifestyle"><strong>Lifestyle:</strong> {LIFESTYLE_DISPLAY[pet.lifestyle]} &middot; <strong>Love Language:</strong> {LOVE_LANGUAGE_DISPLAY[pet.loveLanguage]}</p>
+                            <div className="swipe-details-scroll">
+                                <h1 className="swipe-pet-name">{pet.name} &middot; {pet.breed}</h1>
+                                <p className="swipe-description">{pet.description}</p>
+                                <p className="swipe-age-sex-size"><strong>{pet.age} &middot; {pet.sex} &middot; {SIZE_DISPLAY[pet.size]}</strong></p>
+                                <p className="swipe-lifestyle"><strong>Lifestyle:</strong> {LIFESTYLE_DISPLAY[pet.lifestyle]} &middot; <strong>Love Language:</strong> {LOVE_LANGUAGE_DISPLAY[pet.loveLanguage]}</p>
 
-                            <hr className="swipe-divider" />
+                                <hr className="swipe-divider" />
 
-                            <div className="swipe-attributes">
-                                <OpenModalButton buttonText='See Seller Reviews' modalComponent={<SellerReviewsModal sellerId={pet.sellerId}/>}/>
-                                <p><span>House Trained:</span> <strong className={pet.houseTrained ? "yes" : "no"}>{pet.houseTrained ? "Yes" : "No"}</strong></p>
-                                <p><span>Good with Kids:</span> <strong className={pet.kids ? "yes" : "no"}>{pet.kids ? "Yes" : "No"}</strong></p>
-                                <p><span>Good with Other Pets:</span> <strong className={pet.otherPet ? "yes" : "no"}>{pet.otherPet ? "Yes" : "No"}</strong></p>
-                                <p><span>Owner Surrender:</span> <strong className={pet.ownerSurrender ? "yes" : "no"}>{pet.ownerSurrender ? "Yes" : "No"}</strong></p>
-                                <p><span>Vaccinated:</span> <strong className={pet.vaccinated ? "yes" : "no"}>{pet.vaccinated ? "Yes" : "No"}</strong></p>
-                                <p><span>Special Needs:</span> <strong className={pet.specialNeeds ? "yes" : "no"}>{pet.specialNeeds ? "Yes" : "No"}</strong></p>
-                                {/* <OpenModalButton buttonText='See Seller Reviews' modalComponent={<SellerReviewsModal />}/> */}
+                                <div className="swipe-attributes">
+                                    <OpenModalButton className='see-reviews-button' buttonText='See Seller Reviews' modalComponent={<SellerReviewsModal sellerId={pet.sellerId}/>}/>
+                                    <p><span>House Trained:</span> <strong className={pet.houseTrained ? "yes" : "no"}>{pet.houseTrained ? "Yes" : "No"}</strong></p>
+                                    <p><span>Good with Kids:</span> <strong className={pet.kids ? "yes" : "no"}>{pet.kids ? "Yes" : "No"}</strong></p>
+                                    <p><span>Good with Other Pets:</span> <strong className={pet.otherPet ? "yes" : "no"}>{pet.otherPet ? "Yes" : "No"}</strong></p>
+                                    <p><span>Owner Surrender:</span> <strong className={pet.ownerSurrender ? "yes" : "no"}>{pet.ownerSurrender ? "Yes" : "No"}</strong></p>
+                                    <p><span>Vaccinated:</span> <strong className={pet.vaccinated ? "yes" : "no"}>{pet.vaccinated ? "Yes" : "No"}</strong></p>
+                                    <p><span>Special Needs:</span> <strong className={pet.specialNeeds ? "yes" : "no"}>{pet.specialNeeds ? "Yes" : "No"}</strong></p>
+                                </div>
+
                             </div>
 
                         </div>
