@@ -9,7 +9,6 @@ import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { thunkUpdateUserLocation } from "../../redux/session";
 import OpenModalButton from "../OpenModalButton";
 import SellerReviewsModal from "../SellerReviewsModal/SellerReviewsModal";
-import socket from "../../socket";
 
 const SwipingPage = () => {
     const dispatch = useDispatch()
@@ -19,7 +18,6 @@ const SwipingPage = () => {
     const [validatingPet, setValidatingPet] = useState(true)
     const [matchesAreLoaded, setMatchesAreLoaded] = useState(false)
     const [matchesFilteredReady, setMatchesFilteredReady] = useState(false)
-    // const [petIsReady, setPetIsReady] = useState(false)
 
     const [position, setPosition] = useState(0)
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
@@ -55,6 +53,8 @@ const SwipingPage = () => {
     const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
     const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
     const rejectedMatch = useSelector((state) => state.matches?.rejectedMatches)
+    const reviews = useSelector((state) => state.reviews.reviews)
+    const reviewsArray = Object.values(reviews)
 
     // useEffect(() => {
     //     if (currentUser) {
@@ -340,7 +340,7 @@ const SwipingPage = () => {
                                 <hr className="swipe-divider" />
 
                                 <div className="swipe-attributes">
-                                    <OpenModalButton className='see-reviews-button' buttonText='See Seller Reviews' modalComponent={<SellerReviewsModal sellerId={pet.sellerId}/>}/>
+                                    {reviewsArray?.length > 0 ? <OpenModalButton className='see-reviews-button' buttonText='See Seller Reviews' modalComponent={<SellerReviewsModal sellerId={pet.sellerId}/>}/> : null}
                                     <p><span>House Trained:</span> <strong className={pet.houseTrained ? "yes" : "no"}>{pet.houseTrained ? "Yes" : "No"}</strong></p>
                                     <p><span>Good with Kids:</span> <strong className={pet.kids ? "yes" : "no"}>{pet.kids ? "Yes" : "No"}</strong></p>
                                     <p><span>Good with Other Pets:</span> <strong className={pet.otherPet ? "yes" : "no"}>{pet.otherPet ? "Yes" : "No"}</strong></p>

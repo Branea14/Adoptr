@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useModal } from "../../context/Modal";
 import "./SellerReviewsModal.css"
 import { loadReviewsThunk } from "../../redux/reviews";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,13 +6,9 @@ import { FaStar } from "react-icons/fa";
 
 
 const SellerReviewsModal = ({sellerId}) => {
-    const {closeModal} = useModal()
     const dispatch = useDispatch()
     const reviews = useSelector((state) => state.reviews.reviews)
     const reviewsArray = Object.values(reviews)
-    console.log('array', reviewsArray)
-    console.log('reviews', reviews)
-
 
     useEffect(() => {
         dispatch(loadReviewsThunk(sellerId))
@@ -32,20 +27,20 @@ const SellerReviewsModal = ({sellerId}) => {
       }
 
     return (
-        <>
+        <div className="seller-reviews-modal">
             <h2>
                 Seller Reviews <FaStar color="gold"/> ({avgRating == 5 ? '5' : avgRating}/5)
             </h2>
 
-            {reviewsArray && reviewsArray?.map((review, index) => (
-                <div key={index}>
-                    <p>{getStarRating(review.stars)}</p>
-                    <p>"{review.review}"</p>
-                    <p>- {review.ReviewerInfo.firstName} {review.ReviewerInfo.lastName.split("")[0]}.</p>
+            {reviewsArray?.map((review, index) => (
+                <div key={index} className="review-block">
+                    <p className="review-stars">{getStarRating(review.stars)}</p>
+                    <p className="review-text">"{review.review}"</p>
+                    <p className="reviewer-name">- {review.ReviewerInfo.firstName} {review.ReviewerInfo.lastName.split("")[0]}.</p>
                 </div>
 
             ))}
-        </>
+        </div>
     )
 }
 
