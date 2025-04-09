@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./SellerReviewsModal.css"
 import { loadReviewsThunk } from "../../redux/reviews";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,11 +7,14 @@ import { FaStar } from "react-icons/fa";
 
 const SellerReviewsModal = ({sellerId}) => {
     const dispatch = useDispatch()
+    const [loading, setLoading] = useState(true)
     const reviews = useSelector((state) => state.reviews.reviews)
     const reviewsArray = Object.values(reviews)
 
     useEffect(() => {
+        setLoading(true)
         dispatch(loadReviewsThunk(sellerId))
+        setLoading(false)
     }, [dispatch, sellerId])
 
     const numReviews = reviewsArray ? reviewsArray.length : 0;
@@ -25,6 +28,8 @@ const SellerReviewsModal = ({sellerId}) => {
 
         return '★'.repeat(filledStars) + '☆'.repeat(emptyStars);
       }
+
+    if (loading) return null;
 
     return (
         <div className="seller-reviews-modal">

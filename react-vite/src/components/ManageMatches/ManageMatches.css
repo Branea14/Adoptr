@@ -1,30 +1,32 @@
-
 .manage-matches-container {
-  position: absolute; /* Removes absolute positioning */
+  position: absolute;
   top: 100px;
   left: 300px;
-  width: calc(100% - 300px);
+  width: calc(100vw - 300px);
+  /* height: calc(100vh - 100px); */
+  /* overflow: hidden; */
   display: flex;
   flex-direction: column;
   text-align: center;
   padding: 20px;
 }
 
-
-/* Matches Section Container */
 .matches-section {
   display: flex;
   flex-direction: column;
-  gap: 30px; /* Space between sections */
+  gap: 30px;
 }
 
-/* Ensures Individual Match Sections Align Left */
 .matches-container {
   width: 100%;
   text-align: center;
+  overflow: scroll;
 }
 
-/* Horizontal line separator */
+.matches-container::-webkit-scrollbar {
+  display: none;
+}
+
 .matches-separator {
   width: 100%;
   border: none;
@@ -33,7 +35,6 @@
   margin: 30px 0;
 }
 
-/* Aligns Matches */
 .approved-match-on-page {
   display: flex;
   flex-wrap: wrap;
@@ -41,9 +42,13 @@
   gap: 25px;
   margin-top: 20px;
   margin-left: 10px;
+  overflow: scroll;
 }
 
-/* Match Tiles */
+.approved-match-on-page::-webkit-scrollbar {
+  display: none;
+}
+
 .approved-match-tile {
   display: flex;
   flex-direction: column;
@@ -52,7 +57,6 @@
   text-align: center;
 }
 
-/* Match Images */
 .approved-match-image-on-page {
   width: 155px;
   height: 155px;
@@ -66,7 +70,6 @@
   transform: scale(1.05);
 }
 
-/* Match Names */
 .pet-details-link h3 {
   font-size: 18px;
   font-weight: bold;
@@ -92,24 +95,17 @@
   margin-top: -20px;
   padding: 6px 12px;
   font-size: 13px;
-
 }
 
 .manage-match-image-on-page:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
-  /* bottom: 10px; / */
 }
 
 .tabs-container {
   display: flex;
   gap: 1rem;
   margin-bottom: 1.5rem;
-  /* border-bottom: 2px solid #ccc; */
-  /* padding-bottom: 0.5rem; */
-  /* align-items: center;
-  text-align: center; */
-  /* justify-content: center; */
   justify-content: space-evenly;
 }
 
@@ -142,19 +138,6 @@
 }
 
 .chat-card {
-  /* display: flex;
-  align-items: center;
-  padding: 1rem;
-  background-color: #fdf8f3;
-  border-radius: 12px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6);
-  transition: background-color 0.2s ease;
-  cursor: pointer; */
-  /* background: #fdf7ec; */
-  /* padding: 20px; */
-  /* max-width: 900px;
-  margin: auto; */
-  /* justify-content: space-between; */
   display: flex;
   align-items: center;
   padding: 0.75rem 1rem;
@@ -171,11 +154,6 @@
   background-color: #f6eee2;
 }
 
-/* .chat-image {
-  flex-shrink: 0;
-  margin-right: 1rem;
-} */
-
 .chat-pet-image {
   width: 50px;
   height: 50px;
@@ -183,10 +161,6 @@
   object-fit: cover;
   margin-right: .5rem;
 }
-
-/* .chat-details {
-  flex-grow: 1;
-} */
 
 .chat-name {
   font-size: 1.1rem;
@@ -216,9 +190,14 @@
   border-right: 1px solid #eee0d0;
 }
 
+.chat-list::-webkit-scrollbar,
+.chat-box::-webkit-scrollbar {
+  display: none;
+}
+
 .matches-conversation-container {
   display: flex;
-  height: calc(100vh - 120px); /* adjust for your header */
+  height: calc(100vh - 120px);
   overflow: hidden;
   background-color: #fefaf5;
   border-radius: 12px;
@@ -227,6 +206,6 @@
 .chat-details {
   flex: 1 1 auto;
   text-align: left;
-  min-width: 0;        /* ✅ Needed to allow ellipsis */
-  overflow: hidden;    /* ✅ Prevent text from overflowing container */
+  min-width: 0;
+  overflow: hidden;
 }
