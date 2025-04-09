@@ -9,7 +9,7 @@ def seed_matches():
         (1, 4, 23, "REJECTED"), #adopted
         (1, 3, 16, "APPROVED"), #adopted
         (1, 5, 30, "REQUESTED"), #adopted
-        (1, 3, 18, 'APPROVED')
+        (1, 3, 18, 'APPROVED'),
 
         (2, 3, 17, "APPROVED"),
         (2, 1, 2, "REQUESTED"),
