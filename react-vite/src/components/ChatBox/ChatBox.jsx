@@ -163,9 +163,21 @@ const ChatBox = () => {
                                 {currentChat.sellerId === currentUser.id ? (
                                 <img
                                     className="pet-avatar"
-                                    src={currentChat.senderAvatar}
-                                    alt={currentChat.senderName}
-                                    onClick={() => navigate(`/user/${currentChat.senderId}`)}
+                                    src={
+                                        currentChat.senderId === currentUser.id
+                                        ? currentChat.receiverAvatar
+                                        : currentChat.senderAvatar
+                                    }
+                                    alt={
+                                        currentChat.senderId === currentUser.id
+                                        ? currentChat.receiverName
+                                        : currentChat.senderName
+                                    }
+                                    onClick={() => navigate(`/user/${
+                                        currentChat.senderId === currentUser.id
+                                        ? currentChat.receiverId
+                                        : currentChat.senderId
+                                    }`)}
                                 />
                                 ) :
                                     <img
@@ -191,7 +203,11 @@ const ChatBox = () => {
                     {currentChat && (
                         <div className="chat-header-text">
                             {currentChat.sellerId === currentUser.id ? (
-                                <h2>{currentChat.senderName}</h2>
+                                <h2>{
+                                    currentChat.senderId === currentUser.id
+                                    ? currentChat.receiverName
+                                    : currentChat.senderName
+                                }</h2>
                             ) : <h2>{currentChat.petName}</h2>}
 
                             {currentChat.sellerId === currentUser.id ? (
