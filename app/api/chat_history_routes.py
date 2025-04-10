@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, session
 from flask_login import login_required, current_user
-from app.models import db, ChatHistory, Pet
+from app.models import db, ChatHistory, Pet, User
 from sqlalchemy import func, and_, desc
 from sqlalchemy.orm import joinedload
 
@@ -33,7 +33,10 @@ def all_conversations():
             ChatHistory.createdAt == subquery.c.latest
         )
     ).options(
-        joinedload(ChatHistory.pets).joinedload(Pet.images)
+        joinedload(ChatHistory.pets).joinedload(Pet.images),
+        joinedload(ChatHistory.pets).joinedload(Pet.sellers),
+        joinedload(ChatHistory.receiver),
+        joinedload(ChatHistory.sender)
     ).order_by(desc(ChatHistory.createdAt)).all()
     # messages = ChatHistory.query.options(
     #     joinedload(ChatHistory.pets).joinedload(Pet.images)
@@ -67,8 +70,14 @@ def all_conversations():
         chat_data.append({
             "id": chat.id,
             "senderId": chat.senderId,
+            "senderName": chat.sender.firstName,
+            "senderAvatar": chat.sender.avatar,
             "receiverId": chat.receiverId,
+            "receiverName": chat.receiver.firstName,
+            "receiverAvatar": chat.receiver.avatar,
             "petId": chat.petId,
+            "sellerName": pet.sellers.firstName,
+            "sellerId": pet.sellers.id,
             "petName": pet.name if pet else None,
             "petImage": pet_image.url if pet_image else None,
             "content": chat.content,
@@ -88,10 +97,13 @@ def selected_conversation_history(receiverId):
     # grabs petId from query params
     pet_id = request.args.get('petId', type=int)
 
-    chat = ChatHistory.query.options(joinedload(ChatHistory.sender), joinedload(ChatHistory.receiver)).filter(
-        ((ChatHistory.senderId == current_user.id) & (ChatHistory.receiverId == receiverId)) |
-        ((ChatHistory.receiverId == current_user.id) & (ChatHistory.senderId == receiverId))
-    )
+    chat = ChatHistory.query.options(
+            joinedload(ChatHistory.sender),
+            joinedload(ChatHistory.receiver)
+        ).filter(
+            ((ChatHistory.senderId == current_user.id) & (ChatHistory.receiverId == receiverId)) |
+            ((ChatHistory.receiverId == current_user.id) & (ChatHistory.senderId == receiverId))
+        )
     # print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
     # print(chat)
 
@@ -115,8 +127,10 @@ def selected_conversation_history(receiverId):
         "id": chat.id,
         "senderId": chat.senderId,
         "senderName": chat.sender.firstName,
+        "senderAvatar": chat.sender.avatar,
         "receiverId": chat.receiverId,
         "receiverName": chat.receiver.firstName,
+        "receiverAvatar": chat.receiver.avatar,
         "petId": chat.petId,
         "content": chat.content,
         "status": chat.status,

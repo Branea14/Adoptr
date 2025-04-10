@@ -10,8 +10,12 @@
 body {
     background: var(--background);
     color: var(--primary-dark);
+    overflow: scroll;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+  }
 /* .buttons button {
     background: var(--primary-dark);
     color: var(--primary-light);

@@ -16,6 +16,11 @@ const ChatBox = () => {
     const messages = useSelector((state) => state.chatbox.chatHistory?.Chat_History)
     const displayedPet = useSelector((state) => state.pet.viewedPetDetails)
     const currentUser = useSelector((state) => state.session.user)
+    const allChats = useSelector((state) => state.chatbox.allConversations)
+
+    const allChatsArray = Object.values(allChats).sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    )
 
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(true)
@@ -36,6 +41,7 @@ const ChatBox = () => {
         Promise.all([
             dispatch(getChatHistoryThunk(chatHistoryData)),
             dispatch(getViewedPetDetailsThunk(petId)),
+            dispatch(getAllChatThunk())
         ]).finally(() => setLoading(false))
     }, [dispatch, petId, receiverId, refreshTrigger, currentUser])
 
@@ -136,7 +142,13 @@ const ChatBox = () => {
         }
     }, [dispatch])
 
-    console.log('plllllllllllllleaaaaaaase, lok here', currentUser)
+    const currentChat = allChatsArray?.find(chat =>
+        chat.petId === Number(petId) &&
+        (chat.senderId === currentUser.id || chat.receiverId === currentUser.id)
+    )
+
+    console.log('plllllllllllllleaaaaaaase, lok here', currentChat)
+    console.log('did you eat', displayedPet)
     if (loading || !currentUser || !currentUser.id) return null;
 
     return (
@@ -145,21 +157,53 @@ const ChatBox = () => {
                 {/* <FaArrowLeft className="back-arrow-pet-details1" onClick={() => navigate(`/pets/${petId}`)}/> */}
 
                 <div className="chat-header-left">
-                    {displayedPet.PetImages?.filter(image => image.preview ===true)
-                        .map(image => (
-                            <div key={image.id}>
-                                <img className='pet-avatar' src={image.url} alt={displayedPet.name} onClick={() => navigate(`/pets/${displayedPet.id}`)}/>
+                    {currentChat && (
+                        <div>
+                            <div>
+                                {currentChat.sellerId === currentUser.id ? (
+                                <img
+                                    className="pet-avatar"
+                                    src={currentChat.senderAvatar}
+                                    alt={currentChat.senderName}
+                                    onClick={() => navigate(`/user/${currentChat.senderId}`)}
+                                />
+                                ) :
+                                    <img
+                                    key={currentChat.id}
+                                    className="pet-avatar"
+                                    src={currentChat.petImage}
+                                    alt={currentChat.petName}
+                                    onClick={() => navigate(`/pets/${currentChat.petId}`)}
+                                    />
+                                }
                             </div>
-                        ))
-                    }
-                    {messages && messages.length > 0 && (
-                        <div className="chat-header-text">
-                            <h2>{displayedPet.name}</h2>
-                            <span className="chat-subtext">
-                                Chat with {messages[0].senderId === currentUser.id ? messages[0].receiverName : messages[0].senderName}
-                            </span>
                         </div>
                     )}
+
+                     {/* {displayedPet.PetImages?.filter(image => image.preview ===true)
+                    //     .map(image => (
+                    //         <div key={image.id}>
+                    //             <img className='pet-avatar' src={image.url} alt={displayedPet.name} onClick={() => navigate(`/pets/${displayedPet.id}`)}/>
+                    //         </div>
+                    //     ))
+                    // } */}
+
+                    {currentChat && (
+                        <div className="chat-header-text">
+                            {currentChat.sellerId === currentUser.id ? (
+                                <h2>{currentChat.senderName}</h2>
+                            ) : <h2>{currentChat.petName}</h2>}
+
+                            {currentChat.sellerId === currentUser.id ? (
+                                <span className="chat-subtext">Interested in {currentChat.petName}</span>
+                            ):
+                                <span className="chat-subtext">
+                                    Chat with {messages[0]?.senderId === currentUser.id ? messages[0]?.receiverName : messages[0]?.senderName}
+                                </span>
+                            }
+                        </div>
+                    )}
+
                 </div>
             </div>
             <div className="chat-box">
