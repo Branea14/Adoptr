@@ -40,6 +40,13 @@ const ManageReviews = () => {
         setModalContent(<ReviewablePetModal triggerRefresh={triggerRefresh}/>)
     }
 
+    const renderStars = (count) => {
+        const fullStar = '★';
+        const emptyStar = '☆';
+        const maxStars = 5;
+        return fullStar.repeat(count) + emptyStar.repeat(maxStars - count);
+    };
+
     return (
         <div className='manage-reviews-container'>
             {reviewablePets && reviewablePets?.length > 0 && (
@@ -56,22 +63,22 @@ const ManageReviews = () => {
                     })
 
                     return (
-                        <div className='profile-info-container' key={index}>
-                            <div className='profile-image-section'>
-                                <img className='profile-image' src={review?.petImage} alt={`Photo of ${review.petName}`}/>
+                        <div className='review-info-container' key={index}>
+                            <div className='review-image-section'>
+                                <img className='review-image' src={review?.petImage} alt={`Photo of ${review.petName}`}/>
                             </div>
 
-                            <div className='profile-info'>
+                            <div className='review-info'>
                                 <h2>{review?.petName}</h2>
+                                <p><span className='star-rating'>{renderStars(review?.stars)}</span></p>
                                 <p>Sold by {review?.SellerInfo?.firstName} {review?.SellerInfo?.lastName}</p>
                                 <p>Reviewed on {createdAt}</p>
                                 <p>"{review?.review}"</p>
-                                <p>Rating: {review?.stars}</p>
                             </div>
 
-                            <div className='pet-actions'>
+                            <div className='review-actions'>
                                 {/* <button className='update-pet-button' onClick={() => navigate(`/pets/${pet.id}/edit`)}>Update</button> */}
-                                <button className='update-button' onClick={() => setModalContent(<UpdateReviewModal sellerId={review.sellerId} reviewId={review.id} currentReview={review.review} currentStars={review.stars} triggerRefresh={triggerRefresh}/>)}>Update</button>
+                                <button className='update-pet-button' onClick={() => setModalContent(<UpdateReviewModal sellerId={review.sellerId} reviewId={review.id} currentReview={review.review} currentStars={review.stars} triggerRefresh={triggerRefresh}/>)}>Update</button>
                                 <OpenModalButton className="delete-modal-button" buttonText="Delete" modalComponent={<DeleteReviewModal id={review.id} triggerRefresh={triggerRefresh}/>}/>
                             </div>
 

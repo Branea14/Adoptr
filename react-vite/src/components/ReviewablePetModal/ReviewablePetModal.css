@@ -77,7 +77,7 @@
 
 .reviewable-products-product-name-2 {
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 2rem;
     margin-bottom: 5px;
     margin-top: 20px;
     /* cursor: pointer; */
@@ -147,3 +147,23 @@
     margin-top: 15px;
     margin-bottom: 15px;
   }
+
+  textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    margin-top: 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-family: inherit;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.delete-reviews-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+}

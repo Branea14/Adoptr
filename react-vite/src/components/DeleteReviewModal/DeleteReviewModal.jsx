@@ -22,8 +22,8 @@ const DeleteReviewModal = ({id, triggerRefresh}) => {
             <h1 className="delete-pet-header">Confirm Delete</h1>
             <div className="confirmation-question">Are you sure you want to remove this review?</div>
             <div className="action-buttons">
-                <button onClick={handleDelete} className="yes">Yes (Delete Review)</button>
                 <button onClick={handleCancelButton} className="no">No (Keep Review)</button>
+                <button onClick={handleDelete} className="yes">Yes (Delete Review)</button>
             </div>
         </div>
     )

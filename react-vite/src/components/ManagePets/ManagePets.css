@@ -52,7 +52,7 @@
     text-align: center;
 }
 
-.create-pet-listing-link a {
+.create-pet-listing-link a, .create-pet-listing-link button {
     /* display: inline-block; */
     background-color: #2C5F90; /* Match theme */
     color: white;
@@ -61,6 +61,12 @@
     font-weight: bold;
     text-decoration: none;
     font-family: "Open Sans";
+    text-decoration: none;
+    border: none;             /* Removes default button border */
+    box-shadow: none;         /* Removes black border on focus */
+    outline: none;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 .create-pet-listing-link a:hover {
@@ -153,6 +159,7 @@
     cursor: pointer;
     border: none;
     box-shadow: none;
+    width:100px;
     /* transition: background 0.3s ease-in-out; */
 }
 

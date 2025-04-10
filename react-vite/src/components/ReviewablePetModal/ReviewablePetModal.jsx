@@ -136,9 +136,9 @@ const ReviewablePetModal = ({triggerRefresh}) => {
                             value={reviewText}
                             onChange={(e) => setReviewText(e.target.value)}
                         />
-                        <div className="delete-favorite-buttons">
-                            <button className='reviews-confirm-button' disabled={disableButton()} onClick={handleSubmitReview}>Submit</button>
-                            <button className='reviews-cancel-button' onClick={() => setShowReviewModal(false)}>Cancel</button>
+                        <div className="delete-reviews-buttons">
+                            <button className='confirm-button' disabled={disableButton()} onClick={handleSubmitReview}>Submit</button>
+                            <button className='cancel-button' onClick={() => setShowReviewModal(false)}>Cancel</button>
                         </div>
                     </div>
                 );
