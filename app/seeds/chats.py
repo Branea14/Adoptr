@@ -43,6 +43,13 @@ def seed_chats():
         (3, 5, 32, "Is Cooper still available for adoption?", "SENT"),
         (5, 3, 32, "Yes! He’s an energetic pup and loves to play!", "DELIVERED"),
         (3, 5, 32, "I’ll fill out an adoption application today!", "READ"),
+
+        # Extra random conversations
+        (4, 1, 3, "Hazel is adorable! What’s her temperament like?", "SENT"),
+        (1, 4, 3, "She’s very calm and loves relaxing on the couch.", "DELIVERED"),
+
+        (1, 3, 18, "Does Rusty require any special care?", "SENT"),
+        (3, 1, 18, "Nope! Just lots of love and attention.", "READ"),
     ]
 
     chat_objects = []
