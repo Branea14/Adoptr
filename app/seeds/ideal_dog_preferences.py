@@ -83,7 +83,7 @@ def seed_ideal_dog_preferences():
 # it will reset the primary keys for you as well.
 def undo_ideal_dog_preferences():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.ideal_dog_preferences RESTART IDENTITY CASCADE;")
+        db.session.execute(text(f"TRUNCATE table {SCHEMA}.ideal_dog_preferences RESTART IDENTITY CASCADE;"))
     else:
         db.session.execute(text("DELETE FROM ideal_dog_preferences"))
 

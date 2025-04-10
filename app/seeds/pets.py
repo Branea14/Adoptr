@@ -112,7 +112,7 @@ def seed_pets():
 # it will reset the primary keys for you as well.
 def undo_pets():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.pets RESTART IDENTITY CASCADE;")
+        db.session.execute(text(f"TRUNCATE table {SCHEMA}.pets RESTART IDENTITY CASCADE;"))
     else:
         db.session.execute(text("DELETE FROM pets"))
 
