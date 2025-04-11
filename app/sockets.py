@@ -5,6 +5,8 @@ from flask_login import current_user
 from app.models import db, ChatHistory
 from flask import request
 from sqlalchemy import Enum
+# import eventlet
+# eventlet.monkey_patch()
 
 # enable websockets
 socketio = SocketIO(cors_allowed_origins="*")

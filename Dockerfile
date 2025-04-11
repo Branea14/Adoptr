@@ -27,4 +27,4 @@ COPY . .
 
 RUN flask db upgrade || (echo "❌ Migration Failed! Deployment Stopping." && exit 1)
 RUN flask seed all || (echo "❌ Seeding Failed! Deployment Stopping." && exit 1)
-CMD gunicorn app:app
+CMD gunicorn -k eventlet -w 1 app:app
