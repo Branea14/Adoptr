@@ -4,7 +4,6 @@ import { addToChat, deleteMessage, getAllChatThunk, getChatHistoryThunk, markAsR
 import { useNavigate, useParams } from "react-router-dom"
 import './ChatBox.css'
 import { getViewedPetDetailsThunk } from "../../redux/pets"
-import { FaArrowLeft } from "react-icons/fa";
 import socket from "../../socket"
 import { FaTrash } from "react-icons/fa"
 
@@ -29,8 +28,6 @@ const ChatBox = () => {
     const messagesEndRef = useRef(null)
 
     const triggerRefresh = () => {
-        console.log("🌀 Triggering refresh");
-
         setRefreshTrigger(prev => prev + 1)
     }
 
@@ -67,14 +64,12 @@ const ChatBox = () => {
             id: id
         })
 
-        // triggerRefresh()
-
         dispatch(getAllChatThunk())
     }
 
     useEffect(() => {
         if (!messages || messages.length === 0 ) return
-        console.log("📦 messages in useEffect:", messages);
+        // console.log("📦 messages in useEffect:", messages);
 
         const unread = messages?.some(
             (msg) =>
@@ -83,13 +78,13 @@ const ChatBox = () => {
                 msg.status === 'SENT'
         )
 
-        console.log("📤 Checking unread for", {
-            receiverId,
-            petId,
-            currentUserId: currentUser?.id
-          });
+        // console.log("📤 Checking unread for", {
+        //     receiverId,
+        //     petId,
+        //     currentUserId: currentUser?.id
+        //   });
 
-        console.log('unread', unread)
+        // console.log('unread', unread)
 
         if (unread) {
             console.log('emitting mark_messages_read')
@@ -147,15 +142,13 @@ const ChatBox = () => {
         (chat.senderId === currentUser.id || chat.receiverId === currentUser.id)
     )
 
-    console.log('plllllllllllllleaaaaaaase, lok here', currentChat)
-    console.log('did you eat', displayedPet)
+    // console.log('plllllllllllllleaaaaaaase, lok here', currentChat)
+    // console.log('did you eat', displayedPet)
     if (loading || !currentUser || !currentUser.id) return null;
 
     return (
         <div className="manage-chat-container">
             <div className="chat-header">
-                {/* <FaArrowLeft className="back-arrow-pet-details1" onClick={() => navigate(`/pets/${petId}`)}/> */}
-
                 <div className="chat-header-left">
                     {currentChat && (
                         <div>
@@ -191,14 +184,6 @@ const ChatBox = () => {
                             </div>
                         </div>
                     )}
-
-                     {/* {displayedPet.PetImages?.filter(image => image.preview ===true)
-                    //     .map(image => (
-                    //         <div key={image.id}>
-                    //             <img className='pet-avatar' src={image.url} alt={displayedPet.name} onClick={() => navigate(`/pets/${displayedPet.id}`)}/>
-                    //         </div>
-                    //     ))
-                    // } */}
 
                     {currentChat && (
                         <div className="chat-header-text">

@@ -42,7 +42,7 @@ export const removeReviewablePets = (petId) => ({
 //thunk
 export const getUserReviewsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/reviews/users/current')
-    console.log('response from thunk', response)
+    // console.log('response from thunk', response)
 
     if (response.ok) {
         const data = await response.json()
@@ -56,7 +56,7 @@ export const getUserReviewsThunk = () => async (dispatch) => {
     }
 }
 export const loadReviewsThunk = (userId) => async (dispatch) => {
-    console.log('userId from thunk', userId)
+    // console.log('userId from thunk', userId)
     const response = await csrfFetch(`/api/reviews/users/${userId}`)
 
     if (response.ok) {
@@ -71,7 +71,7 @@ export const loadReviewsThunk = (userId) => async (dispatch) => {
     }
 }
 export const addReview = (newReview) => async (dispatch) => {
-    console.log('newReview from thunk', newReview)
+    // console.log('newReview from thunk', newReview)
     const {sellerId, review, stars, petId} = newReview
 
     const response = await csrfFetch(`/api/reviews/users/${sellerId}`, {

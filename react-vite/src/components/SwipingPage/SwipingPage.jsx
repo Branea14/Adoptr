@@ -101,7 +101,6 @@ const SwipingPage = () => {
     }, [rejectedMatch, currentUser.id])
 
 
-
     const validateAndSetPet = async (petCandidate) => {
         const allMatchIds = new Set([
             ...Object.values(requestedMatch || {}).map(m => m.petId),

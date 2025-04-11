@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
-// import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { editUserThunk, thunkAuthenticate } from "../../redux/session";
 import { useModal } from "../../context/Modal";
 import Slider from '@mui/material/Slider'
@@ -58,7 +57,7 @@ const UpdateUserForm = ({user}) => {
 
   useEffect(() => {
       if (user) {
-          console.log('user data from editing profile', user)
+          // console.log('user data from editing profile', user)
 
           setFirstName(user.firstName || "")
           setLastName(user.lastName || "")
@@ -112,7 +111,7 @@ const UpdateUserForm = ({user}) => {
     setLoadingLocation(true)
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        console.log('location fetched:', position.coords.latitude, position.coords.longitude)
+        // console.log('location fetched:', position.coords.latitude, position.coords.longitude)
           setLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})
           setErrors((prev) => {
             const newErrors = { ...prev }
@@ -176,7 +175,7 @@ const UpdateUserForm = ({user}) => {
         if (otherPets === null) newErrors.otherPets = "Please answer question."
         if (petExperience === null) newErrors.petExperience = "Please answer question"
 
-        console.log('looooooooooooook here for errors specifically location', newErrors)
+        // console.log('looooooooooooook here for errors specifically location', newErrors)
         if (Object.keys(newErrors).length > 0) {
             return setErrors((prev) => ({ ...prev, ...newErrors}))
         }
@@ -204,7 +203,7 @@ const UpdateUserForm = ({user}) => {
             })
           )
 
-          console.log('serverResponse', serverResponse)
+          // console.log('serverResponse', serverResponse)
           if (serverResponse) {
             if(serverResponse.errors) setErrors(serverResponse.errors)
             else if (typeof serverResponse === 'object') setErrors(serverResponse)
@@ -219,8 +218,8 @@ const UpdateUserForm = ({user}) => {
             }
           }
     }
-    console.log('validationerrors', validationErrors, errors)
-    console.log('validationErrors2', validationErrors2)
+    // console.log('validationerrors', validationErrors, errors)
+    // console.log('validationErrors2', validationErrors2)
 
     return (
         <div className="signup-modal">

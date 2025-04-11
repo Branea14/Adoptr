@@ -63,7 +63,6 @@ const PetDetails = () => {
 
     return (
         <div className="swiping-page-container">
-            {/* <FaArrowLeft className="back-arrow-pet-details" onClick={() => navigate('/matches/approved')}/> */}
             <div className="swipe-card">
 
                 {images && images.length > 1 ? (
@@ -77,14 +76,7 @@ const PetDetails = () => {
                         <div key={index}><img className='swipe-pet-image' src={image.url}/></div>
                     )))
                 }
-                {/* {pet?.PetImages?.map((image, index) => (
-                    <div key={index} className="pet-images">
-                        <img
-                            src={image.url}
-                            alt={`${pet.name}'s images`}
-                        />
-                    </div>
-                ))} */}
+
                 <div className="swipe-details-container">
                     {currentUser.id !== pet.sellerId ? (
                         <button className="adopt-button" onClick={() => navigate(`/matches/manage/conversations/${pet.sellerId}/${pet.id}`)}>Want to Adopt?</button>

@@ -17,7 +17,7 @@ const ApprovedMatches = () => {
     const approvedMatch = useSelector((state) => state.matches?.approvedMatches)
 
     const filteredApprovedMatches = Object.values(approvedMatch || {}).filter(match => match.sellerId !== currentUser.id)
-    console.log(filteredApprovedMatches)
+    // console.log(filteredApprovedMatches)
 
     const triggerRefresh = () => {
         setRefreshTrigger(prev => prev + 1)

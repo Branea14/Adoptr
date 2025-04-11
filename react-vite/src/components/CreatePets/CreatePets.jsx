@@ -107,7 +107,7 @@ const CreatePets = () => {
             })
         )
 
-        console.log('LOOOOOOOOK HERE /pets/', serverResponse.id)
+        // console.log('LOOOOOOOOK HERE /pets/', serverResponse.id)
         if (serverResponse) {
             if(serverResponse.errors) setErrors(serverResponse.errors)
             else if (typeof serverResponse === 'object') setErrors(serverResponse)

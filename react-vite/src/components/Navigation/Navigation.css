@@ -8,13 +8,7 @@
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0px 2px 4px #2C1B14;
-  /* transition: transform 0.2s ease-in-out; */
 }
-
-/* .approved-match-image:hover {
-  transform: scale(1.1);
-
-} */
 
 .approved-match {
   display: flex;
@@ -31,18 +25,14 @@
   left: 0;
   width: 300px;
   height: 100vh;
-  /* background-color: var(--highlight); */
   display: flex;
   flex-direction: column;
-  z-index: 1000; /* ensures it stays on top */
+  z-index: 1000;
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.6);
   color: var(--primary-light);
   font-size: 20px;
   transition: transform 0.3s ease-in-out;
-  /* background: linear-gradient(180deg, var(--highlight) 10%, #3a4d2d 90%); */
   background: linear-gradient(180deg, #1E3A5F 10%, #14223D 90%);
-
-  /* align-items: center; */
 }
 
 .container-of-headers {
@@ -61,12 +51,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* padding: 10px 20px; */
-  /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); */
   z-index: 999;
   gap: 10px;
-  /* background-color: #FAF2E5; */
-  /* border-bottom: 1px solid #ddd; */
 }
 
 .nav-logo {
@@ -75,25 +61,19 @@
   object-fit: contain;
   border-radius: 50%;
   box-shadow: 0px 2px 4px #2C1B14;
-
-  /* margin-right: 10px; */
 }
 
 .platform-name {
   font-size: 70px;
   font-weight: bold;
-  /* color: #333; */
   color: var(--primary-dark);
   font-family: 'Bubblegum Sans';
-  /* text-transform: uppercase; */
   margin-top: 8px;
   margin-left: 10px;
-  /* text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5),
-  -2px -2px 4px rgba(255, 255, 255, 0.2); */
   text-shadow:
   3px 3px 5px rgba(0, 0, 0, 0.5),
   -2px -2px 4px rgba(255, 255, 255, 0.2),
-  0px 0px 5px rgba(29, 78, 137, 0.6); /* Soft Blue Glow */
+  0px 0px 5px rgba(29, 78, 137, 0.6);
 letter-spacing: 2px;
 }
 
@@ -111,8 +91,6 @@ letter-spacing: 2px;
   position: absolute;
   left: -90px;
   transition: transform 0.2s ease-in-out;
-  /* padding-left: -35px; */
-/* gap: 44px; */
 }
 
 .toggle-button:hover {
@@ -131,14 +109,10 @@ letter-spacing: 2px;
   width: 55px;
   object-fit: cover;
   box-shadow: 0px 2px 4px #2C1B14;
-  /* border: 2px solid var(--primary-light); */
   margin-right: 10px;
 }
 
 .profile-button-container {
-  /* margin-top: 15px;
-  margin-left: 15px;
-  list-style-type: none; */
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -157,19 +131,15 @@ letter-spacing: 2px;
   display: flex;
   flex-direction: row;
  align-items: center;
-
 }
 
 .profile-name {
-  /* margin-left: 10px; */
   font-family: "Open Sans";
-  /* font-family: "Quicksand"; */
   color: var(--primary-light)
 
 }
 .nav-items:hover, .approved-match-image:hover {
   transform: scale(1.05);
-  /* box-shadow: 0 0 6px rgba(0, 0, 0, 0.2); */
   cursor: pointer;
 }
 
@@ -179,12 +149,8 @@ letter-spacing: 2px;
 }
 
 .approved-matches-container-nav {
-  /* margin-top: 20px;
-  margin-left: 15px; */
   display: flex;
-
   flex-direction: column;
-  /* align-items: center; */
   padding: 10px;
   max-height: 200px;
   overflow-y: auto;
@@ -195,15 +161,11 @@ letter-spacing: 2px;
 }
 
 .approved-matches-header a {
-  /* font-size: 1.4rem; */
   font-weight: bold;
   color: var(--accent);
   text-decoration: none;
-  /* letter-spacing: 1px; */
   transition: color .3s ease, text-shadow .3s ease;
   font-family: "Open Sans";
-  /* text-align: center; */
-
 }
 
 .approved-matches-header a:hover {
@@ -213,9 +175,7 @@ letter-spacing: 2px;
 
 .additional-menu-links {
   text-decoration: none;
-  /* list-style: none; */
   font-family: "Open Sans";
-  /* font-weight: bold; */
   transition: color .3s ease;
   cursor: pointer;
   list-style-type: none;
@@ -224,20 +184,16 @@ letter-spacing: 2px;
   border-radius: 0.5rem;
   text-align: left;
   transition: all 0.2s ease;
-  /* font-size: 16px; */
   letter-spacing: 0.5px;
 }
 
 .additional-menu-links:hover {
-  /* text-decoration: underline; */
   color: #f4e2d8;
   background-color: rgba(255, 255, 255, 0.1);
-
 }
 
 .additional-menu-links a {
   text-decoration: none;
-  /* font-weight: bold; */
   transition: color .3s ease;
   cursor: pointer;
   list-style-type: none;
@@ -250,15 +206,8 @@ letter-spacing: 2px;
 }
 
 .additional-menu {
-  /* position: absolute; */
-  /* bottom: 20px; */
-  /* left: 50%;
-  width: 90%; */
-  /* transform: translateX(-50%); */
-  /* text-align: center; */
   display: flex;
   flex-direction: column;
-  /* align-items: right; */
   padding: 1.5rem 1.2rem;
   gap: 1rem;
 }

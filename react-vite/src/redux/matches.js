@@ -43,8 +43,7 @@ export const resetMatches = () => ({
 export const createMatch = (pet, status = "REQUESTED") => async (dispatch) => {
     if (!status) status = 'REQUESTED'
 
-
-    console.log('looooooooooooooooooooook', pet)
+    // console.log('looooooooooooooooooooook', pet)
     // const {id, sellerId, status} = pet
     const response = await csrfFetch('/api/matches/', {
         method: 'POST',
@@ -72,8 +71,7 @@ export const approvedMatches = () => async (dispatch) => {
             acc[match.petId] = match;
             return acc;
         }, {})
-        console.log('Normalized approved matches:', normalizedMatches); // Verify the data structure
-
+        // console.log('Normalized approved matches:', normalizedMatches); // Verify the data structure
         dispatch(approvedMatchAction(normalizedMatches))
         return data
     }

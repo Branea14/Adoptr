@@ -1,8 +1,8 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import "./ManageMatches.css"
 import { useEffect, useState } from "react"
 import { thunkAuthenticate } from "../../redux/session"
-import { approvedMatches, rejectedMatches, requestedMatches, updatedMatch } from "../../redux/matches"
+import { approvedMatches, requestedMatches } from "../../redux/matches"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
 const ManageMatches = () => {

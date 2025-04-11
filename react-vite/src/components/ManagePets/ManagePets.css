@@ -1,17 +1,10 @@
 .manage-pets-container {
-    /* position: relative;
-    margin-left: 300px;
-    padding: 20px; */
-    /* margin-left: 200px; */
     position: absolute;
     top: 100px;
     left: 300px;
     width: calc(100% - 300px);
-    /* margin-top: 80px; */
-    /* padding: 20px; */
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
     text-align: center;
     padding: 20px;
 }
@@ -28,7 +21,6 @@
 .pets-container {
     display: flex;
     flex-wrap: wrap;
-    /* grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); */
     gap: 20px;
     justify-content: flex-start;
     padding: 20px;
@@ -48,13 +40,12 @@
 .create-pet-listing-link {
     display: flex;
     justify-content: center;
-    margin-bottom: 10px; /* Adds space between header and link */
+    margin-bottom: 10px;
     text-align: center;
 }
 
 .create-pet-listing-link a, .create-pet-listing-link button {
-    /* display: inline-block; */
-    background-color: #2C5F90; /* Match theme */
+    background-color: #2C5F90;
     color: white;
     padding: 10px 15px;
     border-radius: 5px;
@@ -62,8 +53,8 @@
     text-decoration: none;
     font-family: "Open Sans";
     text-decoration: none;
-    border: none;             /* Removes default button border */
-    box-shadow: none;         /* Removes black border on focus */
+    border: none;
+    box-shadow: none;
     outline: none;
     cursor: pointer;
     font-size: 16px;
@@ -80,7 +71,7 @@
 
 .pet-img-container {
     width: 100%;
-    height: 180px; /* Fixed height */
+    height: 180px;
     overflow: hidden;
     border-radius: 8px;
 }
@@ -100,7 +91,6 @@
 
 .pet-info {
     padding: 10px;
-    /* background-color: #181825; */
     background-color: #E9D0B0;
     padding: 12px;
     border-radius: 0 0 8px 8px;
@@ -113,11 +103,10 @@
 }
 
 .pet-tile-name {
-    /* font-size: 1rem; */
     font-size: 1.09rem;
     margin-bottom: 5px;
     color: #2C1B14;
-    max-width: 135px; /* Adjust the width as needed */
+    max-width: 135px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -160,7 +149,6 @@
     border: none;
     box-shadow: none;
     width:100px;
-    /* transition: background 0.3s ease-in-out; */
 }
 
 .update-pet-button:hover {

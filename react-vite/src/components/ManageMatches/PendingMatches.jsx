@@ -5,7 +5,7 @@ import { thunkAuthenticate } from "../../redux/session"
 import { Link } from "react-router-dom"
 import OpenModalButton from "../OpenModalButton"
 import UnmatchModal from "../UnmatchModal/UnmatchModal"
-import { rejectedMatches, requestedMatches, updatedMatch } from "../../redux/matches"
+import { requestedMatches } from "../../redux/matches"
 import "./ManageMatches.css"
 
 const PendingMatches = () => {

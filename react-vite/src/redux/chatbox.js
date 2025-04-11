@@ -44,12 +44,12 @@ export const getAllChatThunk = () => async (dispatch) => {
 
     if (response.ok) {
         const data = await response.json()
-        console.log("DATA FROM getAllChatThunk", data)
+        // console.log("DATA FROM getAllChatThunk", data)
         const normalizedChats = data.Chat_History.reduce((acc, conversation) => {
             acc[conversation.id] = conversation;
             return acc;
         }, {})
-        console.log('look at data here', data)
+        // console.log('look at data here', data)
         dispatch(getAllChat(normalizedChats))
     }
 }
@@ -84,7 +84,6 @@ export const markAsReadThunk = (messageData) => async (dispatch) => {
 
     if (response.ok) {
         const data = await response.json()
-        console.log('pussy open', data)
         dispatch(markAsRead(data))
         return data
     }

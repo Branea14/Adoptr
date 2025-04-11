@@ -19,8 +19,8 @@ const ManageReviews = () => {
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     )
     const reviewablePets = useSelector((state) => state.reviews.reviewablePets)
-    console.log('review', reviews)
-    console.log(reviewablePets)
+    // console.log('review', reviews)
+    // console.log(reviewablePets)
 
 
     const triggerRefresh = () => {

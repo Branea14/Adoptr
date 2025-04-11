@@ -3,8 +3,6 @@
   top: 100px;
   left: 300px;
   width: calc(100vw - 320px);
-  /* height: calc(100vh - 100px); */
-  /* overflow: hidden; */
   display: flex;
   flex-direction: column;
   text-align: center;

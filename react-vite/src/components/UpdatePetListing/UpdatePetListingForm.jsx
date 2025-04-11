@@ -35,7 +35,7 @@ const UpdatePetListingForm = ({pet}) => {
 
     useEffect(() => {
         if (pet) {
-            console.log('pet data', pet)
+            // console.log('pet data', pet)
 
             setName(pet.name || "")
             setDescription(pet.description || "")
@@ -175,7 +175,7 @@ const UpdatePetListingForm = ({pet}) => {
             })
         )
 
-        console.log('LOOOOOOOOK HERE /pets/', serverResponse)
+        // console.log('LOOOOOOOOK HERE /pets/', serverResponse)
         if (serverResponse) {
             if(serverResponse.errors) setErrors(serverResponse.errors)
             else if (typeof serverResponse === 'object') setErrors(serverResponse)

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChatThunk } from "../../redux/chatbox";
 import { Outlet, useNavigate } from "react-router-dom";

@@ -15,7 +15,7 @@ const NewMatches = () => {
     const requestedMatch = useSelector((state) => state.matches?.requestedMatches)
 
     const incomingMatch = Object.values(requestedMatch || {}).filter(match => match.sellerId === currentUser.id)
-    console.log('incomingMatch', incomingMatch)
+    // console.log('incomingMatch', incomingMatch)
 
     const triggerRefresh = () => {
         setRefreshTrigger(prev => prev + 1)
@@ -35,7 +35,7 @@ const NewMatches = () => {
 
     const handleApproveMatch = async (matchId) => {
         const matchToUpdate = requestedMatch[matchId]
-        console.log('you want to see this', matchId)
+        // console.log('you want to see this', matchId)
 
         if (matchToUpdate) {
             const updatedMatchData = {

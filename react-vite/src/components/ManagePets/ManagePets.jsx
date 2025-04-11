@@ -18,7 +18,7 @@ const ManagePets = () => {
     const petsArray = Object.values(pets).sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     )
-    console.log(petsArray)
+    // console.log(petsArray)
 
     const petsWithPreview = petsArray.map((pet) => {
         const previewImage = pet.images.find((image) => image.preview) || pet.images[0]; // falls back on first photo

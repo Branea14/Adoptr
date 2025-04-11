@@ -101,7 +101,7 @@ export const createPet = (newPetData) => async (dispatch) => {
     }
 }
 export const updatePet = (updatedPetData) => async (dispatch) => {
-    console.log('updatedPetData', updatedPetData)
+    // console.log('updatedPetData', updatedPetData)
     // console.log(petId)
     const formattedImages = updatedPetData.images.map((img, index) => ({
         url: img.url,
@@ -116,7 +116,7 @@ export const updatePet = (updatedPetData) => async (dispatch) => {
         //     : updatedPetData.otherPets ? [updatedPetData.otherPets] : []
     }
 
-    console.log('responseData', responseData)
+    // console.log('responseData', responseData)
     try {
         const response = await csrfFetch(`/api/pets/${updatedPetData.id}`, {
             method: "PUT",
