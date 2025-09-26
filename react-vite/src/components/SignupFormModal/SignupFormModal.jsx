@@ -15,8 +15,7 @@ function SignupFormModal() {
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+
   const [avatar, setAvatar] = useState("")
   const [kids, setKids] = useState(null)
   const [hasBackyard, setHasBackyard] = useState(null)

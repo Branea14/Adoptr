@@ -69,7 +69,7 @@ const ChatBox = () => {
 
     useEffect(() => {
         if (!messages || messages.length === 0 ) return
-        // console.log("📦 messages in useEffect:", messages);
+        // console.log("messages in useEffect:", messages);
 
         const unread = messages?.some(
             (msg) =>
@@ -78,7 +78,7 @@ const ChatBox = () => {
                 msg.status === 'SENT'
         )
 
-        // console.log("📤 Checking unread for", {
+        // console.log("Checking unread for", {
         //     receiverId,
         //     petId,
         //     currentUserId: currentUser?.id

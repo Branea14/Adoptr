@@ -56,6 +56,8 @@ const SwipingPage = () => {
     const reviews = useSelector((state) => state.reviews.reviews)
     const reviewsArray = Object.values(reviews)
 
+
+    alert("Swipe left and right and find your next furry friend")
     // useEffect(() => {
     //     if (currentUser) {
     //         socket.connect()
@@ -215,7 +217,7 @@ const SwipingPage = () => {
             const accepted = await validateAndSetPet(newPet)
 
             if (!accepted) {
-                console.log("❌ First pet invalid — trying again...");
+                console.log(" First pet invalid — trying again...");
                 const another = await dispatch(getDetails());
                 await validateAndSetPet(another);
             }
