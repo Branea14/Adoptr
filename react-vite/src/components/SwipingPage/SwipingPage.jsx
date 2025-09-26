@@ -317,6 +317,8 @@ const SwipingPage = () => {
             <div className="swiping-page-container" {...bind()} style={{ transform: `translate(${position}px)` }}>
                 {pet && Object.keys(pet).length > 0 ? (
                     <div className="swipe-card">
+                        <div>testing text</div>
+
                         {images && images.length > 1 ? (
                             <div className="swipe-image-container">
                                 <FaChevronLeft className='arrow-icon-left-swipe' onClick={(e) => { e.stopPropagation(); handlePrevImage() }} />
