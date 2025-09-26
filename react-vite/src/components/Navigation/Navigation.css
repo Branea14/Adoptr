@@ -126,7 +126,11 @@ letter-spacing: 2px;
   align-items: center;
 }
 
-
+nav-items2 {
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .profile-button {
   display: flex;
   flex-direction: row;

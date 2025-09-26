@@ -56,9 +56,13 @@ function Navigation() {
   return (
     <div className={"container-of-headers"}>
       <div className='navbar2'>
-        <div className='nav-items' onClick={swipingPage}>
-          <img src="/logo.png" alt="Adoptr Logo" className='nav-logo'/>
-          <h1 className='platform-name'>Adoptr</h1>
+        <div className="nav-items2">
+          <div className='nav-items' onClick={swipingPage}>
+            <img src="/logo.png" alt="Adoptr Logo" className='nav-logo'/>
+            <h1 className='platform-name'>Adoptr</h1>
+          </div>
+
+          <div>tesing</div>
         </div>
       </div>
       <div className={`navbar ${shifted ? "shifted" : ""}`}>
