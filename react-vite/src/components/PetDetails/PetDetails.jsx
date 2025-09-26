@@ -64,6 +64,7 @@ const PetDetails = () => {
     return (
         <div className="swiping-page-container">
             <div className="swipe-card">
+                <div>testing text</div>
 
                 {images && images.length > 1 ? (
                     <div className="swipe-image-container">
